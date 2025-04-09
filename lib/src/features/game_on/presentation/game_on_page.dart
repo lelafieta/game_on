@@ -1,6 +1,7 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:game_on/src/features/organizers/presentation/pages/organizer_page.dart';
 
 import '../../../config/themes/app_colors.dart';
 import '../../../core/resources/app_icons.dart';
@@ -18,7 +19,7 @@ class _GameOnPageState extends State<GameOnPage> {
 
   List<Widget> widgets = [
     HomePage(),
-    Text("2"),
+    OrganizerPage(),
     Text("3"),
     Text("4"),
     Text("4"),
@@ -26,7 +27,7 @@ class _GameOnPageState extends State<GameOnPage> {
 
   List<String> iconList = [
     AppIcons.houseChimney,
-    AppIcons.calendar,
+    AppIcons.whistle,
     AppIcons.memoPad,
     AppIcons.videoCameraAlt,
     AppIcons.user
@@ -34,7 +35,7 @@ class _GameOnPageState extends State<GameOnPage> {
 
   List<String> iconListBold = [
     AppIcons.houseChimneyBold,
-    AppIcons.calendarBold,
+    AppIcons.whistleBold,
     AppIcons.memoPadBold,
     AppIcons.videoCameraAltBold,
     AppIcons.userBold

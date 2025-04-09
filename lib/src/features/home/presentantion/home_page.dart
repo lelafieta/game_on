@@ -47,14 +47,14 @@ class HomePage extends StatelessWidget {
                 IconButton(
                   onPressed: () {},
                   icon: SvgPicture.asset(
-                    AppIcons.search,
+                    AppIcons.bellNotificationSocialMedia,
                     color: AppColors.color,
                     width: 24,
                   ),
                 ),
                 IconButton(
                   onPressed: () {},
-                  icon: SvgPicture.asset(AppIcons.bell,
+                  icon: SvgPicture.asset(AppIcons.barsStaggered,
                       width: 24, color: AppColors.color),
                 )
               ],
