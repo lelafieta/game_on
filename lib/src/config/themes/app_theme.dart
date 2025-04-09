@@ -38,6 +38,26 @@ class AppTheme {
           backgroundColor: AppColors.primary,
           selectedItemColor: Colors.white,
         ),
+        inputDecorationTheme: const InputDecorationTheme(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(100)),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(100)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(100)),
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(100),
+              ),
+            ),
+          ),
+        ),
         textTheme: const TextTheme(
           bodyLarge: TextStyle(
             color: Color(0xFF777777),
