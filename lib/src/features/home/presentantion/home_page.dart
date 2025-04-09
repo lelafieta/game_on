@@ -3,7 +3,6 @@ import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:game_on/src/core/resources/app_icons.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 
 import '../../../config/themes/app_colors.dart';
 import '../../../core/resources/app_images.dart';

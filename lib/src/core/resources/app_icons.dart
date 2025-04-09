@@ -14,4 +14,5 @@ class AppIcons {
   static const String bell = "assets/icons/bell.svg";
   static const String search = "assets/icons/search.svg";
   static const String siteAlt = "assets/icons/site-alt.svg";
+  static const String barsStaggered = "assets/icons/bars-staggered.svg";
 }
