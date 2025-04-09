@@ -19,4 +19,5 @@ class AppIcons {
       "assets/icons/bell-notification-social-media.svg";
   static const String whistleBold = "assets/icons/whistle-alt.svg";
   static const String whistle = "assets/icons/whistle.svg";
+  static const String marker = "assets/icons/marker.svg";
 }
