@@ -1,25 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../../config/routes/app_routes.dart';
 import '../../../../config/themes/app_colors.dart';
 import '../../../../core/resources/app_icons.dart';
-import '../../../../core/resources/app_images.dart';
 
-class OrganizerDetailsPage extends StatefulWidget {
-  const OrganizerDetailsPage({
+class CompetitionDetailsPage extends StatefulWidget {
+  const CompetitionDetailsPage({
     super.key,
   });
 
   @override
-  State<OrganizerDetailsPage> createState() => _OrganizerDetailsPageState();
+  State<CompetitionDetailsPage> createState() => _CompetitionDetailsPageState();
 }
 
-class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
+class _CompetitionDetailsPageState extends State<CompetitionDetailsPage> {
   List<String> menuList = ["Recentes", "Campanhas", "Eventos", "Blogs"];
   int selected = 0;
 
@@ -135,7 +132,7 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                               height: 100,
                               decoration: BoxDecoration(
                                 color: Colors.green,
-                                borderRadius: BorderRadius.circular(50),
+                                borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
                                     width: 5,
                                     color: Theme.of(context)
@@ -143,7 +140,7 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                               ),
                               margin: const EdgeInsets.only(left: 16),
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(50),
+                                borderRadius: BorderRadius.circular(10),
                                 child: CachedNetworkImage(
                                   imageUrl:
                                       "https://scontent.flad5-1.fna.fbcdn.net/v/t39.30808-6/393362262_295776626562301_407325209243642260_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=Ic8klsng5fwQ7kNvwHzz7Nf&_nc_oc=AdnfpQl6hbBQJYG8NDxfcltgT7wZ2nUGUigL3r7qNjmpj0Zf6MEkoTUMmUzVAJuxd5kEjIE0QOLsAaVv8y2WJx_I&_nc_zt=23&_nc_ht=scontent.flad5-1.fna&_nc_gid=zJ3PK8hA85pmF3pUjOPzWw&oh=00_AfHAR3go9D1FnCrF0S0MbAOvYO4fz_Utmyp8lJAfmIuLAg&oe=67FCAEB5",
@@ -168,7 +165,7 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                                   Row(
                                     children: [
                                       Text(
-                                        "Fieta Organization",
+                                        "Torneio TikTok",
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleMedium!
@@ -213,7 +210,7 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                   child: Row(
                     children: [
                       Text(
-                        "1.000",
+                        "178",
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -221,7 +218,7 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                       ),
                       SizedBox(width: 8),
                       Text(
-                        "Competições",
+                        "Seguidores",
                         style: TextStyle(color: Colors.black),
                       ),
                       SizedBox(width: 10),
@@ -232,7 +229,7 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                       ),
                       SizedBox(width: 10),
                       Text(
-                        "230",
+                        "2",
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -240,7 +237,7 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                       ),
                       SizedBox(width: 8),
                       Text(
-                        "Seguidores",
+                        "Colaborador/es",
                         style: TextStyle(color: Colors.black),
                       ),
                     ],
@@ -313,6 +310,8 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                     ],
                   ),
                 ),
+                const SizedBox(height: 10),
+                ListTile(),
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -421,54 +420,45 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                     crossAxisSpacing: 10,
                     padding: const EdgeInsets.only(top: 15),
                     itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            AppRoutes.competionDetails,
-                            arguments: gridItems[index],
-                          );
-                        },
-                        child: Card(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 60,
-                                  height: 60,
-                                  padding: const EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primary,
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  // Add your icon here
-                                  // child: SvgPicture.asset(
-                                  //   AppIcons.lightbulbOn,
-                                  //   color: Colors.white,
-                                  // ),
+                      return Card(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: 60,
+                                height: 60,
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary,
+                                  borderRadius: BorderRadius.circular(50),
                                 ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  gridItems[index]["title"]!,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleSmall!
-                                      .copyWith(fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  gridItems[index]["description"]!,
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
+                                // Add your icon here
+                                // child: SvgPicture.asset(
+                                //   AppIcons.lightbulbOn,
+                                //   color: Colors.white,
+                                // ),
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                gridItems[index]["title"]!,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall!
+                                    .copyWith(fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                gridItems[index]["description"]!,
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
                           ),
                         ),
                       );
