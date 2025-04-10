@@ -386,17 +386,28 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                   child: Row(
                     children: [
                       SvgPicture.asset(
-                        width: 26,
+                        width: 30,
                         AppIcons.flagAngola,
                       ),
-                      const SizedBox(width: 5),
-                      Text("Angola, Luanda, Kikolo"),
+                      const SizedBox(width: 10),
+                      const Text("Angola, Luanda, Kikolo"),
                     ],
                   ),
                 ),
+                const SizedBox(height: 15),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(
+                    "Competições",
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.black,
+                        ),
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: MasonryGridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -407,6 +418,7 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                     itemCount: gridItems.length,
                     mainAxisSpacing: 10,
                     crossAxisSpacing: 10,
+                    padding: const EdgeInsets.only(top: 15),
                     itemBuilder: (context, index) {
                       return Card(
                         color: Colors.white,
@@ -454,171 +466,171 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                   ),
                 ),
 
-                Container(
-                  padding: const EdgeInsets.only(left: 16, right: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Impactos feitos",
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      TextButton(onPressed: () {}, child: Text("Ver mais"))
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 150,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    physics: const ClampingScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemBuilder: (context, index) {
-                      return ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: Stack(
-                          children: [
-                            Container(
-                              width: 150,
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                            ),
-                            Positioned(
-                              left: 0,
-                              right: 0,
-                              top: 0,
-                              bottom: 0,
-                              child: Image.asset(
-                                AppImages.wave,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            Positioned(
-                              left: 0,
-                              right: 0,
-                              top: 0,
-                              bottom: 0,
-                              child: Container(
-                                color: Colors.black26,
-                              ),
-                            ),
-                            Positioned(
-                              left: 0,
-                              right: 0,
-                              bottom: 0,
-                              child: Container(
-                                height: 55,
-                                decoration: const BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Colors.transparent,
-                                      Colors.black,
-                                    ],
-                                  ),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Covid Test",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      Text(
-                                        "11 Agosto 2025",
-                                        style: TextStyle(
-                                          color: Colors.white70,
-                                          overflow: TextOverflow.ellipsis,
-                                          fontSize: 10,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(width: 10);
-                    },
-                    itemCount: 15,
-                  ),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 45,
-                  decoration: BoxDecoration(
-                      // border: Border(
-                      //   bottom: BorderSide(
-                      //     width: 2,
-                      //     color: Colors.black12,
-                      //   ),
-                      // ),
-                      ),
-                  child: ListView.separated(
-                    physics: const ClampingScrollPhysics(),
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          setState(() {
-                            selected = index;
-                          });
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                          ),
-                          decoration: BoxDecoration(
-                            border: (index == selected)
-                                ? const Border(
-                                    bottom: BorderSide(
-                                      width: 2,
-                                      color: Colors.black,
-                                    ),
-                                  )
-                                : Border.all(
-                                    width: 0, color: Colors.transparent),
-                          ),
-                          child: Center(
-                            child: Text(
-                              menuList[index].toString(),
-                              style: (index != selected)
-                                  ? Theme.of(context).textTheme.bodyMedium
-                                  : Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(
-                        width: 10,
-                      );
-                    },
-                    itemCount: menuList.length,
-                  ),
-                ),
+                // Container(
+                //   padding: const EdgeInsets.only(left: 16, right: 16),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       Text(
+                //         "Impactos feitos",
+                //         style: Theme.of(context).textTheme.titleLarge,
+                //       ),
+                //       TextButton(onPressed: () {}, child: Text("Ver mais"))
+                //     ],
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 150,
+                //   child: ListView.separated(
+                //     scrollDirection: Axis.horizontal,
+                //     shrinkWrap: true,
+                //     physics: const ClampingScrollPhysics(),
+                //     padding: const EdgeInsets.symmetric(horizontal: 16),
+                //     itemBuilder: (context, index) {
+                //       return ClipRRect(
+                //         borderRadius: BorderRadius.circular(5),
+                //         child: Stack(
+                //           children: [
+                //             Container(
+                //               width: 150,
+                //               decoration: BoxDecoration(
+                //                 color: Colors.red,
+                //                 borderRadius: BorderRadius.circular(5),
+                //               ),
+                //             ),
+                //             Positioned(
+                //               left: 0,
+                //               right: 0,
+                //               top: 0,
+                //               bottom: 0,
+                //               child: Image.asset(
+                //                 AppImages.wave,
+                //                 fit: BoxFit.cover,
+                //               ),
+                //             ),
+                //             Positioned(
+                //               left: 0,
+                //               right: 0,
+                //               top: 0,
+                //               bottom: 0,
+                //               child: Container(
+                //                 color: Colors.black26,
+                //               ),
+                //             ),
+                //             Positioned(
+                //               left: 0,
+                //               right: 0,
+                //               bottom: 0,
+                //               child: Container(
+                //                 height: 55,
+                //                 decoration: const BoxDecoration(
+                //                   gradient: LinearGradient(
+                //                     begin: Alignment.topCenter,
+                //                     end: Alignment.bottomCenter,
+                //                     colors: [
+                //                       Colors.transparent,
+                //                       Colors.black,
+                //                     ],
+                //                   ),
+                //                 ),
+                //                 child: const Padding(
+                //                   padding: EdgeInsets.all(8.0),
+                //                   child: Column(
+                //                     crossAxisAlignment:
+                //                         CrossAxisAlignment.start,
+                //                     children: [
+                //                       Text(
+                //                         "Covid Test",
+                //                         style: TextStyle(
+                //                           color: Colors.white,
+                //                           overflow: TextOverflow.ellipsis,
+                //                         ),
+                //                       ),
+                //                       Text(
+                //                         "11 Agosto 2025",
+                //                         style: TextStyle(
+                //                           color: Colors.white70,
+                //                           overflow: TextOverflow.ellipsis,
+                //                           fontSize: 10,
+                //                         ),
+                //                       ),
+                //                     ],
+                //                   ),
+                //                 ),
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //       );
+                //     },
+                //     separatorBuilder: (context, index) {
+                //       return const SizedBox(width: 10);
+                //     },
+                //     itemCount: 15,
+                //   ),
+                // ),
+                // Container(
+                //   width: double.infinity,
+                //   height: 45,
+                //   decoration: BoxDecoration(
+                //       // border: Border(
+                //       //   bottom: BorderSide(
+                //       //     width: 2,
+                //       //     color: Colors.black12,
+                //       //   ),
+                //       // ),
+                //       ),
+                //   child: ListView.separated(
+                //     physics: const ClampingScrollPhysics(),
+                //     shrinkWrap: true,
+                //     scrollDirection: Axis.horizontal,
+                //     padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                //     itemBuilder: (context, index) {
+                //       return InkWell(
+                //         onTap: () {
+                //           setState(() {
+                //             selected = index;
+                //           });
+                //         },
+                //         child: Container(
+                //           padding: const EdgeInsets.symmetric(
+                //             horizontal: 16,
+                //           ),
+                //           decoration: BoxDecoration(
+                //             border: (index == selected)
+                //                 ? const Border(
+                //                     bottom: BorderSide(
+                //                       width: 2,
+                //                       color: Colors.black,
+                //                     ),
+                //                   )
+                //                 : Border.all(
+                //                     width: 0, color: Colors.transparent),
+                //           ),
+                //           child: Center(
+                //             child: Text(
+                //               menuList[index].toString(),
+                //               style: (index != selected)
+                //                   ? Theme.of(context).textTheme.bodyMedium
+                //                   : Theme.of(context)
+                //                       .textTheme
+                //                       .bodyMedium!
+                //                       .copyWith(
+                //                           fontWeight: FontWeight.bold,
+                //                           color: Colors.black),
+                //             ),
+                //           ),
+                //         ),
+                //       );
+                //     },
+                //     separatorBuilder: (context, index) {
+                //       return const SizedBox(
+                //         width: 10,
+                //       );
+                //     },
+                //     itemCount: menuList.length,
+                //   ),
+                // ),
               ],
             ),
           ),
