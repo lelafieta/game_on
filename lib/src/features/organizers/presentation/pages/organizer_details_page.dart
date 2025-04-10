@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sliver_app_bar_builder/sliver_app_bar_builder.dart';
+
+import '../../../../config/themes/app_colors.dart';
 
 class OrganizerDetailsPage extends StatelessWidget {
   const OrganizerDetailsPage({super.key});
@@ -8,77 +11,103 @@ class OrganizerDetailsPage extends StatelessWidget {
     return DefaultTabController(
       length: 3, // Número de abas
       child: Scaffold(
-        body: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              SliverAppBar(
-                expandedHeight: 200.0,
-                floating: false,
-                pinned: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: false,
-                  background: Stack(
-                    fit: StackFit.passthrough,
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBarBuilder(
+              barHeight: 60,
+              pinned: true,
+              floating: false,
+              backgroundColorAll: Colors.white,
+              leadingActions: [
+                (context, expandRatio, barHeight, overlapsContent) {
+                  return SizedBox(
+                    height: barHeight,
+                    child: const BackButton(),
+                  );
+                }
+              ],
+              initialContentHeight: 150,
+              contentBuilder: (context, expandRatio, contentHeight,
+                  overlapsContent, barHeight) {
+                return Container(
+                  alignment: Alignment.centerLeft,
+                  height: 60,
+                  transform: Matrix4.translationValues(
+                      10 + (1 - expandRatio) * 40, 0, 0),
+                  child: Row(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        color: Colors.red,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                    'https://example.com/image.jpg',
-                                  ),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            Text("data"),
-                          ],
+                      CircleAvatar(
+                        radius: 30 + expandRatio * 20,
+                        backgroundImage:
+                            const NetworkImage('https://example.com/image.jpg'),
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        'My Title',
+                        style: TextStyle(
+                          fontSize: 22 + expandRatio * 10,
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   ),
-                ),
-                bottom: const TabBar(
+                );
+              },
+            ),
+            SliverPersistentHeader(
+              pinned: true,
+              floating: true,
+              delegate: _SliverAppBarDelegate(
+                const TabBar(
+                  labelColor: Colors.black,
+                  unselectedLabelColor: Colors.grey,
                   tabs: [
-                    Tab(text: 'Details'),
-                    Tab(text: 'Events'),
-                    Tab(text: 'Reviews'),
+                    Tab(text: 'Tab 1'),
+                    Tab(text: 'Tab 2'),
+                    Tab(text: 'Tab 3'),
                   ],
                 ),
               ),
-            ];
-          },
-          body: TabBarView(
-            children: [
-              ListView(
-                padding: const EdgeInsets.all(16.0),
-                children: const [
-                  SizedBox(height: 16),
-                  Text(
-                    'Organizer Description',
-                    style: TextStyle(fontSize: 16),
-                    textAlign: TextAlign.center,
-                  ),
-                  Divider(height: 32),
-                  // Adicione mais detalhes ou widgets aqui
+            ),
+            const SliverFillRemaining(
+              child: TabBarView(
+                children: [
+                  Center(child: Text('Content for Tab 1')),
+                  Center(child: Text('Content for Tab 2')),
+                  Center(child: Text('Content for Tab 3')),
                 ],
               ),
-              const Center(child: Text('Events Tab Content')),
-              const Center(child: Text('Reviews Tab Content')),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
+  }
+}
+
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  final TabBar tabBar;
+
+  _SliverAppBarDelegate(this.tabBar);
+
+  @override
+  double get minExtent => tabBar.preferredSize.height;
+
+  @override
+  double get maxExtent => tabBar.preferredSize.height;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      color: Colors.white,
+      child: tabBar,
+    );
+  }
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    return true;
   }
 }
