@@ -1,5 +1,7 @@
+import 'package:bottom_sheet_bar/bottom_sheet_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,7 +18,8 @@ class CompetitionDetailsPage extends StatefulWidget {
   State<CompetitionDetailsPage> createState() => _CompetitionDetailsPageState();
 }
 
-class _CompetitionDetailsPageState extends State<CompetitionDetailsPage> {
+class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
+    with SingleTickerProviderStateMixin {
   List<String> menuList = ["Recentes", "Campanhas", "Eventos", "Blogs"];
   int selected = 0;
 
@@ -46,8 +49,149 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage> {
       "description": "Inspiração para jovens",
     },
   ];
+
+  bool _isLocked = false;
+  bool _isCollapsed = true;
+  bool _isExpanded = false;
+  int _listSize = 5;
+  final _bsbController = BottomSheetBarController();
+  final _listSizeController = TextEditingController(text: '5');
+  late final TabController _tabController;
+
+  @override
+  void initState() {
+    _tabController = TabController(length: 3, vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: BottomSheetBar(
+        backdropColor: Colors.green.withOpacity(0.8),
+        locked: _isLocked,
+        controller: _bsbController,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(32.0),
+          topRight: Radius.circular(32.0),
+        ),
+        borderRadiusExpanded: const BorderRadius.only(
+          topLeft: Radius.circular(0.0),
+          topRight: Radius.circular(0.0),
+        ),
+        boxShadows: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5.0,
+            blurRadius: 32.0,
+            offset: const Offset(0, 0), // changes position of shadow
+          ),
+        ],
+        expandedBuilder: (scrollController) {
+          final itemList = List<int>.generate(6, (index) => index + 1);
+
+          // Wrapping the returned widget with [Material] for tap effects
+          return Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(32.0),
+                topRight: Radius.circular(32.0),
+              ),
+            ),
+          );
+          return Material(
+            color: Colors.transparent,
+            child: CustomScrollView(
+              controller: scrollController,
+              shrinkWrap: true,
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      // TabBar widget
+                      TabBar(
+                        controller: _tabController,
+                        tabs: const [
+                          Tab(text: 'Tab 1'),
+                          Tab(text: 'Tab 2'),
+                          Tab(text: 'Tab 3'),
+                        ],
+                      ),
+                      // TabBarView widget
+                      SizedBox(
+                        height: 200, // Adjust the height based on your content
+                        child: TabBarView(
+                          controller: _tabController,
+                          children: [
+                            _buildTabContent(itemList),
+                            _buildTabContent(itemList),
+                            _buildTabContent(itemList),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+        collapsed: TextButton(
+          onPressed: () => _bsbController.expand(),
+          style: TextButton.styleFrom(
+            backgroundColor: Colors.green,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(32.0),
+                topRight: Radius.circular(32.0),
+              ),
+            ),
+          ),
+          child: Text(
+            'Click',
+            style: const TextStyle(color: Colors.white),
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 251.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text('BottomSheetBar is'),
+              Text(
+                _isLocked ? 'Locked' : 'Unlocked',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              Text(
+                _isLocked
+                    ? 'Bottom sheet cannot be expanded or collapsed by swiping'
+                    : 'Swipe it to expand or collapse the bottom sheet',
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                width: 250,
+                child: TextField(
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  controller: _listSizeController,
+                  decoration: const InputDecoration(
+                      hintText: 'Number of expanded list-items'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -636,6 +780,27 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage> {
           ),
         ),
       ),
+    );
+  }
+
+  // Method to build tab content (a list of items for now)
+  Widget _buildTabContent(List<int> itemList) {
+    return ListView.builder(
+      itemCount: itemList.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(
+            'Item ${itemList[index]}',
+            style: const TextStyle(fontSize: 20.0),
+          ),
+          onTap: () => showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text(itemList[index].toString()),
+            ),
+          ),
+        );
+      },
     );
   }
 }
