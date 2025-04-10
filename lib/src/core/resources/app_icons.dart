@@ -20,4 +20,11 @@ class AppIcons {
   static const String whistleBold = "assets/icons/whistle-alt.svg";
   static const String whistle = "assets/icons/whistle.svg";
   static const String marker = "assets/icons/marker.svg";
+
+  static const String facebook = "assets/icons/facebook.svg";
+  static const String x = "assets/icons/x.svg";
+  static const String instagram = "assets/icons/instagram.svg";
+  static const String whatsapp = "assets/icons/whatsapp.svg";
+  static const String link = "assets/icons/link.svg";
+  static const String flagAngola = "assets/icons/flag-for-flag-angola.svg";
 }

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../config/themes/app_colors.dart';
+import '../../../../core/resources/app_icons.dart';
 import '../../../../core/resources/app_images.dart';
 
 class OrganizerDetailsPage extends StatefulWidget {
@@ -287,132 +288,145 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.facebook, color: AppColors.primary),
+                        onPressed: () async {},
+                        icon: SvgPicture.asset(
+                          AppIcons.link,
+                          width: 25,
+                          height: 25,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
                       ),
                       IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.youtube_searched_for,
-                          color: AppColors.primary,
+                        onPressed: () async {},
+                        icon: SvgPicture.asset(
+                          AppIcons.whatsapp,
+                          width: 30,
+                          height: 30,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      IconButton(
+                        onPressed: () async {},
+                        icon: SvgPicture.asset(
+                          AppIcons.facebook,
+                          width: 30,
+                          height: 30,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      IconButton(
+                        onPressed: () async {},
+                        icon: SvgPicture.asset(
+                          AppIcons.instagram,
+                          width: 30,
+                          height: 30,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      IconButton(
+                        onPressed: () async {},
+                        icon: SvgPicture.asset(
+                          AppIcons.x,
+                          width: 30,
+                          height: 30,
                         ),
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    "Sobre",
-                    style: Theme.of(context).textTheme.titleMedium!,
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 16),
+                //   child: Text(
+                //     "Sobre",
+                //     style: Theme.of(context).textTheme.titleMedium!,
+                //   ),
+                // ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text("Aqui vai o about lorem ipsum dolor sit amet, "),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        width: 26,
+                        AppIcons.flagAngola,
+                      ),
+                      const SizedBox(width: 5),
+                      Text("Angola, Luanda, Kikolo"),
+                    ],
+                  ),
                 ),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Card(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            height: 150,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 30,
-                                  height: 30,
-                                  padding: const EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primary,
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  // child: SvgPicture.asset(
-                                  //   AppIcons.lightbulbOn,
-                                  //   color: Colors.white,
-                                  // ),
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: 3 / 2,
+                    ),
+                    itemCount: 6,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: 30,
+                                height: 30,
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary,
+                                  borderRadius: BorderRadius.circular(50),
                                 ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  "Visão",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleSmall!
-                                      .copyWith(fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  "Minha visão",
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                )
-                              ],
-                            ),
+                                // Add your icon here
+                                // child: SvgPicture.asset(
+                                //   AppIcons.lightbulbOn,
+                                //   color: Colors.white,
+                                // ),
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                index % 2 == 0 ? "Visão" : "Missão",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall!
+                                    .copyWith(fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                index % 2 == 0 ? "Minha visão" : "Minha missão",
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Card(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            height: 150,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 30,
-                                  height: 30,
-                                  padding: const EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primary,
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  // child: SvgPicture.asset(
-                                  //   AppIcons.bullseyeArrow,
-                                  //   color: Colors.white,
-                                  // ),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  "Missão",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleSmall!
-                                      .copyWith(fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  "Missão",
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 ),
+
                 Container(
                   padding: const EdgeInsets.only(left: 16, right: 16),
                   child: Row(
