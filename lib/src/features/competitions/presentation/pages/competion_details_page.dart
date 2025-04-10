@@ -282,36 +282,36 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage> {
                           ),
                           onPressed: () {},
                           child: const Text(
-                            "Chat",
+                            "+4 Avaliações",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      OutlinedButton(
-                        style: ButtonStyle(
-                          foregroundColor:
-                              MaterialStateProperty.all(AppColors.black),
-                          minimumSize: const MaterialStatePropertyAll(
-                            Size(45, 43),
-                          ),
-                          side: const MaterialStatePropertyAll(
-                            BorderSide(
-                              color: Colors.black12,
-                              width: 2,
-                            ),
-                          ),
-                        ),
-                        onPressed: () {},
-                        child: const Icon(
-                          Icons.phone,
-                        ),
-                      )
                     ],
                   ),
                 ),
                 const SizedBox(height: 10),
-                ListTile(),
+                ListTile(
+                  leading: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                  title: const Text(
+                    "Fieta Organizer",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.black,
+                    ),
+                  ),
+                  subtitle: const Text(
+                    "Organizador",
+                    style: TextStyle(color: AppColors.black),
+                  ),
+                ),
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
