@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../config/themes/app_colors.dart';
@@ -20,6 +21,33 @@ class OrganizerDetailsPage extends StatefulWidget {
 class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
   List<String> menuList = ["Recentes", "Campanhas", "Eventos", "Blogs"];
   int selected = 0;
+
+  final List<Map<String, String>> gridItems = [
+    {
+      "title": "Champions das Duplas 2023",
+      "description": "Minha visão",
+    },
+    {
+      "title": "Torneio Nacional",
+      "description": "Minha missão",
+    },
+    {
+      "title": "Workshop de Liderança",
+      "description": "Capacitação de líderes",
+    },
+    {
+      "title": "Evento de Caridade",
+      "description": "Ajudando comunidades",
+    },
+    {
+      "title": "Campeonato Regional",
+      "description": "Unindo talentos locais",
+    },
+    {
+      "title": "Palestra Motivacional",
+      "description": "Inspiração para jovens",
+    },
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -369,17 +397,16 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-                  child: GridView.builder(
+                  child: MasonryGridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
+                        const SliverSimpleGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 3 / 2,
                     ),
-                    itemCount: 6,
+                    itemCount: gridItems.length,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
                     itemBuilder: (context, index) {
                       return Card(
                         color: Colors.white,
@@ -392,8 +419,8 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                width: 30,
-                                height: 30,
+                                width: 60,
+                                height: 60,
                                 padding: const EdgeInsets.all(5),
                                 decoration: BoxDecoration(
                                   color: AppColors.primary,
@@ -407,7 +434,7 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                               ),
                               const SizedBox(height: 5),
                               Text(
-                                index % 2 == 0 ? "Visão" : "Missão",
+                                gridItems[index]["title"]!,
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleSmall!
@@ -415,7 +442,7 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                               ),
                               const SizedBox(height: 5),
                               Text(
-                                index % 2 == 0 ? "Minha visão" : "Minha missão",
+                                gridItems[index]["description"]!,
                                 maxLines: 3,
                                 overflow: TextOverflow.ellipsis,
                               ),
