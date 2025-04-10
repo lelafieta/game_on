@@ -60,7 +60,7 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
 
   @override
   void initState() {
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 10, vsync: this);
     super.initState();
   }
 
@@ -96,13 +96,41 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
         expandedBuilder: (scrollController) {
           final itemList = List<int>.generate(6, (index) => index + 1);
 
-          // Wrapping the returned widget with [Material] for tap effects
-          return Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(32.0),
-                topRight: Radius.circular(32.0),
+          return DefaultTabController(
+            length: 10,
+            child: Scaffold(
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                flexibleSpace: TabBar(
+                  controller: _tabController,
+                  indicatorColor: AppColors.primary,
+                  labelColor: AppColors.primary,
+                  unselectedLabelColor: Colors.grey,
+                  isScrollable: true,
+                  tabs: const [
+                    Tab(text: 'Tab 1'),
+                    Tab(text: 'Tab 2'),
+                    Tab(text: 'Tab 3'),
+                    Tab(text: 'Tab 4'),
+                    Tab(text: 'Tab 5'),
+                    Tab(text: 'Tab 6'),
+                    Tab(text: 'Tab 7'),
+                    Tab(text: 'Tab 8'),
+                    Tab(text: 'Tab 9'),
+                    Tab(text: 'Tab 10'),
+                  ],
+                ),
+              ),
+              body: TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildTabContent(List<int>.generate(6, (index) => index + 1)),
+                  _buildTabContent(List<int>.generate(6, (index) => index + 7)),
+                  _buildTabContent(
+                      List<int>.generate(6, (index) => index + 13)),
+                ],
               ),
             ),
           );
@@ -146,7 +174,7 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
         collapsed: TextButton(
           onPressed: () => _bsbController.expand(),
           style: TextButton.styleFrom(
-            backgroundColor: Colors.green,
+            backgroundColor: AppColors.primary.withOpacity(0.8),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(32.0),
@@ -155,12 +183,12 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
             ),
           ),
           child: Text(
-            'Click',
+            'Click${_isLocked ? "" : " or swipe"} to expand',
             style: const TextStyle(color: Colors.white),
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 251.0),
+          padding: const EdgeInsets.symmetric(horizontal: 25.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
