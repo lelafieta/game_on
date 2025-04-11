@@ -225,7 +225,7 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
                             List<int>.generate(6, (index) => index + 13)),
                         _buildTabContent(
                             List<int>.generate(6, (index) => index + 13)),
-                        _buildTabContent(
+                        _buildTabContentTeam(
                             List<int>.generate(6, (index) => index + 13)),
                       ],
                     ),
@@ -891,7 +891,7 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
         // Cabeçalho fixo
         Container(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-          color: Colors.grey[200],
+          color: AppColors.primary,
           child: const Row(
             children: [
               Expanded(
@@ -903,23 +903,33 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
               Expanded(
                   flex: 6,
                   child: Text("Clube",
-                      style: TextStyle(fontWeight: FontWeight.bold))),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.white))),
               Expanded(
-                  child:
-                      Text("V", style: TextStyle(fontWeight: FontWeight.bold))),
+                  child: Text("V",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.white))),
               Expanded(
-                  child:
-                      Text("E", style: TextStyle(fontWeight: FontWeight.bold))),
+                  child: Text("E",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.white))),
               Expanded(
-                  child:
-                      Text("D", style: TextStyle(fontWeight: FontWeight.bold))),
+                  child: Text("D",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.white))),
               Expanded(
                   child: Text("Pts",
-                      style: TextStyle(fontWeight: FontWeight.bold))),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.white))),
             ],
           ),
         ),
-        const Divider(height: 1),
+        // const Divider(height: 1),
         // Lista rolável
         Expanded(
           child: ListView.builder(
@@ -1037,6 +1047,64 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
             'Item ${itemList[index]}',
             style: const TextStyle(fontSize: 20.0),
           ),
+          onTap: () => showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text(itemList[index].toString()),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildTabContentTeam(List<int> itemList) {
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      itemCount: itemList.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          leading: Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              // color: AppColors.primary,
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: CachedNetworkImage(
+              imageUrl:
+                  "https://upload.wikimedia.org/wikipedia/pt/9/98/Real_Madrid.png",
+              fit: BoxFit.contain,
+            ),
+          ),
+          title: Text(
+            'Real Madrid',
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.black,
+                ),
+          ),
+          subtitle: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: "6 ",
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black54,
+                      ),
+                ),
+                TextSpan(
+                  text: "Jogadores",
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Colors.black45),
+                ),
+              ],
+            ),
+          ),
+          trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => showDialog(
             context: context,
             builder: (context) => AlertDialog(
