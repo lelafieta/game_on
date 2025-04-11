@@ -583,7 +583,7 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
                       ],
                     ),
                   ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 25),
                   Row(
                     children: [
                       Expanded(
@@ -618,13 +618,86 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
                                       color: AppColors.black,
                                       fontSize: 55),
                             ),
-                            Text("Jogadores"),
+                            const Text("Jogadores"),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 25),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 10),
+                    child: Text(
+                      "Data da Temporada",
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.black,
+                          ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            SvgPicture.asset(AppIcons.calendar),
+                            const SizedBox(height: 5),
+                            Text(
+                              "Data de Início",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(
+                                      // color: AppColors.black,
+                                      ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              "01/01/2023", // Replace with your dynamic date
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            SvgPicture.asset(AppIcons.calendarBold),
+                            const SizedBox(height: 5),
+                            Text(
+                              "Data de Término",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(
+                                      // color: AppColors.black,
+                                      ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              "01/01/2023", // Replace with your dynamic date
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 25),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
@@ -635,7 +708,6 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
                           ),
                     ),
                   ),
-
                   SizedBox(
                     height: 150,
                     child: ListView.separated(
