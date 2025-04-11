@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:game_on/src/core/strings/app_strings.dart';
+import 'package:scrollable_list_tab_scroller/scrollable_list_tab_scroller.dart';
 
 import '../../../../config/themes/app_colors.dart';
 import '../../../../core/resources/app_icons.dart';
@@ -221,7 +222,7 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
                             List<int>.generate(6, (index) => index + 7)),
                         _buildTabContentTable(
                             List<int>.generate(6, (index) => index + 13)),
-                        _buildTabContent(
+                        _buildTabContentRankings(
                             List<int>.generate(6, (index) => index + 13)),
                         _buildTabContent(
                             List<int>.generate(6, (index) => index + 13)),
@@ -1113,6 +1114,107 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
           ),
         );
       },
+    );
+  }
+
+  Widget _buildTabContentRankings(List<int> itemList) {
+    final data = {
+      "Melhores Marcadores": [
+        "Item 1 (A)",
+        "Item 2 (A)",
+        "Item 3 (A)",
+        "Item 4 (A)",
+      ],
+      "Melhores Assistentes": [
+        "Item 1 (B)",
+        "Item 2 (B)",
+      ],
+      "Melhor Ataque": [
+        "Item 1 (C)",
+        "Item 2 (C)",
+        "Item 3 (C)",
+        "Item 4 (C)",
+        "Item 5 (C)",
+      ],
+      "Melhor Defesa": [
+        "Item 1 (D)",
+        "Item 2 (D)",
+        "Item 3 (D)",
+        "Item 4 (D)",
+      ],
+    };
+    return DefaultTabController(
+      length: data.keys.length,
+      child: Column(
+        children: [
+          Container(
+            color: AppColors.primary,
+            child: TabBar(
+              isScrollable: true,
+              indicatorColor: AppColors.white,
+              labelColor: AppColors.white,
+              unselectedLabelColor: Colors.white70,
+              tabs: data.keys
+                  .map((category) => Tab(
+                        text: category,
+                      ))
+                  .toList(),
+            ),
+          ),
+          Expanded(
+            child: TabBarView(
+              children: data.keys.map((category) {
+                final items = data[category]!;
+                return ListView.builder(
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: AppColors.primary,
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                      ),
+                      title: Text(items[index]),
+                      subtitle: Row(
+                        children: [
+                          Container(
+                            width: 20,
+                            height: 20,
+                            decoration: BoxDecoration(
+                              // color: AppColors.primary,
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  "https://upload.wikimedia.org/wikipedia/pt/9/98/Real_Madrid.png",
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text("Real Madrid"),
+                        ],
+                      ),
+                      trailing: Text(
+                        "10",
+                        style:
+                            Theme.of(context).textTheme.titleMedium!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.black,
+                                ),
+                      ),
+                    );
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

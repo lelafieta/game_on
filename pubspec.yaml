@@ -50,6 +50,7 @@ dependencies:
   animate_do: ^4.2.0
   bottom_sheet_bar: ^2.3.10
   flutter_expandable_table: ^2.1.0
+  scrollable_list_tab_scroller: ^2.0.1
 
 dev_dependencies:
   flutter_test:
