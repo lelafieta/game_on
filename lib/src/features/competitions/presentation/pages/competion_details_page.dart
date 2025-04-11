@@ -107,9 +107,9 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
                 elevation: 0,
                 centerTitle: true,
                 title: Text(
-                  "Titulo",
+                  "Fieta Competition",
                   style: TextStyle(
-                    color: AppColors.black,
+                    color: AppColors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
@@ -135,12 +135,30 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
                       ),
                       isScrollable: true,
                       tabs: const [
-                        Tab(text: 'Jogos'),
-                        Tab(text: 'Competições'),
-                        Tab(text: 'Classificações'),
-                        Tab(text: 'Rankings'),
-                        Tab(text: 'Notícias'),
-                        Tab(text: 'Equipes'),
+                        Tab(
+                          icon: Icon(Icons.sports_esports),
+                          text: 'Jogos',
+                        ),
+                        Tab(
+                          icon: Icon(Icons.emoji_events),
+                          text: 'Competições',
+                        ),
+                        Tab(
+                          icon: Icon(Icons.leaderboard),
+                          text: 'Classificações',
+                        ),
+                        Tab(
+                          icon: Icon(Icons.star),
+                          text: 'Rankings',
+                        ),
+                        Tab(
+                          icon: Icon(Icons.article),
+                          text: 'Notícias',
+                        ),
+                        Tab(
+                          icon: Icon(Icons.group),
+                          text: 'Equipes',
+                        ),
                       ],
                     ),
                   ),
