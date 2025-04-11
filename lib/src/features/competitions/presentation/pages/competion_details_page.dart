@@ -585,7 +585,44 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
                   ),
                   const SizedBox(height: 15),
                   Row(
-                    children: [Expanded(child: Column())],
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text(
+                              "20",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge!
+                                  .copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.black,
+                                      fontSize: 55),
+                            ),
+                            Text(
+                              "Equipes",
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text(
+                              "57",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge!
+                                  .copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.black,
+                                      fontSize: 55),
+                            ),
+                            Text("Jogadores"),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 15),
                   Padding(
