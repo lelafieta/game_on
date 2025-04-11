@@ -584,10 +584,14 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
                     ),
                   ),
                   const SizedBox(height: 15),
+                  Row(
+                    children: [Expanded(child: Column())],
+                  ),
+                  const SizedBox(height: 15),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
-                      "Competições",
+                      "Patrocinadores",
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
                             fontWeight: FontWeight.bold,
                             color: AppColors.black,
@@ -595,19 +599,15 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
                     ),
                   ),
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: MasonryGridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                      ),
+                  SizedBox(
+                    height: 150,
+                    child: ListView.separated(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 16),
+                      scrollDirection: Axis.horizontal,
                       itemCount: gridItems.length,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                      padding: const EdgeInsets.only(top: 15),
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(width: 10),
                       itemBuilder: (context, index) {
                         return Card(
                           color: Colors.white,
@@ -615,6 +615,7 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Container(
+                            width: 200,
                             padding: const EdgeInsets.all(10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -640,13 +641,14 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
                                       .textTheme
                                       .titleSmall!
                                       .copyWith(fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  gridItems[index]["description"]!,
-                                  maxLines: 3,
                                   overflow: TextOverflow.ellipsis,
                                 ),
+                                // const SizedBox(height: 5),
+                                // Text(
+                                //   gridItems[index]["description"]!,
+                                //   maxLines: 2,
+                                //   overflow: TextOverflow.ellipsis,
+                                // ),
                               ],
                             ),
                           ),
