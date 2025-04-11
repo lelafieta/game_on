@@ -101,34 +101,35 @@ class HomePage extends StatelessWidget {
                     height: 60,
                     margin: EdgeInsets.symmetric(vertical: 8),
                     child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        padding: EdgeInsets.symmetric(horizontal: 16),
-                        itemBuilder: (context, index) {
-                          final league = Competition.fromJson(jsonData[index]);
-                          return ClipOval(
-                            child: Container(
-                              width: 60,
-                              decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(.2),
-                                borderRadius: BorderRadius.circular(100),
-                                border: Border.all(
-                                  color: AppColors.color.withOpacity(.4),
-                                  width: 1,
-                                ),
-                              ),
-                              child: CachedNetworkImage(
-                                imageUrl: league.logo,
-                                fit: BoxFit.contain,
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      itemBuilder: (context, index) {
+                        final league = Competition.fromJson(jsonData[index]);
+                        return ClipOval(
+                          child: Container(
+                            width: 60,
+                            decoration: BoxDecoration(
+                              color: Colors.grey.withOpacity(.2),
+                              borderRadius: BorderRadius.circular(100),
+                              border: Border.all(
+                                color: AppColors.color.withOpacity(.4),
+                                width: 1,
                               ),
                             ),
-                          );
-                        },
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(
-                            width: 16,
-                          );
-                        },
-                        itemCount: jsonData.length),
+                            child: CachedNetworkImage(
+                              imageUrl: league.logo,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(
+                          width: 16,
+                        );
+                      },
+                      itemCount: jsonData.length,
+                    ),
                   ),
                   Container(
                     width: double.infinity,
