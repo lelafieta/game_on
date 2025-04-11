@@ -2,6 +2,7 @@ import 'package:bottom_sheet_bar/bottom_sheet_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -60,7 +61,7 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
 
   @override
   void initState() {
-    _tabController = TabController(length: 10, vsync: this);
+    _tabController = TabController(length: 6, vsync: this);
     super.initState();
   }
 
@@ -97,39 +98,50 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
           final itemList = List<int>.generate(6, (index) => index + 1);
 
           return DefaultTabController(
-            length: 10,
+            length: 6,
             child: Scaffold(
               appBar: AppBar(
                 automaticallyImplyLeading: false,
                 backgroundColor: Colors.transparent,
                 elevation: 0,
-                flexibleSpace: TabBar(
-                  controller: _tabController,
-                  indicatorColor: AppColors.primary,
-                  labelColor: AppColors.primary,
-                  unselectedLabelColor: Colors.grey,
-                  isScrollable: true,
-                  tabs: const [
-                    Tab(text: 'Tab 1'),
-                    Tab(text: 'Tab 2'),
-                    Tab(text: 'Tab 3'),
-                    Tab(text: 'Tab 4'),
-                    Tab(text: 'Tab 5'),
-                    Tab(text: 'Tab 6'),
-                    Tab(text: 'Tab 7'),
-                    Tab(text: 'Tab 8'),
-                    Tab(text: 'Tab 9'),
-                    Tab(text: 'Tab 10'),
-                  ],
-                ),
+                title: Text("Titulo"),
               ),
-              body: TabBarView(
-                controller: _tabController,
+              body: Column(
                 children: [
-                  _buildTabContent(List<int>.generate(6, (index) => index + 1)),
-                  _buildTabContent(List<int>.generate(6, (index) => index + 7)),
-                  _buildTabContent(
-                      List<int>.generate(6, (index) => index + 13)),
+                  TabBar(
+                    controller: _tabController,
+                    indicatorColor: AppColors.primary,
+                    labelColor: AppColors.primary,
+                    unselectedLabelColor: Colors.grey,
+                    isScrollable: true,
+                    tabs: const [
+                      Tab(text: 'Jogos'),
+                      Tab(text: 'Competições'),
+                      Tab(text: 'Classificações'),
+                      Tab(text: 'Rankings'),
+                      Tab(text: 'Notícias'),
+                      Tab(text: 'Equipes'),
+                    ],
+                  ),
+                  Expanded(
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: [
+                        _buildTabContent(
+                            List<int>.generate(6, (index) => index + 1)),
+                        _buildTabContent(
+                            List<int>.generate(6, (index) => index + 7)),
+                        _buildTabContent(
+                            List<int>.generate(6, (index) => index + 13)),
+                        _buildTabContent(
+                            List<int>.generate(6, (index) => index + 13)),
+                        _buildTabContent(
+                            List<int>.generate(6, (index) => index + 13)),
+                        _buildTabContent(
+                            List<int>.generate(6, (index) => index + 13)),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
