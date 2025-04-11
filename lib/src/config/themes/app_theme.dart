@@ -11,6 +11,7 @@ class AppTheme {
         scaffoldBackgroundColor: Colors.white,
         primaryColor: AppColors.primary,
         fontFamily: AppStrings.fontFamily,
+        cardColor: AppColors.white,
         colorScheme: const ColorScheme(
           brightness: Brightness.light,
           primary: AppColors.primary,
