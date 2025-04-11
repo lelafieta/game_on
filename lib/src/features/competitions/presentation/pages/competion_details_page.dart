@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:game_on/src/core/strings/app_strings.dart';
 
 import '../../../../config/themes/app_colors.dart';
 import '../../../../core/resources/app_icons.dart';
@@ -102,26 +103,46 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
             child: Scaffold(
               appBar: AppBar(
                 automaticallyImplyLeading: false,
-                backgroundColor: Colors.transparent,
+                backgroundColor: AppColors.primary,
                 elevation: 0,
-                title: Text("Titulo"),
+                centerTitle: true,
+                title: Text(
+                  "Titulo",
+                  style: TextStyle(
+                    color: AppColors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
               body: Column(
                 children: [
-                  TabBar(
-                    controller: _tabController,
-                    indicatorColor: AppColors.primary,
-                    labelColor: AppColors.primary,
-                    unselectedLabelColor: Colors.grey,
-                    isScrollable: true,
-                    tabs: const [
-                      Tab(text: 'Jogos'),
-                      Tab(text: 'Competições'),
-                      Tab(text: 'Classificações'),
-                      Tab(text: 'Rankings'),
-                      Tab(text: 'Notícias'),
-                      Tab(text: 'Equipes'),
-                    ],
+                  Container(
+                    color: AppColors.primary,
+                    child: TabBar(
+                      controller: _tabController,
+                      indicatorColor: AppColors.white,
+                      labelColor: AppColors.white,
+                      unselectedLabelColor: Colors.white70,
+                      unselectedLabelStyle: const TextStyle(
+                        fontSize: 16,
+                        fontFamily: AppStrings.fontFamily,
+                      ),
+                      labelStyle: const TextStyle(
+                        fontSize: 16,
+                        fontFamily: AppStrings.fontFamily,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      isScrollable: true,
+                      tabs: const [
+                        Tab(text: 'Jogos'),
+                        Tab(text: 'Competições'),
+                        Tab(text: 'Classificações'),
+                        Tab(text: 'Rankings'),
+                        Tab(text: 'Notícias'),
+                        Tab(text: 'Equipes'),
+                      ],
+                    ),
                   ),
                   Expanded(
                     child: TabBarView(
