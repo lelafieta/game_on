@@ -429,10 +429,17 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                             arguments: gridItems[index],
                           );
                         },
-                        child: Card(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.09),
+                                blurRadius: 12,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
                           ),
                           child: Container(
                             padding: const EdgeInsets.all(10),

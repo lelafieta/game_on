@@ -649,8 +649,18 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
                     child: Row(
                       children: [
                         Expanded(
-                          child: Card(
-                            color: Colors.white,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.09),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 10, horizontal: 5),
@@ -683,33 +693,49 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
                             ),
                           ),
                         ),
+                        const SizedBox(width: 10),
                         Expanded(
-                          child: Card(
-                            child: Column(
-                              children: [
-                                SvgPicture.asset(AppIcons.calendarBold),
-                                const SizedBox(height: 5),
-                                Text(
-                                  "Data de Término",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleMedium!
-                                      .copyWith(
-                                          // color: AppColors.black,
-                                          ),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  "01/01/2023", // Replace with your dynamic date
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleMedium!
-                                      .copyWith(
-                                        color: AppColors.black,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.09),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 4),
                                 ),
                               ],
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 5),
+                              child: Column(
+                                children: [
+                                  SvgPicture.asset(AppIcons.calendarBold),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    "Data de Término",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium!
+                                        .copyWith(
+                                            // color: AppColors.black,
+                                            ),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    "01/01/2023", // Replace with your dynamic date
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium!
+                                        .copyWith(
+                                          color: AppColors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -732,15 +758,23 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
                     child: ListView.separated(
                       padding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 16),
-                      // scrollDirection: Horizontal,
+                      scrollDirection: Axis.horizontal,
                       itemCount: gridItems.length,
                       separatorBuilder: (context, index) =>
                           const SizedBox(width: 10),
                       itemBuilder: (context, index) {
-                        return Card(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
+                        return Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.09),
+                                blurRadius: 12,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
                           ),
                           child: Container(
                             width: 200,
