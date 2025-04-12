@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -84,10 +85,10 @@ class _LiveGamePageState extends State<LiveGamePage> {
             child: GridView.builder(
               padding: const EdgeInsets.all(16.0),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 5.0,
-                childAspectRatio: 0.95,
+                crossAxisCount: 1,
+                crossAxisSpacing: 15.0,
+                mainAxisSpacing: 16.0,
+                childAspectRatio: 4 / 2,
               ),
               itemCount: 10, // Number of elements (2 to 10)
               itemBuilder: (context, index) {
@@ -98,6 +99,8 @@ class _LiveGamePageState extends State<LiveGamePage> {
                   child: Stack(
                     children: [
                       Container(
+                        padding: const EdgeInsets.all(40),
+                        height: double.infinity,
                         decoration: BoxDecoration(
                           color: AppColors.black,
                           borderRadius: BorderRadius.circular(10.0),
@@ -109,13 +112,112 @@ class _LiveGamePageState extends State<LiveGamePage> {
                             ),
                           ],
                         ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(10.0),
+                                  bottomLeft: Radius.circular(10.0),
+                                ),
+                                child: CachedNetworkImage(
+                                  fit: BoxFit.contain,
+                                  height: 100,
+                                  placeholder: (context, url) => Container(
+                                    color: Colors.grey.withOpacity(0.2),
+                                  ),
+                                  imageUrl:
+                                      "https://upload.wikimedia.org/wikipedia/pt/9/98/Real_Madrid.png",
+                                ),
+                              ),
+                            ),
+                            Text(
+                              "X",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white.withOpacity(0.7),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(10.0),
+                                  bottomLeft: Radius.circular(10.0),
+                                ),
+                                child: CachedNetworkImage(
+                                  fit: BoxFit.contain,
+                                  height: 100,
+                                  placeholder: (context, url) => Container(
+                                      // color: Colors.grey.withOpacity(0.2),
+                                      ),
+                                  imageUrl:
+                                      "https://upload.wikimedia.org/wikipedia/pt/b/b6/Manchester_United_FC_logo.png",
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Positioned(
+                          left: 0,
+                          right: 0,
+                          top: 0,
+                          bottom: 0,
+                          child: Container(
+                            padding: const EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              color: AppColors.primary.withOpacity(.6),
+                              borderRadius: BorderRadius.circular(10.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.09),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: const Text(
+                              "Campeonato internacional",
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )),
+                      Positioned(
+                        child: Center(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.09),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                              vertical: 4.0,
+                            ),
+                            child: Icon(
+                              Icons.play_arrow,
+                              size: 40,
+                            ),
+                          ),
+                        ),
                       ),
                       Positioned(
                         right: 0,
                         top: 15,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: AppColors.primary,
+                            color: AppColors.white,
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(10.0),
                               bottomLeft: Radius.circular(10.0),
@@ -136,8 +238,8 @@ class _LiveGamePageState extends State<LiveGamePage> {
                             text: TextSpan(
                               text: '40\'',
                               style: const TextStyle(
-                                fontSize: 14.0,
-                                color: Colors.white,
+                                fontSize: 16.0,
+                                color: AppColors.primary,
                                 fontWeight: FontWeight.bold,
                               ),
                               children: [
