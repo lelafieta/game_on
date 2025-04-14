@@ -208,6 +208,7 @@ class _LiveGamePageState extends State<LiveGamePage> {
                             child: Icon(
                               Icons.play_arrow,
                               size: 40,
+                              color: AppColors.primary.withOpacity(0.7),
                             ),
                           ),
                         ),

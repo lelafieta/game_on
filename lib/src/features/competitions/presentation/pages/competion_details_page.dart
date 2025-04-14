@@ -254,9 +254,9 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
               ),
             ),
           ),
-          child: Text(
+          child: const Text(
             'Click Informações da Competição',
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white),
           ),
         ),
         body: NestedScrollView(
@@ -269,7 +269,7 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
                 pinned: true,
                 leading: IconButton(
                   onPressed: () {},
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.arrow_back,
                     color: Colors.white,
                   ),
@@ -277,7 +277,7 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
                 actions: [
                   IconButton(
                     onPressed: () {},
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.share,
                       color: Colors.white,
                     ),
@@ -1234,10 +1234,8 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
                               fit: BoxFit.contain,
                             ),
                           ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text("Real Madrid"),
+                          const SizedBox(width: 5),
+                          const Text("Real Madrid"),
                         ],
                       ),
                       trailing: Text(
