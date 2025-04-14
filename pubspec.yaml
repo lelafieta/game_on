@@ -51,6 +51,7 @@ dependencies:
   bottom_sheet_bar: ^2.3.10
   flutter_expandable_table: ^2.1.0
   scrollable_list_tab_scroller: ^2.0.1
+  sliver_snap: ^2.0.0
 
 dev_dependencies:
   flutter_test:

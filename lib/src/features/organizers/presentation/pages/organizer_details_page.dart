@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sliver_snap/widgets/sliver_snap.dart';
 
 import '../../../../config/routes/app_routes.dart';
 import '../../../../config/themes/app_colors.dart';
@@ -51,6 +52,43 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
   ];
   @override
   Widget build(BuildContext context) {
+    return SliverSnap(
+      onCollapseStateChanged: (isCollapsed, scrollingOffset, maxExtent) {},
+      collapsedBackgroundColor: Colors.black,
+      expandedBackgroundColor: Colors.transparent,
+      backdropWidget: Image.network(
+        "https://storage.boxoutsports.com/template_categories/24/templates/563110/9eb93cff-6904-4caf-9871-8852e4e9dd30.jpg",
+        fit: BoxFit.cover,
+      ),
+      bottom: const PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: Icon(
+          Icons.directions_boat,
+          color: Colors.blue,
+          size: 45,
+        ),
+      ),
+      expandedContentHeight: 350,
+      expandedContent: Center(
+        child: Column(
+          children: [
+            CachedNetworkImage(
+              width: 100,
+              height: 100,
+              imageUrl:
+                  "https://storage.boxoutsports.com/template_categories/24/templates/563110/9eb93cff-6904-4caf-9871-8852e4e9dd30.jpg",
+            )
+          ],
+        ),
+      ),
+      collapsedContent:
+          const Icon(Icons.car_crash, color: Colors.green, size: 45),
+      body: const Material(
+        elevation: 7,
+        child: Placeholder(),
+      ),
+    );
+
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
