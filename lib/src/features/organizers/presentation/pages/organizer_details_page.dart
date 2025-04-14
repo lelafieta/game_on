@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -56,9 +58,31 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
       onCollapseStateChanged: (isCollapsed, scrollingOffset, maxExtent) {},
       collapsedBackgroundColor: Colors.black,
       expandedBackgroundColor: Colors.transparent,
-      backdropWidget: Image.network(
-        "https://storage.boxoutsports.com/template_categories/24/templates/563110/9eb93cff-6904-4caf-9871-8852e4e9dd30.jpg",
-        fit: BoxFit.cover,
+      backdropWidget: Stack(
+        children: [
+          // Image.network(
+          //   "https://storage.boxoutsports.com/template_categories/24/templates/563110/9eb93cff-6904-4caf-9871-8852e4e9dd30.jpg",
+          //   fit: BoxFit.cover,
+          // ),
+          Positioned(
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                backgroundBlendMode: BlendMode.darken,
+              ),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: Container(
+                    // color: Colors.black87.withOpacity(0.2),
+                    ),
+              ),
+            ),
+          ),
+        ],
       ),
       bottom: const PreferredSize(
         preferredSize: Size.fromHeight(50),
@@ -69,16 +93,46 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
         ),
       ),
       expandedContentHeight: 350,
-      expandedContent: Center(
-        child: Column(
-          children: [
-            CachedNetworkImage(
-              width: 100,
-              height: 100,
-              imageUrl:
-                  "https://storage.boxoutsports.com/template_categories/24/templates/563110/9eb93cff-6904-4caf-9871-8852e4e9dd30.jpg",
-            )
-          ],
+      expandedContent: SafeArea(
+        child: Center(
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  // color: Colors.amber,
+                  // border: Border.all(color: Colors.white),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                clipBehavior: Clip.hardEdge,
+                child: CachedNetworkImage(
+                  width: 100,
+                  height: 100,
+                  imageUrl:
+                      "https://storage.boxoutsports.com/template_categories/24/templates/563110/9eb93cff-6904-4caf-9871-8852e4e9dd30.jpg",
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Fieta Organization",
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.black,
+                    ),
+              ),
+              Text(
+                "Aqui vai uma descrição sobre o Campeonato",
+                // style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                //       fontWeight: FontWeight.bold,
+                //       color: AppColors.black,
+                //     ),
+              ),
+            ],
+          ),
         ),
       ),
       collapsedContent:
