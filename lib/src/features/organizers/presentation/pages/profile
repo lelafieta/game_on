@@ -752,10 +752,20 @@
 
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/widgets.dart';
+import 'package:game_on/src/core/strings/app_strings.dart';
+import 'package:game_on/src/secrets/app_secrets.dart';
 
-class OrganizerDetailsPage extends StatelessWidget {
+import '../../../../config/themes/app_colors.dart';
+
+class OrganizerDetailsPage extends StatefulWidget {
   const OrganizerDetailsPage({super.key});
 
+  @override
+  State<OrganizerDetailsPage> createState() => _OrganizerDetailsPageState();
+}
+
+class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
   final String backgroundUrl =
       'https://scontent.flad5-1.fna.fbcdn.net/v/t39.30808-6/481972096_1207928134015658_4427683262273356979_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=zV_8X74IuyoQ7kNvwFNQ4ob&_nc_oc=AdkuSLXzaRPCkaG4Rk49w94sTBmd8Fhxnz2QazxYg2iIpuENHNFuCjDX0VJn-DIsKu_tpPTIOY-QLCN9VE_o77Vv&_nc_zt=23&_nc_ht=scontent.flad5-1.fna&_nc_gid=6g5SEc_mHR1ryf38jcOikw&oh=00_AfHwiN08xuDHuwgUxbjxBUvvfo7y6kwFlL6d0wj-XXV6kA&oe=68047308';
   final String profileUrl =
@@ -773,49 +783,147 @@ class OrganizerDetailsPage extends StatelessWidget {
         backgroundColor: Colors.white,
         body: Column(
           children: [
-            Stack(
+            Column(
               children: [
-                CachedNetworkImage(
-                  imageUrl: backgroundUrl,
-                  height: 220,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
+                Stack(
+                  alignment: Alignment.center,
+                  clipBehavior: Clip.none,
+                  children: [
+                    // Imagem de capa
+                    Image.network(
+                      backgroundUrl,
+                      width: double.infinity,
+                      height: 180,
+                      fit: BoxFit.cover,
+                    ),
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      top: 0,
+                      bottom: 0,
+                      child: Container(
+                        color: Colors.black54,
+                      ),
+                    ),
+                    Positioned(
+                      left: 16,
+                      top: 10,
+                      child: SafeArea(
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            shape: BoxShape.circle,
+                          ),
+                          child: IconButton(
+                            padding: const EdgeInsets.all(8.0),
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              color: AppColors.black,
+                            ),
+                            onPressed: () {
+                              // Navigator.of(context).pop();
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    Positioned(
+                      bottom: -60, // ajustado para acomodar o tamanho maior
+                      child: Stack(
+                        children: [
+                          CircleAvatar(
+                            radius: 70, // aumentado o tamanho do círculo
+                            backgroundColor: Colors.white,
+                            child: CircleAvatar(
+                              radius: 66, // aumentado o tamanho da imagem
+                              backgroundImage: NetworkImage(profileUrl),
+                            ),
+                          ),
+                          Positioned(
+                            right: 0,
+                            bottom: 0,
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(50),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 4,
+                                    offset: Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: Icon(Icons.verified,
+                                  color: Colors.blue, size: 22),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                Container(
-                  height: 220,
-                  color: Colors.black.withOpacity(0.3),
-                ),
-                Positioned(
-                  top: 60,
-                  left: 20,
-                  right: 20,
+                SizedBox(height: 70), // ajustado para o novo tamanho do escudo
+                // Nome do time + selo de verificação
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
                     children: [
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundImage: CachedNetworkImageProvider(profileUrl),
-                      ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        'Paris Saint-Germain',
+                      Text(
+                        'Fieta Organizador',
                         style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
+                          fontSize: 22,
                           fontWeight: FontWeight.bold,
+                          color: Colors.black,
                         ),
-                      ),
-                      const Text(
-                        'Paris, France',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white70,
-                        ),
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
                       ),
                     ],
                   ),
-                )
+                ),
+                SizedBox(height: 4),
+                // Informações adicionais
+                RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                      fontFamily: AppStrings.fontFamily,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: '3,1 M',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' Torneios • ',
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      TextSpan(
+                        text: '3,5 M',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' seguidores',
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
+            const SizedBox(height: 10),
             const TabBar(
               labelColor: Color(0xFF04764E),
               unselectedLabelColor: Colors.grey,

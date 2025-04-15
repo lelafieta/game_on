@@ -781,100 +781,101 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
       length: 4,
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: Column(
-          children: [
-            Column(
-              children: [
-                Stack(
-                  alignment: Alignment.center,
-                  clipBehavior: Clip.none,
-                  children: [
-                    // Imagem de capa
-                    Image.network(
-                      backgroundUrl,
-                      width: double.infinity,
-                      height: 180,
-                      fit: BoxFit.cover,
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                alignment: Alignment.center,
+                clipBehavior: Clip.none,
+                children: [
+                  // Imagem de capa
+                  Image.network(
+                    backgroundUrl,
+                    width: double.infinity,
+                    height: 180,
+                    fit: BoxFit.cover,
+                  ),
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                    child: Container(
+                      color: Colors.black54,
                     ),
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      top: 0,
-                      bottom: 0,
+                  ),
+                  Positioned(
+                    left: 16,
+                    top: 10,
+                    child: SafeArea(
                       child: Container(
-                        color: Colors.black54,
-                      ),
-                    ),
-                    Positioned(
-                      left: 16,
-                      top: 10,
-                      child: SafeArea(
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.grey,
-                            shape: BoxShape.circle,
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          shape: BoxShape.circle,
+                        ),
+                        child: IconButton(
+                          padding: const EdgeInsets.all(8.0),
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: AppColors.black,
                           ),
-                          child: IconButton(
-                            padding: const EdgeInsets.all(8.0),
-                            icon: const Icon(
-                              Icons.arrow_back,
-                              color: AppColors.black,
-                            ),
-                            onPressed: () {
-                              // Navigator.of(context).pop();
-                            },
-                          ),
+                          onPressed: () {
+                            // Navigator.of(context).pop();
+                          },
                         ),
                       ),
                     ),
+                  ),
 
-                    Positioned(
-                      bottom: -60, // ajustado para acomodar o tamanho maior
-                      child: Stack(
-                        children: [
-                          CircleAvatar(
-                            radius: 70, // aumentado o tamanho do círculo
-                            backgroundColor: Colors.white,
-                            child: CircleAvatar(
-                              radius: 66, // aumentado o tamanho da imagem
-                              backgroundImage: NetworkImage(profileUrl),
-                            ),
+                  Positioned(
+                    bottom: -60, // ajustado para acomodar o tamanho maior
+                    child: Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 70, // aumentado o tamanho do círculo
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            radius: 66, // aumentado o tamanho da imagem
+                            backgroundImage: NetworkImage(profileUrl),
                           ),
-                          Positioned(
-                            right: 0,
-                            bottom: 0,
-                            child: Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(50),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 4,
-                                    offset: Offset(0, 2),
-                                  ),
-                                ],
-                              ),
-                              child: Icon(Icons.verified,
-                                  color: Colors.blue, size: 22),
+                        ),
+                        Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(50),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 4,
+                                  offset: Offset(0, 2),
+                                ),
+                              ],
                             ),
-                          )
-                        ],
-                      ),
+                            child: Icon(Icons.verified,
+                                color: Colors.blue, size: 22),
+                          ),
+                        )
+                      ],
                     ),
-                  ],
-                ),
-                SizedBox(height: 70), // ajustado para o novo tamanho do escudo
-                // Nome do time + selo de verificação
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Column(
-                    children: [
-                      Text(
+                  ),
+                ],
+              ),
+              SizedBox(height: 70), // ajustado para o novo tamanho do escudo
+              // Nome do time + selo de verificação
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  children: [
+                    Center(
+                      child: Text(
                         'Fieta Organizador',
                         style: TextStyle(
                           fontSize: 22,
@@ -885,12 +886,14 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                         overflow: TextOverflow.ellipsis,
                         maxLines: 3,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 4),
-                // Informações adicionais
-                RichText(
+              ),
+              SizedBox(height: 4),
+              // Informações adicionais
+              Center(
+                child: RichText(
                   text: TextSpan(
                     style: TextStyle(
                       fontFamily: AppStrings.fontFamily,
@@ -921,40 +924,246 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                     ],
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 5),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(Icons.location_on, color: Colors.grey),
-                SizedBox(width: 5),
-                Text("Angola, Luanda, Benfica"),
-              ],
-            ),
-            const SizedBox(height: 10),
-            const TabBar(
-              labelColor: Color(0xFF04764E),
-              unselectedLabelColor: Colors.grey,
-              tabs: [
-                Tab(text: 'Overview'),
-                Tab(text: 'Table'),
-                Tab(text: 'Squad'),
-                Tab(text: 'Matches'),
-              ],
-            ),
-            Expanded(
-              child: TabBarView(
+              ),
+              const SizedBox(height: 5),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  _buildOverview(team1Logo, team2Logo),
-                  const Center(child: Text('Table Content')),
-                  const Center(child: Text('Squad Content')),
-                  const Center(child: Text('Matches Content')),
+                  Icon(Icons.location_on, color: Colors.grey),
+                  SizedBox(width: 5),
+                  Text("Angola, Luanda, Benfica"),
                 ],
               ),
-            )
-          ],
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      left: BorderSide(
+                        width: 5,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ),
+                  padding: const EdgeInsets.all(8.0),
+                  child: const Text(
+                    'Torneios',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                ),
+              ),
+              ListView.separated(
+                itemCount: 20,
+                shrinkWrap: true,
+                physics: const ClampingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: CachedNetworkImageProvider(team2Logo),
+                    ),
+                    title: Text(
+                      'Campeonado das escolas',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      ),
+                    ),
+                    subtitle:
+                        Text('Aqui vai alguma descrição sobre o campeonato'),
+                    // trailing: Icon(Icons.arrow_forward),
+                    onTap: () {
+                      // Handle item tap
+                    },
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return Divider(
+                    color: Colors.black12,
+                  );
+                },
+              ),
+            ],
+          ),
         ),
+        // body: Column(
+        //   children: [
+        //     Column(
+        //       children: [
+        //         Stack(
+        //           alignment: Alignment.center,
+        //           clipBehavior: Clip.none,
+        //           children: [
+        //             // Imagem de capa
+        //             Image.network(
+        //               backgroundUrl,
+        //               width: double.infinity,
+        //               height: 180,
+        //               fit: BoxFit.cover,
+        //             ),
+        //             Positioned(
+        //               left: 0,
+        //               right: 0,
+        //               top: 0,
+        //               bottom: 0,
+        //               child: Container(
+        //                 color: Colors.black54,
+        //               ),
+        //             ),
+        //             Positioned(
+        //               left: 16,
+        //               top: 10,
+        //               child: SafeArea(
+        //                 child: Container(
+        //                   width: 50,
+        //                   height: 50,
+        //                   decoration: BoxDecoration(
+        //                     color: Colors.grey,
+        //                     shape: BoxShape.circle,
+        //                   ),
+        //                   child: IconButton(
+        //                     padding: const EdgeInsets.all(8.0),
+        //                     icon: const Icon(
+        //                       Icons.arrow_back,
+        //                       color: AppColors.black,
+        //                     ),
+        //                     onPressed: () {
+        //                       // Navigator.of(context).pop();
+        //                     },
+        //                   ),
+        //                 ),
+        //               ),
+        //             ),
+
+        //             Positioned(
+        //               bottom: -60, // ajustado para acomodar o tamanho maior
+        //               child: Stack(
+        //                 children: [
+        //                   CircleAvatar(
+        //                     radius: 70, // aumentado o tamanho do círculo
+        //                     backgroundColor: Colors.white,
+        //                     child: CircleAvatar(
+        //                       radius: 66, // aumentado o tamanho da imagem
+        //                       backgroundImage: NetworkImage(profileUrl),
+        //                     ),
+        //                   ),
+        //                   Positioned(
+        //                     right: 0,
+        //                     bottom: 0,
+        //                     child: Container(
+        //                       width: 40,
+        //                       height: 40,
+        //                       decoration: BoxDecoration(
+        //                         color: Colors.white,
+        //                         borderRadius: BorderRadius.circular(50),
+        //                         boxShadow: [
+        //                           BoxShadow(
+        //                             color: Colors.black.withOpacity(0.1),
+        //                             blurRadius: 4,
+        //                             offset: Offset(0, 2),
+        //                           ),
+        //                         ],
+        //                       ),
+        //                       child: Icon(Icons.verified,
+        //                           color: Colors.blue, size: 22),
+        //                     ),
+        //                   )
+        //                 ],
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //         SizedBox(height: 70), // ajustado para o novo tamanho do escudo
+        //         // Nome do time + selo de verificação
+        //         Padding(
+        //           padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        //           child: Column(
+        //             children: [
+        //               Text(
+        //                 'Fieta Organizador',
+        //                 style: TextStyle(
+        //                   fontSize: 22,
+        //                   fontWeight: FontWeight.bold,
+        //                   color: Colors.black,
+        //                 ),
+        //                 textAlign: TextAlign.center,
+        //                 overflow: TextOverflow.ellipsis,
+        //                 maxLines: 3,
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //         SizedBox(height: 4),
+        //         // Informações adicionais
+        //         RichText(
+        //           text: TextSpan(
+        //             style: TextStyle(
+        //               fontFamily: AppStrings.fontFamily,
+        //             ),
+        //             children: [
+        //               TextSpan(
+        //                 text: '3,1 M',
+        //                 style: TextStyle(
+        //                   color: Colors.black,
+        //                   fontWeight: FontWeight.bold,
+        //                 ),
+        //               ),
+        //               TextSpan(
+        //                 text: ' Torneios • ',
+        //                 style: TextStyle(color: Colors.grey[700]),
+        //               ),
+        //               TextSpan(
+        //                 text: '3,5 M',
+        //                 style: TextStyle(
+        //                   color: Colors.black,
+        //                   fontWeight: FontWeight.bold,
+        //                 ),
+        //               ),
+        //               TextSpan(
+        //                 text: ' seguidores',
+        //                 style: TextStyle(color: Colors.grey[700]),
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //       ],
+        //     ),
+        //     const SizedBox(height: 5),
+        //     const Row(
+        //       mainAxisAlignment: MainAxisAlignment.center,
+        //       children: [
+        //         Icon(Icons.location_on, color: Colors.grey),
+        //         SizedBox(width: 5),
+        //         Text("Angola, Luanda, Benfica"),
+        //       ],
+        //     ),
+        //     const SizedBox(height: 10),
+        //     const TabBar(
+        //       labelColor: Color(0xFF04764E),
+        //       unselectedLabelColor: Colors.grey,
+        //       tabs: [
+        //         Tab(text: 'Torneios'),
+        //         Tab(text: 'Table'),
+        //         Tab(text: 'Squad'),
+        //         Tab(text: 'Matches'),
+        //       ],
+        //     ),
+        //     Expanded(
+        //       child: TabBarView(
+        //         children: [
+        //           _buildOverview(team1Logo, team2Logo),
+        //           const Center(child: Text('Table Content')),
+        //           const Center(child: Text('Squad Content')),
+        //           const Center(child: Text('Matches Content')),
+        //         ],
+        //       ),
+        //     )
+        //   ],
+        // ),
       ),
     );
   }
