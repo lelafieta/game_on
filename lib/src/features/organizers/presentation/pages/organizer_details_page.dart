@@ -869,9 +869,10 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 70), // ajustado para o novo tamanho do escudo
+                const SizedBox(
+                    height: 70), // ajustado para o novo tamanho do escudo
                 // Nome do time + selo de verificação
-                Padding(
+                const Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
                     children: [
@@ -967,10 +968,8 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
       physics: const ClampingScrollPhysics(),
       itemBuilder: (context, index) {
         return ListTile(
-          leading: Container(
-            child: CachedNetworkImage(
-              imageUrl: team2Logo,
-            ),
+          leading: CachedNetworkImage(
+            imageUrl: team2Logo,
           ),
           title: Text(
             'Campeonado das escolas',
