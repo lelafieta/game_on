@@ -33,6 +33,40 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
       'https://scontent.flad5-1.fna.fbcdn.net/v/t39.30808-1/449761244_1062646795218211_4139834764378388664_n.jpg?stp=c196.196.1199.1199a_dst-jpg_s200x200_tt6&_nc_cat=1&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=2PIv9d0zbT4Q7kNvwFrDdyl&_nc_oc=Adnbea-uBG6-Yjz-swaIok52lxeGLlxbFYlST90cK4dm1KdQveMu-MleJfCBBy4zbgL6PbCyY77uA-Jx-87CXmsf&_nc_zt=24&_nc_ht=scontent.flad5-1.fna&_nc_gid=b_6-6aTZFayQsgqhCcyxhQ&oh=00_AfE78XoqOuYLsaL3vLfGnPlltyuw8ZA_dK-vkLTcnXYkEA&oe=68047744';
   final String team2Logo =
       'https://scontent.flad5-1.fna.fbcdn.net/v/t39.30808-1/273144602_10152602977424953_1955203260619408476_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=1&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=q-W_7Ofx0GIQ7kNvwGEJVrU&_nc_oc=Adnh-RBMtZE6Kr9ubdATmRiKH6NAEiVO92HwxQXcJXb10vyt6hqv1nhkO14Pimi4X05KqocWeD2Q83HP7vsW3Xw6&_nc_zt=24&_nc_ht=scontent.flad5-1.fna&_nc_gid=tINtmFSQ5O2qx6UrzJ1Xjg&oh=00_AfFWaHkb26Gz6qnHdeiku917wrHIZY8eRqAgYFACd31o-Q&oe=68047B4B';
+  final List<MatchModel> matches = List.generate(
+    6,
+    (index) => MatchModel(
+      homeTeam: 'FC Bayern Munich',
+      awayTeam: 'Manchester United My team',
+      homeScore: 3,
+      awayScore: 2,
+      minute: 48,
+      homePossession: 0.78,
+      homeLogo:
+          'https://upload.wikimedia.org/wikipedia/pt/9/98/Real_Madrid.png',
+      awayLogo:
+          'https://upload.wikimedia.org/wikipedia/pt/b/b6/Manchester_United_FC_logo.png',
+    ),
+  );
+
+  final List<Map<String, dynamic>> tableData = [
+    {"pos": 1, "club": "Victory Greens", "w": 25, "d": 5, "l": 4, "pts": 80},
+    {"pos": 2, "club": "Red Devils", "w": 20, "d": 8, "l": 6, "pts": 68},
+    {"pos": 3, "club": "Blue Monkeys", "w": 20, "d": 8, "l": 6, "pts": 68},
+    {"pos": 4, "club": "Crazy Eagle", "w": 19, "d": 10, "l": 5, "pts": 67},
+    {"pos": 5, "club": "Rocky Birds", "w": 19, "d": 10, "l": 5, "pts": 67},
+    {"pos": 6, "club": "Blue Lightning", "w": 19, "d": 9, "l": 6, "pts": 66},
+    {"pos": 7, "club": "White Clouds", "w": 17, "d": 11, "l": 6, "pts": 62},
+    {"pos": 8, "club": "Yellow Submarine", "w": 17, "d": 11, "l": 6, "pts": 58},
+    {"pos": 9, "club": "Sharks", "w": 16, "d": 12, "l": 6, "pts": 56},
+    {"pos": 10, "club": "King's Team", "w": 15, "d": 12, "l": 7, "pts": 55},
+    {"pos": 11, "club": "Fast Cowboys", "w": 15, "d": 3, "l": 16, "pts": 52},
+    {"pos": 12, "club": "Green Lentils", "w": 14, "d": 7, "l": 13, "pts": 49},
+    {"pos": 13, "club": "Black Eagles", "w": 14, "d": 5, "l": 15, "pts": 47},
+    {"pos": 14, "club": "Red Clove", "w": 14, "d": 1, "l": 19, "pts": 42},
+    {"pos": 15, "club": "Wild", "w": 0, "d": 0, "l": 34, "pts": 0},
+    {"pos": 16, "club": "Snakes", "w": 0, "d": 0, "l": 34, "pts": 0},
+  ];
 
   @override
   void initState() {
@@ -51,7 +85,7 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Competition Details',
+          'Brinca na areia',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: AppColors.primary,
@@ -63,10 +97,10 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
           unselectedLabelColor: AppColors.white.withOpacity(.6),
           labelColor: AppColors.white,
           tabs: const [
-            Tab(icon: Icon(Icons.sports_soccer), text: 'Games'),
-            Tab(icon: Icon(Icons.emoji_events), text: 'Competitions'),
-            Tab(icon: Icon(Icons.leaderboard), text: 'Standings'),
-            Tab(icon: Icon(Icons.star), text: 'Rankings'),
+            Tab(icon: Icon(Icons.sports_soccer), text: 'Detalhes'),
+            Tab(icon: Icon(Icons.emoji_events), text: 'Jogos'),
+            Tab(icon: Icon(Icons.leaderboard), text: 'Classificação'),
+            Tab(icon: Icon(Icons.star), text: 'Estatísticas'),
             Tab(icon: Icon(Icons.article), text: 'News'),
           ],
         ),
@@ -75,10 +109,43 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
         controller: _tabController,
         children: [
           Expanded(child: _contantGame()),
-          Expanded(child: Center(child: Text('Competitions Content'))),
-          Center(child: Text('Standings Content')),
-          Center(child: Text('Rankings Content')),
+          Expanded(child: _buildTabContentMatch()),
+          Expanded(child: _buildTable()),
+          Expanded(child: _buildStats()),
           Center(child: Text('News Content')),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStats() {
+    return DefaultTabController(
+      length: 3,
+      child: Column(
+        children: [
+          TabBar(
+            indicatorColor: AppColors.primary,
+            labelColor: AppColors.primary,
+            unselectedLabelColor: Colors.grey,
+            isScrollable: true,
+            tabAlignment: TabAlignment.center,
+            tabs: const [
+              Tab(text: 'Gols'),
+              Tab(text: 'Assistências'),
+              // Tab(text: 'Defesas'),
+              Tab(text: 'Cartões'),
+            ],
+          ),
+          Expanded(
+            child: TabBarView(
+              children: [
+                Center(child: Text('Gols Content')),
+                Center(child: Text('Assistências Content')),
+                Center(child: Text('Defesas Content')),
+                Center(child: Text('Cartões Content')),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -254,6 +321,99 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
     );
   }
 
+  Widget _buildTeam(String logoUrl, String name, CrossAxisAlignment align) {
+    return Column(
+      crossAxisAlignment: align,
+      children: [
+        Image.network(logoUrl, width: 40, height: 40),
+        const SizedBox(height: 8),
+        Text(name,
+            style: const TextStyle(fontSize: 14),
+            overflow: TextOverflow.ellipsis),
+      ],
+    );
+  }
+
+  Widget _buildTabContentMatch() {
+    return ListView.builder(
+      itemCount: matches.length,
+      itemBuilder: (context, index) {
+        final match = matches[index];
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.09),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: AppColors.primary.withOpacity(.1),
+                  ),
+                  child: Center(
+                    child: Text("Primeira Jornada"),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildTeam(
+                        match.homeLogo,
+                        match.homeTeam,
+                        CrossAxisAlignment.start,
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Text(
+                            '${match.homeScore} - ${match.awayScore}',
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "${match.minute}'",
+                            style: const TextStyle(
+                                fontSize: 16, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: _buildTeam(
+                        match.awayLogo,
+                        match.awayTeam,
+                        CrossAxisAlignment.end,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Widget _buildStatCard({
     required IconData icon,
     required String title,
@@ -300,7 +460,156 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
       ),
     );
   }
-}
+
+  Widget _buildTable() {
+    return Column(
+      children: [
+        // Header row
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+          color: AppColors.primary,
+          child: const Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text(
+                  "POS",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.white,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 4,
+                child: Text(
+                  "Clube",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.white,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  "V",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  "E",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  "D",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  "Pts",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ),
+        // Table rows
+        Expanded(
+          child: ListView.builder(
+            itemCount: tableData.length,
+            itemBuilder: (context, index) {
+              final item = tableData[index];
+              final isEvenRow = index % 2 == 0;
+              return Container(
+                color: isEvenRow ? Colors.grey[200] : Colors.white,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Text(
+                        "${item['pos']}",
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 4,
+                      child: Row(
+                        children: [
+                          CachedNetworkImage(
+                            imageUrl:
+                                "https://upload.wikimedia.org/wikipedia/pt/9/98/Real_Madrid.png",
+                            width: 30,
+                            height: 30,
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              "${item['club']}",
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        "${item['w']}",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        "${item['d']}",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        "${item['l']}",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        "${item['pts']}",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
 
 // class CompetitionDetailsPage extends StatefulWidget {
 //   const CompetitionDetailsPage({
@@ -1136,84 +1445,84 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
 //     );
 //   }
 
-//   Widget _buildTabContentMatch(List<int> itemList) {
-//     return ListView.builder(
-//       itemCount: matches.length,
-//       itemBuilder: (context, index) {
-//         final match = matches[index];
-//         return Container(
-//           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-//           decoration: BoxDecoration(
-//             color: Colors.white,
-//             borderRadius: BorderRadius.circular(10),
-//             boxShadow: [
-//               BoxShadow(
-//                 color: Colors.black.withOpacity(0.09),
-//                 blurRadius: 12,
-//                 offset: const Offset(0, 4),
+// Widget _buildTabContentMatch(List<int> itemList) {
+//   return ListView.builder(
+//     itemCount: matches.length,
+//     itemBuilder: (context, index) {
+//       final match = matches[index];
+//       return Container(
+//         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+//         decoration: BoxDecoration(
+//           color: Colors.white,
+//           borderRadius: BorderRadius.circular(10),
+//           boxShadow: [
+//             BoxShadow(
+//               color: Colors.black.withOpacity(0.09),
+//               blurRadius: 12,
+//               offset: const Offset(0, 4),
+//             ),
+//           ],
+//         ),
+//         child: Padding(
+//           padding: const EdgeInsets.all(16),
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               const Text(
+//                 "Calendário 8 | 2023",
+//                 style: TextStyle(
+//                   fontSize: 14,
+//                   fontWeight: FontWeight.bold,
+//                   color: Colors.black38,
+//                 ),
 //               ),
+//               const SizedBox(height: 8),
+//               Row(
+//                 children: [
+//                   Expanded(
+//                     child: _buildTeam(
+//                       match.homeLogo,
+//                       match.homeTeam,
+//                       CrossAxisAlignment.start,
+//                     ),
+//                   ),
+//                   Expanded(
+//                     child: Column(
+//                       children: [
+//                         Text(
+//                           '${match.homeScore} - ${match.awayScore}',
+//                           style: const TextStyle(
+//                             fontSize: 24,
+//                             fontWeight: FontWeight.bold,
+//                             color: Colors.black,
+//                           ),
+//                         ),
+//                         Text(
+//                           "${match.minute}'",
+//                           style: const TextStyle(
+//                               fontSize: 16, color: Colors.grey),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                   Expanded(
+//                     child: _buildTeam(
+//                       match.awayLogo,
+//                       match.awayTeam,
+//                       CrossAxisAlignment.end,
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//               const SizedBox(height: 12),
+//               _buildPossessionBar(match.homePossession),
 //             ],
 //           ),
-//           child: Padding(
-//             padding: const EdgeInsets.all(16),
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 const Text(
-//                   "Calendário 8 | 2023",
-//                   style: TextStyle(
-//                     fontSize: 14,
-//                     fontWeight: FontWeight.bold,
-//                     color: Colors.black38,
-//                   ),
-//                 ),
-//                 const SizedBox(height: 8),
-//                 Row(
-//                   children: [
-//                     Expanded(
-//                       child: _buildTeam(
-//                         match.homeLogo,
-//                         match.homeTeam,
-//                         CrossAxisAlignment.start,
-//                       ),
-//                     ),
-//                     Expanded(
-//                       child: Column(
-//                         children: [
-//                           Text(
-//                             '${match.homeScore} - ${match.awayScore}',
-//                             style: const TextStyle(
-//                               fontSize: 24,
-//                               fontWeight: FontWeight.bold,
-//                               color: Colors.black,
-//                             ),
-//                           ),
-//                           Text(
-//                             "${match.minute}'",
-//                             style: const TextStyle(
-//                                 fontSize: 16, color: Colors.grey),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                     Expanded(
-//                       child: _buildTeam(
-//                         match.awayLogo,
-//                         match.awayTeam,
-//                         CrossAxisAlignment.end,
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//                 const SizedBox(height: 12),
-//                 _buildPossessionBar(match.homePossession),
-//               ],
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
+//         ),
+//       );
+//     },
+//   );
+// }
 
 //   Widget _buildTabContentTable(List<int> itemList) {
 //     return Column(
@@ -1261,114 +1570,114 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
 //         ),
 //         // const Divider(height: 1),
 //         // Lista rolável
-//         Expanded(
-//           child: ListView.builder(
-//             itemCount: tableData.length,
-//             itemBuilder: (context, index) {
-//               final item = tableData[index];
-//               return Container(
-//                 padding:
-//                     const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-//                 decoration: BoxDecoration(
-//                   border:
-//                       Border(bottom: BorderSide(color: Colors.grey.shade300)),
+//     Expanded(
+//       child: ListView.builder(
+//         itemCount: tableData.length,
+//         itemBuilder: (context, index) {
+//           final item = tableData[index];
+//           return Container(
+//             padding:
+//                 const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+//             decoration: BoxDecoration(
+//               border:
+//                   Border(bottom: BorderSide(color: Colors.grey.shade300)),
+//             ),
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   flex: 0,
+//                   child: Container(
+//                     width: 20,
+//                     child: Text("${item['pos']}"),
+//                   ),
 //                 ),
-//                 child: Row(
-//                   children: [
-//                     Expanded(
-//                       flex: 0,
-//                       child: Container(
-//                         width: 20,
-//                         child: Text("${item['pos']}"),
-//                       ),
-//                     ),
-//                     const SizedBox(width: 20),
-//                     Expanded(
-//                         flex: 6,
-//                         child: Row(
-//                           children: [
-//                             CachedNetworkImage(
-//                               width: 30,
-//                               imageUrl:
-//                                   "https://upload.wikimedia.org/wikipedia/pt/9/98/Real_Madrid.png",
-//                             ),
-//                             const SizedBox(width: 10),
-//                             Expanded(
-//                               child: Text(
-//                                 item['club'],
-//                                 overflow: TextOverflow.ellipsis,
-//                               ),
-//                             ),
-//                           ],
-//                         )),
-//                     Expanded(child: Text("${item['w']}")),
-//                     Expanded(child: Text("${item['d']}")),
-//                     Expanded(child: Text("${item['l']}")),
-//                     Expanded(
-//                         child: Text(
-//                       "${item['pts']}",
-//                       style: const TextStyle(
-//                         fontWeight: FontWeight.bold,
-//                         color: AppColors.primary,
-//                       ),
+//                 const SizedBox(width: 20),
+//                 Expanded(
+//                     flex: 6,
+//                     child: Row(
+//                       children: [
+//                         CachedNetworkImage(
+//                           width: 30,
+//                           imageUrl:
+//                               "https://upload.wikimedia.org/wikipedia/pt/9/98/Real_Madrid.png",
+//                         ),
+//                         const SizedBox(width: 10),
+//                         Expanded(
+//                           child: Text(
+//                             item['club'],
+//                             overflow: TextOverflow.ellipsis,
+//                           ),
+//                         ),
+//                       ],
 //                     )),
-//                   ],
-//                 ),
-//               );
-//             },
-//           ),
-//         ),
-//       ],
-//     );
-//     // return SingleChildScrollView(
-//     //   child: DataTable(
-//     //     sortAscending: true,
-//     //     sortColumnIndex: 3,
-//     //     horizontalMargin: 10,
-//     //     columnSpacing: 5,
-//     //     columns: const [
-//     //       DataColumn(
-//     //         label: Text('POS'),
-//     //       ),
-//     //       DataColumn(label: Text('CLUB')),
-//     //       DataColumn(label: Text('V')),
-//     //       DataColumn(label: Text('D')),
-//     //       DataColumn(label: Text('E')),
-//     //       DataColumn(label: Text('PTS')),
-//     //     ],
-//     //     rows: tableData.map((team) {
-//     //       return DataRow(
-//     //         cells: [
-//     //           DataCell(
-//     //             Row(
-//     //               children: [
-//     //                 Expanded(
-//     //                   child: Text(
-//     //                     '${team['pos']}',
-//     //                     style: const TextStyle(
-//     //                       fontSize: 16,
-//     //                       fontWeight: FontWeight.bold,
-//     //                       color: Colors.black,
-//     //                     ),
-//     //                   ),
-//     //                 ),
-//     //                 CachedNetworkImage(
-//     //                   imageUrl:
-//     //                       "https://upload.wikimedia.org/wikipedia/pt/9/98/Real_Madrid.png",
-//     //                 ),
-//     //               ],
-//     //             ),
-//     //           ),
-//     //           DataCell(Text('${team['club']}')),
-//     //           DataCell(Text('${team['w']}')),
-//     //           DataCell(Text('${team['d']}')),
-//     //           DataCell(Text('${team['l']}')),
-//     //           DataCell(Text('${team['pts']}')),
-//     //         ],
-//     //       );
-//     //     }).toList(),
-//     //   ),
-//     // );
+//                 Expanded(child: Text("${item['w']}")),
+//                 Expanded(child: Text("${item['d']}")),
+//                 Expanded(child: Text("${item['l']}")),
+//                 Expanded(
+//                     child: Text(
+//                   "${item['pts']}",
+//                   style: const TextStyle(
+//                     fontWeight: FontWeight.bold,
+//                     color: AppColors.primary,
+//                   ),
+//                 )),
+//               ],
+//             ),
+//           );
+//         },
+//       ),
+//     ),
+//   ],
+// );
+// // return SingleChildScrollView(
+// //   child: DataTable(
+// //     sortAscending: true,
+// //     sortColumnIndex: 3,
+// //     horizontalMargin: 10,
+// //     columnSpacing: 5,
+// //     columns: const [
+// //       DataColumn(
+// //         label: Text('POS'),
+// //       ),
+// //       DataColumn(label: Text('CLUB')),
+// //       DataColumn(label: Text('V')),
+// //       DataColumn(label: Text('D')),
+// //       DataColumn(label: Text('E')),
+// //       DataColumn(label: Text('PTS')),
+// //     ],
+// //     rows: tableData.map((team) {
+// //       return DataRow(
+// //         cells: [
+// //           DataCell(
+// //             Row(
+// //               children: [
+// //                 Expanded(
+// //                   child: Text(
+// //                     '${team['pos']}',
+// //                     style: const TextStyle(
+// //                       fontSize: 16,
+// //                       fontWeight: FontWeight.bold,
+// //                       color: Colors.black,
+// //                     ),
+// //                   ),
+// //                 ),
+// //                 CachedNetworkImage(
+// //                   imageUrl:
+// //                       "https://upload.wikimedia.org/wikipedia/pt/9/98/Real_Madrid.png",
+// //                 ),
+// //               ],
+// //             ),
+// //           ),
+// //           DataCell(Text('${team['club']}')),
+// //           DataCell(Text('${team['w']}')),
+// //           DataCell(Text('${team['d']}')),
+// //           DataCell(Text('${team['l']}')),
+// //           DataCell(Text('${team['pts']}')),
+// //         ],
+// //       );
+// //     }).toList(),
+// //   ),
+// // );
 //     // return ListView.builder(
 //     //   itemCount: itemList.length,
 //     //   itemBuilder: (context, index) {
@@ -1632,18 +1941,18 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
 //     );
 //   }
 
-//   Widget _buildTeam(String logoUrl, String name, CrossAxisAlignment align) {
-//     return Column(
-//       crossAxisAlignment: align,
-//       children: [
-//         Image.network(logoUrl, width: 40, height: 40),
-//         const SizedBox(height: 8),
-//         Text(name,
-//             style: const TextStyle(fontSize: 14),
-//             overflow: TextOverflow.ellipsis),
-//       ],
-//     );
-//   }
+// Widget _buildTeam(String logoUrl, String name, CrossAxisAlignment align) {
+//   return Column(
+//     crossAxisAlignment: align,
+//     children: [
+//       Image.network(logoUrl, width: 40, height: 40),
+//       const SizedBox(height: 8),
+//       Text(name,
+//           style: const TextStyle(fontSize: 14),
+//           overflow: TextOverflow.ellipsis),
+//     ],
+//   );
+// }
 
 //   Widget _buildPossessionBar(double homePercentage) {
 //     final awayPercentage = 1 - homePercentage;
@@ -1741,6 +2050,29 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
 //     required this.awayLogo,
 //   });
 // }
+}
+
+class MatchModel {
+  final String homeTeam;
+  final String awayTeam;
+  final int homeScore;
+  final int awayScore;
+  final int minute;
+  final double homePossession; // 0.0 to 1.0
+  final String homeLogo;
+  final String awayLogo;
+
+  MatchModel({
+    required this.homeTeam,
+    required this.awayTeam,
+    required this.homeScore,
+    required this.awayScore,
+    required this.minute,
+    required this.homePossession,
+    required this.homeLogo,
+    required this.awayLogo,
+  });
+}
 
 final List<Map<String, dynamic>> jsonData = [
   {

@@ -950,8 +950,6 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                 children: [
                   _buildOverview(team1Logo, team2Logo),
                   const Center(child: Text('Table Content')),
-                  const Center(child: Text('Squad Content')),
-                  const Center(child: Text('Matches Content')),
                 ],
               ),
             )
@@ -968,8 +966,12 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
       physics: const ClampingScrollPhysics(),
       itemBuilder: (context, index) {
         return ListTile(
-          leading: CachedNetworkImage(
-            imageUrl: team2Logo,
+          leading: Container(
+            width: 40,
+            height: 40,
+            child: CachedNetworkImage(
+              imageUrl: team2Logo,
+            ),
           ),
           title: Text(
             'Campeonado das escolas',
