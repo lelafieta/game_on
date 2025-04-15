@@ -1,6 +1,7 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:game_on/src/features/competitions/presentation/pages/my_competitions_list_page.dart';
 import 'package:game_on/src/features/live_games/presentation/pages/live_game_page.dart';
 import 'package:game_on/src/features/organizers/presentation/pages/organizer_page.dart';
 
@@ -21,7 +22,7 @@ class _GameOnPageState extends State<GameOnPage> {
   List<Widget> widgets = [
     HomePage(),
     OrganizerPage(),
-    Text("4"),
+    MyCompetitionsListPage(),
     LiveGamePage(),
     Text("4"),
   ];
