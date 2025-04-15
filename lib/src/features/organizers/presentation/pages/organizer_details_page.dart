@@ -753,6 +753,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
+import 'package:game_on/src/config/routes/app_routes.dart';
 import 'package:game_on/src/core/strings/app_strings.dart';
 import 'package:game_on/src/secrets/app_secrets.dart';
 
@@ -778,104 +779,103 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      length: 2,
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                alignment: Alignment.center,
-                clipBehavior: Clip.none,
-                children: [
-                  // Imagem de capa
-                  Image.network(
-                    backgroundUrl,
-                    width: double.infinity,
-                    height: 180,
-                    fit: BoxFit.cover,
-                  ),
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0,
-                    child: Container(
-                      color: Colors.black54,
+        body: Column(
+          children: [
+            Column(
+              children: [
+                Stack(
+                  alignment: Alignment.center,
+                  clipBehavior: Clip.none,
+                  children: [
+                    // Imagem de capa
+                    Image.network(
+                      backgroundUrl,
+                      width: double.infinity,
+                      height: 180,
+                      fit: BoxFit.cover,
                     ),
-                  ),
-                  Positioned(
-                    left: 16,
-                    top: 10,
-                    child: SafeArea(
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      top: 0,
+                      bottom: 0,
                       child: Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          shape: BoxShape.circle,
-                        ),
-                        child: IconButton(
-                          padding: const EdgeInsets.all(8.0),
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            color: AppColors.black,
+                        color: Colors.black54,
+                      ),
+                    ),
+                    Positioned(
+                      left: 16,
+                      top: 10,
+                      child: SafeArea(
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            shape: BoxShape.circle,
                           ),
-                          onPressed: () {
-                            // Navigator.of(context).pop();
-                          },
+                          child: IconButton(
+                            padding: const EdgeInsets.all(8.0),
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              color: AppColors.black,
+                            ),
+                            onPressed: () {
+                              // Navigator.of(context).pop();
+                            },
+                          ),
                         ),
                       ),
                     ),
-                  ),
 
-                  Positioned(
-                    bottom: -60, // ajustado para acomodar o tamanho maior
-                    child: Stack(
-                      children: [
-                        CircleAvatar(
-                          radius: 70, // aumentado o tamanho do círculo
-                          backgroundColor: Colors.white,
-                          child: CircleAvatar(
-                            radius: 66, // aumentado o tamanho da imagem
-                            backgroundImage: NetworkImage(profileUrl),
-                          ),
-                        ),
-                        Positioned(
-                          right: 0,
-                          bottom: 0,
-                          child: Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(50),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  blurRadius: 4,
-                                  offset: Offset(0, 2),
-                                ),
-                              ],
+                    Positioned(
+                      bottom: -60, // ajustado para acomodar o tamanho maior
+                      child: Stack(
+                        children: [
+                          CircleAvatar(
+                            radius: 70, // aumentado o tamanho do círculo
+                            backgroundColor: Colors.white,
+                            child: CircleAvatar(
+                              radius: 66, // aumentado o tamanho da imagem
+                              backgroundImage: NetworkImage(profileUrl),
                             ),
-                            child: Icon(Icons.verified,
-                                color: Colors.blue, size: 22),
                           ),
-                        )
-                      ],
+                          Positioned(
+                            right: 0,
+                            bottom: 0,
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(50),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 4,
+                                    offset: Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: Icon(Icons.verified,
+                                  color: Colors.blue, size: 22),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 70), // ajustado para o novo tamanho do escudo
-              // Nome do time + selo de verificação
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
-                  children: [
-                    Center(
-                      child: Text(
+                  ],
+                ),
+                SizedBox(height: 70), // ajustado para o novo tamanho do escudo
+                // Nome do time + selo de verificação
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    children: [
+                      Text(
                         'Fieta Organizador',
                         style: TextStyle(
                           fontSize: 22,
@@ -886,14 +886,12 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                         overflow: TextOverflow.ellipsis,
                         maxLines: 3,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: 4),
-              // Informações adicionais
-              Center(
-                child: RichText(
+                SizedBox(height: 4),
+                // Informações adicionais
+                RichText(
                   text: TextSpan(
                     style: TextStyle(
                       fontFamily: AppStrings.fontFamily,
@@ -924,327 +922,75 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
                     ],
                   ),
                 ),
-              ),
-              const SizedBox(height: 5),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+              ],
+            ),
+            const SizedBox(height: 5),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.location_on, color: Colors.grey),
+                SizedBox(width: 5),
+                Text("Angola, Luanda, Benfica"),
+              ],
+            ),
+            const SizedBox(height: 10),
+            const TabBar(
+              labelColor: Color(0xFF04764E),
+              unselectedLabelColor: Colors.grey,
+              tabs: [
+                Tab(text: 'Torneios'),
+                Tab(text: 'Notícias'),
+                // Tab(text: 'Squad'),
+                // Tab(text: 'Matches'),
+              ],
+            ),
+            Expanded(
+              child: TabBarView(
                 children: [
-                  Icon(Icons.location_on, color: Colors.grey),
-                  SizedBox(width: 5),
-                  Text("Angola, Luanda, Benfica"),
+                  _buildOverview(team1Logo, team2Logo),
+                  const Center(child: Text('Table Content')),
+                  const Center(child: Text('Squad Content')),
+                  const Center(child: Text('Matches Content')),
                 ],
               ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: Container(
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      left: BorderSide(
-                        width: 5,
-                        color: AppColors.primary,
-                      ),
-                    ),
-                  ),
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Text(
-                    'Torneios',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
-                ),
-              ),
-              ListView.separated(
-                itemCount: 20,
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: CachedNetworkImageProvider(team2Logo),
-                    ),
-                    title: Text(
-                      'Campeonado das escolas',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
-                      ),
-                    ),
-                    subtitle:
-                        Text('Aqui vai alguma descrição sobre o campeonato'),
-                    // trailing: Icon(Icons.arrow_forward),
-                    onTap: () {
-                      // Handle item tap
-                    },
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return Divider(
-                    color: Colors.black12,
-                  );
-                },
-              ),
-            ],
-          ),
+            )
+          ],
         ),
-        // body: Column(
-        //   children: [
-        //     Column(
-        //       children: [
-        //         Stack(
-        //           alignment: Alignment.center,
-        //           clipBehavior: Clip.none,
-        //           children: [
-        //             // Imagem de capa
-        //             Image.network(
-        //               backgroundUrl,
-        //               width: double.infinity,
-        //               height: 180,
-        //               fit: BoxFit.cover,
-        //             ),
-        //             Positioned(
-        //               left: 0,
-        //               right: 0,
-        //               top: 0,
-        //               bottom: 0,
-        //               child: Container(
-        //                 color: Colors.black54,
-        //               ),
-        //             ),
-        //             Positioned(
-        //               left: 16,
-        //               top: 10,
-        //               child: SafeArea(
-        //                 child: Container(
-        //                   width: 50,
-        //                   height: 50,
-        //                   decoration: BoxDecoration(
-        //                     color: Colors.grey,
-        //                     shape: BoxShape.circle,
-        //                   ),
-        //                   child: IconButton(
-        //                     padding: const EdgeInsets.all(8.0),
-        //                     icon: const Icon(
-        //                       Icons.arrow_back,
-        //                       color: AppColors.black,
-        //                     ),
-        //                     onPressed: () {
-        //                       // Navigator.of(context).pop();
-        //                     },
-        //                   ),
-        //                 ),
-        //               ),
-        //             ),
-
-        //             Positioned(
-        //               bottom: -60, // ajustado para acomodar o tamanho maior
-        //               child: Stack(
-        //                 children: [
-        //                   CircleAvatar(
-        //                     radius: 70, // aumentado o tamanho do círculo
-        //                     backgroundColor: Colors.white,
-        //                     child: CircleAvatar(
-        //                       radius: 66, // aumentado o tamanho da imagem
-        //                       backgroundImage: NetworkImage(profileUrl),
-        //                     ),
-        //                   ),
-        //                   Positioned(
-        //                     right: 0,
-        //                     bottom: 0,
-        //                     child: Container(
-        //                       width: 40,
-        //                       height: 40,
-        //                       decoration: BoxDecoration(
-        //                         color: Colors.white,
-        //                         borderRadius: BorderRadius.circular(50),
-        //                         boxShadow: [
-        //                           BoxShadow(
-        //                             color: Colors.black.withOpacity(0.1),
-        //                             blurRadius: 4,
-        //                             offset: Offset(0, 2),
-        //                           ),
-        //                         ],
-        //                       ),
-        //                       child: Icon(Icons.verified,
-        //                           color: Colors.blue, size: 22),
-        //                     ),
-        //                   )
-        //                 ],
-        //               ),
-        //             ),
-        //           ],
-        //         ),
-        //         SizedBox(height: 70), // ajustado para o novo tamanho do escudo
-        //         // Nome do time + selo de verificação
-        //         Padding(
-        //           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        //           child: Column(
-        //             children: [
-        //               Text(
-        //                 'Fieta Organizador',
-        //                 style: TextStyle(
-        //                   fontSize: 22,
-        //                   fontWeight: FontWeight.bold,
-        //                   color: Colors.black,
-        //                 ),
-        //                 textAlign: TextAlign.center,
-        //                 overflow: TextOverflow.ellipsis,
-        //                 maxLines: 3,
-        //               ),
-        //             ],
-        //           ),
-        //         ),
-        //         SizedBox(height: 4),
-        //         // Informações adicionais
-        //         RichText(
-        //           text: TextSpan(
-        //             style: TextStyle(
-        //               fontFamily: AppStrings.fontFamily,
-        //             ),
-        //             children: [
-        //               TextSpan(
-        //                 text: '3,1 M',
-        //                 style: TextStyle(
-        //                   color: Colors.black,
-        //                   fontWeight: FontWeight.bold,
-        //                 ),
-        //               ),
-        //               TextSpan(
-        //                 text: ' Torneios • ',
-        //                 style: TextStyle(color: Colors.grey[700]),
-        //               ),
-        //               TextSpan(
-        //                 text: '3,5 M',
-        //                 style: TextStyle(
-        //                   color: Colors.black,
-        //                   fontWeight: FontWeight.bold,
-        //                 ),
-        //               ),
-        //               TextSpan(
-        //                 text: ' seguidores',
-        //                 style: TextStyle(color: Colors.grey[700]),
-        //               ),
-        //             ],
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //     const SizedBox(height: 5),
-        //     const Row(
-        //       mainAxisAlignment: MainAxisAlignment.center,
-        //       children: [
-        //         Icon(Icons.location_on, color: Colors.grey),
-        //         SizedBox(width: 5),
-        //         Text("Angola, Luanda, Benfica"),
-        //       ],
-        //     ),
-        //     const SizedBox(height: 10),
-        //     const TabBar(
-        //       labelColor: Color(0xFF04764E),
-        //       unselectedLabelColor: Colors.grey,
-        //       tabs: [
-        //         Tab(text: 'Torneios'),
-        //         Tab(text: 'Table'),
-        //         Tab(text: 'Squad'),
-        //         Tab(text: 'Matches'),
-        //       ],
-        //     ),
-        //     Expanded(
-        //       child: TabBarView(
-        //         children: [
-        //           _buildOverview(team1Logo, team2Logo),
-        //           const Center(child: Text('Table Content')),
-        //           const Center(child: Text('Squad Content')),
-        //           const Center(child: Text('Matches Content')),
-        //         ],
-        //       ),
-        //     )
-        //   ],
-        // ),
       ),
     );
   }
 
   Widget _buildOverview(String team1, String team2) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Next match',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    return ListView.separated(
+      itemCount: 20,
+      shrinkWrap: true,
+      physics: const ClampingScrollPhysics(),
+      itemBuilder: (context, index) {
+        return ListTile(
+          leading: Container(
+            child: CachedNetworkImage(
+              imageUrl: team2Logo,
             ),
-            const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Colors.grey[200],
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildTeamColumn(team1, 'Juventus'),
-                  const Column(
-                    children: [
-                      Text('07:30',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold)),
-                      Text('10 DEC'),
-                      Text('Emirates stadium', style: TextStyle(fontSize: 10)),
-                    ],
-                  ),
-                  _buildTeamColumn(team2, 'PSG'),
-                ],
-              ),
+          ),
+          title: Text(
+            'Campeonado das escolas',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 18,
             ),
-            const SizedBox(height: 20),
-            const Text(
-              'Previous Games',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: const [
-                Text('4:0'),
-                Text('0:5'),
-                Text('5:2'),
-                Text('1:1'),
-                Text('3:1'),
-              ],
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Point Table',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            DataTable(columns: const [
-              DataColumn(label: Text('Pos')),
-              DataColumn(label: Text('EAST')),
-              DataColumn(label: Text('P')),
-              DataColumn(label: Text('Goals')),
-              DataColumn(label: Text('GD')),
-              DataColumn(label: Text('Pts')),
-            ], rows: const [
-              DataRow(cells: [
-                DataCell(Text('1')),
-                DataCell(Text('PSG')),
-                DataCell(Text('4')),
-                DataCell(Text('18:4')),
-                DataCell(Text('14')),
-                DataCell(Text('10')),
-              ])
-            ])
-          ],
-        ),
-      ),
+          ),
+          subtitle: Text('Aqui vai alguma descrição sobre o campeonato'),
+          // trailing: Icon(Icons.arrow_forward),
+          onTap: () {
+            Navigator.pushNamed(context, AppRoutes.competionDetails);
+          },
+        );
+      },
+      separatorBuilder: (context, index) {
+        return Divider(
+          color: Colors.black12,
+        );
+      },
     );
   }
 
