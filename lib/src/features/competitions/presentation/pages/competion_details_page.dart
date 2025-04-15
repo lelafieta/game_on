@@ -130,7 +130,9 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
             isScrollable: true,
             tabAlignment: TabAlignment.center,
             tabs: const [
-              Tab(text: 'Gols'),
+              Tab(
+                text: 'Gols',
+              ),
               Tab(text: 'Assistências'),
               // Tab(text: 'Defesas'),
               Tab(text: 'Cartões'),
@@ -139,10 +141,9 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
           Expanded(
             child: TabBarView(
               children: [
-                Center(child: Text('Gols Content')),
-                Center(child: Text('Assistências Content')),
-                Center(child: Text('Defesas Content')),
-                Center(child: Text('Cartões Content')),
+                _buildGoalsWidget(),
+                _buildAssistsWidget(),
+                _buildCardsWidget(),
               ],
             ),
           ),
@@ -409,6 +410,263 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
               ],
             ),
           ),
+        );
+      },
+    );
+  }
+
+  Widget _buildGoalsWidget() {
+    return ListView.builder(
+      itemCount: matches.length,
+      itemBuilder: (context, index) {
+        final match = matches[index];
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.09),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: ListTile(
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: Image.network(
+                "https://fpfimagehandler.fpf.pt/FPFImageHandler.ashx?type=Person&id=3883014&op=t&w=325&h=378",
+                width: 40,
+                height: 40,
+                fit: BoxFit.cover,
+              ),
+            ),
+            title: Text(
+              'Cristiano Ronaldo',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      child: CachedNetworkImage(imageUrl: match.homeLogo),
+                    ),
+                  ),
+                  Text("Real Madrid"),
+                ],
+              ),
+            ),
+            trailing: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: "20 ",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontFamily: AppStrings.fontFamily),
+                  ),
+                  TextSpan(
+                    text: "Gol.",
+                    style: TextStyle(
+                        color: Colors.grey, fontFamily: AppStrings.fontFamily),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildAssistsWidget() {
+    return ListView.builder(
+      itemCount: matches.length,
+      itemBuilder: (context, index) {
+        final match = matches[index];
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.09),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: ListTile(
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: Image.network(
+                "https://fpfimagehandler.fpf.pt/FPFImageHandler.ashx?type=Person&id=3883014&op=t&w=325&h=378",
+                width: 40,
+                height: 40,
+                fit: BoxFit.cover,
+              ),
+            ),
+            title: Text(
+              'Cristiano Ronaldo',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      child: CachedNetworkImage(imageUrl: match.homeLogo),
+                    ),
+                  ),
+                  Text("Real Madrid"),
+                ],
+              ),
+            ),
+            trailing: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: "20 ",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontFamily: AppStrings.fontFamily),
+                  ),
+                  TextSpan(
+                    text: "Ass.",
+                    style: TextStyle(
+                        color: Colors.grey, fontFamily: AppStrings.fontFamily),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildCardsWidget() {
+    return GridView.builder(
+      padding: const EdgeInsets.all(16),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 15,
+        mainAxisSpacing: 15,
+      ),
+      itemCount: matches.length,
+      itemBuilder: (context, index) {
+        final match = matches[index];
+        return Stack(
+          children: [
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.09),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ClipOval(
+                    child: Image.network(
+                        "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
+                        width: 50,
+                        height: 50),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    "Sergio Ramos",
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 4),
+                  Column(
+                    children: [
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 20,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              color: Colors.yellow,
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "2",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Container(
+                            width: 20,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "2",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Positioned(
+              top: 16,
+              left: 16,
+              child: Container(
+                width: 30,
+                height: 30,
+                child: CachedNetworkImage(
+                  imageUrl: match.homeLogo,
+                ),
+              ),
+            ),
+          ],
         );
       },
     );
