@@ -71,7 +71,7 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 6, vsync: this);
   }
 
   @override
@@ -100,6 +100,7 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
             Tab(icon: Icon(Icons.sports_soccer), text: 'Detalhes'),
             Tab(icon: Icon(Icons.emoji_events), text: 'Jogos'),
             Tab(icon: Icon(Icons.leaderboard), text: 'Classificação'),
+            Tab(icon: Icon(Icons.group), text: 'Equipes'),
             Tab(icon: Icon(Icons.star), text: 'Estatísticas'),
             Tab(icon: Icon(Icons.article), text: 'News'),
           ],
@@ -111,8 +112,9 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
           Expanded(child: _contantGame()),
           Expanded(child: _buildTabContentMatch()),
           Expanded(child: _buildTable()),
+          Expanded(child: _buildTeamsList()),
           Expanded(child: _buildStats()),
-          Center(child: Text('News Content')),
+          _buildTabContentNews()
         ],
       ),
     );
@@ -282,6 +284,123 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
               Text("Angola, Luanda, Benfica"),
             ],
           ),
+          const SizedBox(height: 25),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 8,
+                  offset: Offset(0, 10),
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        Icon(Icons.calendar_today,
+                            color: AppColors.primary, size: 30),
+                        const SizedBox(height: 10),
+                        const Text(
+                          "Data de Início",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        const Text(
+                          "01/01/2023",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // const SizedBox(width: 10),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        Icon(Icons.calendar_month,
+                            color: AppColors.primary, size: 30),
+                        const SizedBox(height: 10),
+                        const Text(
+                          "Data de Fim",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        const Text(
+                          "31/12/2023",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                onPressed: () {},
+                icon: SvgPicture.asset(
+                  AppIcons.facebook,
+                  width: 30,
+                  height: 30,
+                ),
+              ),
+              const SizedBox(width: 10),
+              IconButton(
+                onPressed: () {},
+                icon: SvgPicture.asset(
+                  AppIcons.instagram,
+                  width: 30,
+                  height: 30,
+                ),
+              ),
+              const SizedBox(width: 10),
+              IconButton(
+                onPressed: () {},
+                icon: SvgPicture.asset(
+                  AppIcons.link,
+                  width: 30,
+                  height: 30,
+                ),
+              ),
+              const SizedBox(width: 10),
+              IconButton(
+                onPressed: () {},
+                icon: SvgPicture.asset(
+                  AppIcons.whatsapp,
+                  width: 30,
+                  height: 30,
+                ),
+              ),
+            ],
+          ),
           const SizedBox(height: 10),
           GridView.count(
             crossAxisCount: 2,
@@ -445,6 +564,81 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
             ),
             title: Text(
               'Cristiano Ronaldo',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      child: CachedNetworkImage(imageUrl: match.homeLogo),
+                    ),
+                  ),
+                  Text("Real Madrid"),
+                ],
+              ),
+            ),
+            trailing: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: "20 ",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontFamily: AppStrings.fontFamily),
+                  ),
+                  TextSpan(
+                    text: "Gol.",
+                    style: TextStyle(
+                        color: Colors.grey, fontFamily: AppStrings.fontFamily),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildTeamsList() {
+    return ListView.builder(
+      itemCount: matches.length,
+      itemBuilder: (context, index) {
+        final match = matches[index];
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.09),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: ListTile(
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: Image.network(
+                "https://fpfimagehandler.fpf.pt/FPFImageHandler.ashx?type=Person&id=3883014&op=t&w=325&h=378",
+                width: 40,
+                height: 40,
+                fit: BoxFit.cover,
+              ),
+            ),
+            title: Text(
+              'Bayern Munich',
               style: TextStyle(
                 fontWeight: FontWeight.w600,
               ),
@@ -866,6 +1060,93 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildTabContentNews() {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: ListView.separated(
+        scrollDirection: Axis.vertical,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        physics: ClampingScrollPhysics(),
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          final newss = NewsArticle.fromJson(news[index]);
+          return Container(
+            width: double.infinity,
+            height: 100,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 80,
+                  height: 100,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: CachedNetworkImage(
+                      imageUrl: newss.imageUrl,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        newss.title,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.black,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          SvgPicture.asset(
+                            AppIcons.calendar,
+                            width: 16,
+                            color: AppColors.color,
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          const Text("10/10/2024 10:10"),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          SvgPicture.asset(
+                            AppIcons.siteAlt,
+                            width: 16,
+                            color: AppColors.color,
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Text(newss.sourceStr),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+        separatorBuilder: (context, index) {
+          return const SizedBox(
+            height: 20,
+          );
+        },
+        itemCount: news.length,
+      ),
     );
   }
 
@@ -2112,92 +2393,92 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
 //     );
 //   }
 
-//   Widget _buildTabContentNews(List<int> itemList) {
-//     return Container(
-//       width: double.infinity,
-//       margin: const EdgeInsets.symmetric(vertical: 8),
-//       child: ListView.separated(
-//         scrollDirection: Axis.vertical,
-//         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-//         physics: ClampingScrollPhysics(),
-//         shrinkWrap: true,
-//         itemBuilder: (context, index) {
-//           final newss = NewsArticle.fromJson(news[index]);
-//           return Container(
-//             width: double.infinity,
-//             height: 100,
-//             child: Row(
-//               mainAxisAlignment: MainAxisAlignment.start,
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 Container(
-//                   width: 80,
-//                   height: 100,
-//                   child: ClipRRect(
-//                     borderRadius: BorderRadius.circular(10),
-//                     child: CachedNetworkImage(
-//                       imageUrl: newss.imageUrl,
-//                       fit: BoxFit.cover,
-//                     ),
-//                   ),
-//                 ),
-//                 SizedBox(
-//                   width: 10,
-//                 ),
-//                 Expanded(
-//                   child: Column(
-//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                     children: [
-//                       Text(
-//                         newss.title,
-//                         overflow: TextOverflow.ellipsis,
-//                         maxLines: 3,
-//                         style: TextStyle(
-//                           fontWeight: FontWeight.w600,
-//                           color: AppColors.black,
-//                         ),
-//                       ),
-//                       Row(
-//                         children: [
-//                           SvgPicture.asset(
-//                             AppIcons.calendar,
-//                             width: 16,
-//                             color: AppColors.color,
-//                           ),
-//                           const SizedBox(
-//                             width: 5,
-//                           ),
-//                           const Text("10/10/2024 10:10"),
-//                           const SizedBox(
-//                             width: 10,
-//                           ),
-//                           SvgPicture.asset(
-//                             AppIcons.siteAlt,
-//                             width: 16,
-//                             color: AppColors.color,
-//                           ),
-//                           const SizedBox(
-//                             width: 5,
-//                           ),
-//                           Text(newss.sourceStr),
-//                         ],
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           );
-//         },
-//         separatorBuilder: (context, index) {
-//           return const SizedBox(
-//             height: 20,
-//           );
-//         },
-//         itemCount: news.length,
-//       ),
-//     );
-//   }
+  // Widget _buildTabContentNews(List<int> itemList) {
+  //   return Container(
+  //     width: double.infinity,
+  //     margin: const EdgeInsets.symmetric(vertical: 8),
+  //     child: ListView.separated(
+  //       scrollDirection: Axis.vertical,
+  //       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+  //       physics: ClampingScrollPhysics(),
+  //       shrinkWrap: true,
+  //       itemBuilder: (context, index) {
+  //         final newss = NewsArticle.fromJson(news[index]);
+  //         return Container(
+  //           width: double.infinity,
+  //           height: 100,
+  //           child: Row(
+  //             mainAxisAlignment: MainAxisAlignment.start,
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               Container(
+  //                 width: 80,
+  //                 height: 100,
+  //                 child: ClipRRect(
+  //                   borderRadius: BorderRadius.circular(10),
+  //                   child: CachedNetworkImage(
+  //                     imageUrl: newss.imageUrl,
+  //                     fit: BoxFit.cover,
+  //                   ),
+  //                 ),
+  //               ),
+  //               SizedBox(
+  //                 width: 10,
+  //               ),
+  //               Expanded(
+  //                 child: Column(
+  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                   children: [
+  //                     Text(
+  //                       newss.title,
+  //                       overflow: TextOverflow.ellipsis,
+  //                       maxLines: 3,
+  //                       style: TextStyle(
+  //                         fontWeight: FontWeight.w600,
+  //                         color: AppColors.black,
+  //                       ),
+  //                     ),
+  //                     Row(
+  //                       children: [
+  //                         SvgPicture.asset(
+  //                           AppIcons.calendar,
+  //                           width: 16,
+  //                           color: AppColors.color,
+  //                         ),
+  //                         const SizedBox(
+  //                           width: 5,
+  //                         ),
+  //                         const Text("10/10/2024 10:10"),
+  //                         const SizedBox(
+  //                           width: 10,
+  //                         ),
+  //                         SvgPicture.asset(
+  //                           AppIcons.siteAlt,
+  //                           width: 16,
+  //                           color: AppColors.color,
+  //                         ),
+  //                         const SizedBox(
+  //                           width: 5,
+  //                         ),
+  //                         Text(newss.sourceStr),
+  //                       ],
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         );
+  //       },
+  //       separatorBuilder: (context, index) {
+  //         return const SizedBox(
+  //           height: 20,
+  //         );
+  //       },
+  //       itemCount: news.length,
+  //     ),
+  //   );
+  // }
 
 // Widget _buildTeam(String logoUrl, String name, CrossAxisAlignment align) {
 //   return Column(
