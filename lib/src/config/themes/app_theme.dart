@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:game_on/src/core/strings/app_strings.dart';
 
 import 'app_colors.dart';
@@ -26,10 +28,18 @@ class AppTheme {
           onBackground: AppColors.onBackground,
         ),
         appBarTheme: const AppBarTheme(
-          backgroundColor: AppColors.primary,
+          backgroundColor: AppColors.background,
+          toolbarHeight: 80,
+          scrolledUnderElevation: 5,
+          systemOverlayStyle: SystemUiOverlayStyle(),
+          iconTheme: IconThemeData(
+            color: AppColors.color,
+          ),
           titleTextStyle: TextStyle(
-            color: Colors.white,
             fontFamily: AppStrings.fontFamily,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: AppColors.black,
           ),
         ),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
@@ -39,15 +49,17 @@ class AppTheme {
           backgroundColor: AppColors.primary,
           selectedItemColor: Colors.white,
         ),
-        inputDecorationTheme: const InputDecorationTheme(
-          border: OutlineInputBorder(
+        inputDecorationTheme: InputDecorationTheme(
+          border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(100)),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(100)),
+            borderRadius: const BorderRadius.all(Radius.circular(100)),
+            borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
           ),
-          focusedBorder: OutlineInputBorder(
+          focusedBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(100)),
+            borderSide: BorderSide(color: Colors.grey),
           ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
@@ -57,6 +69,11 @@ class AppTheme {
                 borderRadius: BorderRadius.circular(100),
               ),
             ),
+          ),
+        ),
+        iconButtonTheme: const IconButtonThemeData(
+          style: ButtonStyle(
+            padding: MaterialStatePropertyAll(EdgeInsets.all(10)),
           ),
         ),
         textTheme: const TextTheme(
