@@ -27,4 +27,7 @@ class AppIcons {
   static const String whatsapp = "assets/icons/whatsapp.svg";
   static const String link = "assets/icons/link.svg";
   static const String flagAngola = "assets/icons/flag-for-flag-angola.svg";
+  static const String barsSort = "assets/icons/bars-sort.svg";
+  static const String settings = "assets/icons/settings.svg";
+  static const String convertShapes = "assets/icons/convert-shapes.svg";
 }

@@ -29,7 +29,7 @@ class AppTheme {
         ),
         appBarTheme: const AppBarTheme(
           backgroundColor: AppColors.background,
-          toolbarHeight: 80,
+          toolbarHeight: 50,
           scrolledUnderElevation: 5,
           systemOverlayStyle: SystemUiOverlayStyle(),
           iconTheme: IconThemeData(

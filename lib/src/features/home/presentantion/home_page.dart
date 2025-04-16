@@ -1,18 +1,27 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:game_on/src/core/resources/app_icons.dart';
 
 import '../../../config/themes/app_colors.dart';
 import '../../../core/resources/app_images.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: AppBar(
+      //   title: Text("Torneio Tiktok"),
+      // ),
       appBar: AppBar(
         toolbarHeight: 100,
         backgroundColor: Colors.white,
@@ -21,16 +30,16 @@ class HomePage extends StatelessWidget {
           title: Row(
             children: [
               const Text(
-                'Olá! Bem-vindo',
+                'Campeonato',
                 style: TextStyle(fontSize: 12),
               ),
-              const SizedBox(
-                width: 5,
-              ),
-              Image.asset(
-                AppImages.wave,
-                width: 16,
-              ),
+              // const SizedBox(
+              //   width: 5,
+              // ),
+              // Image.asset(
+              //   AppImages.wave,
+              //   width: 16,
+              // ),
             ],
           ),
           subtitle: const Text(
@@ -46,28 +55,171 @@ class HomePage extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {},
+                  icon: SvgPicture.asset(AppIcons.search,
+                      width: 24, color: AppColors.color),
+                ),
+                IconButton(
+                  onPressed: () {},
                   icon: SvgPicture.asset(
                     AppIcons.bellNotificationSocialMedia,
                     color: AppColors.color,
                     width: 24,
                   ),
                 ),
-                IconButton(
-                  onPressed: () {},
-                  icon: SvgPicture.asset(AppIcons.barsStaggered,
-                      width: 24, color: AppColors.color),
-                )
               ],
             ),
           ),
         ),
       ),
+
+      // drawer: Drawer(
+      //   child: ListView(
+      //     padding: EdgeInsets.zero,
+      //     children: [
+      //       DrawerHeader(
+      //         decoration: BoxDecoration(
+      //           color: AppColors.primary,
+      //         ),
+      //         child: Column(
+      //           crossAxisAlignment: CrossAxisAlignment.start,
+      //           children: [
+      //             const CircleAvatar(
+      //               backgroundImage: AssetImage(AppImages.avatar),
+      //               radius: 30,
+      //             ),
+      //             const SizedBox(height: 10),
+      //             const Text(
+      //               'Jesse Lingard',
+      //               style: TextStyle(
+      //                 color: Colors.white,
+      //                 fontSize: 18,
+      //                 fontWeight: FontWeight.bold,
+      //               ),
+      //             ),
+      //             const Text(
+      //               'jesse.lingard@example.com',
+      //               style: TextStyle(
+      //                 color: Colors.white70,
+      //                 fontSize: 14,
+      //               ),
+      //             ),
+      //           ],
+      //         ),
+      //       ),
+      //       ListTile(
+      //         leading: Icon(Icons.home, color: AppColors.color),
+      //         title: const Text('Home'),
+      //         onTap: () {
+      //           Navigator.pop(context);
+      //         },
+      //       ),
+      //       ListTile(
+      //         leading: Icon(Icons.settings, color: AppColors.color),
+      //         title: const Text('Settings'),
+      //         onTap: () {
+      //           Navigator.pop(context);
+      //         },
+      //       ),
+      //       ListTile(
+      //         leading: Icon(Icons.logout, color: AppColors.color),
+      //         title: const Text('Logout'),
+      //         onTap: () {
+      //           Navigator.pop(context);
+      //         },
+      //       ),
+      //     ],
+      //   ),
+      // ),
+
       body: Column(
         children: [
-          Container(
-            child: EasyDateTimeLine(
-              initialDate: DateTime.now(),
-              locale: "pt_BR",
+          // Image.asset(
+          //   AppImages.freepik,
+          //   color: Colors.red,
+          // ),
+          // Stack(
+          //   alignment: Alignment.center,
+          //   children: [
+          //     // Camisa vermelha
+          //     Image.asset(
+          //       AppImages.freepik,
+          //       color: Colors.red,
+          //       colorBlendMode: BlendMode.srcIn,
+          //     ),
+
+          //     // Barra no peito
+          //     Positioned(
+          //       top: 100,
+          //       child: Container(
+          //         width: 120,
+          //         height: 20,
+          //         color: Colors.white, // cor da barra
+          //       ),
+          //     ),
+
+          //     // Outra barra (por exemplo)
+          //     Positioned(
+          //       top: 130,
+          //       child: Container(
+          //         width: 120,
+          //         height: 20,
+          //         color: Colors.black, // outra barra
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // Stack(
+          //   alignment: Alignment.center,
+          //   children: [
+          //     // Camisa vermelha
+          //     Image.asset(
+          //       AppImages.freepik,
+          //       color: Colors.red,
+          //       colorBlendMode: BlendMode.srcIn,
+          //     ),
+
+          //     // Barra vertical 1
+          //     Positioned(
+          //       top: 60,
+          //       child: Row(
+          //         children: [
+          //           Container(
+          //             width: 10,
+          //             height: 100,
+          //             color: Colors.white,
+          //           ),
+          //           SizedBox(width: 10),
+          //           Container(
+          //             width: 10,
+          //             height: 100,
+          //             color: Colors.white,
+          //           ),
+          //           SizedBox(width: 10),
+          //           Container(
+          //             width: 10,
+          //             height: 100,
+          //             color: Colors.white,
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //   ],
+          // ),
+
+          // CustomPaint(
+          //   size: Size(100, 150),
+          //   painter: JerseyPainter(
+          //     shirtColor: Colors.red,
+          //     stripeColor: Colors.white,
+          //     number: 10,
+          //   ),
+          // ),
+          SafeArea(
+            child: Container(
+              child: EasyDateTimeLine(
+                initialDate: DateTime.now(),
+                locale: "pt_BR",
+              ),
             ),
           ),
           const SizedBox(
@@ -226,6 +378,62 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+class JerseyPainter extends CustomPainter {
+  final Color shirtColor;
+  final Color stripeColor;
+  final int number;
+
+  JerseyPainter(
+      {required this.shirtColor,
+      required this.stripeColor,
+      required this.number});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint();
+
+    // Camisa
+    paint.color = shirtColor;
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height * 0.6), paint);
+
+    // Barra/listra
+    paint.color = stripeColor;
+    canvas.drawRect(Rect.fromLTWH(0, size.height * 0.2, size.width, 10), paint);
+
+    // Número (como texto)
+    final textPainter = TextPainter(
+      text: TextSpan(
+        text: number.toString(),
+        style: TextStyle(color: Colors.white, fontSize: 20),
+      ),
+      textDirection: TextDirection.ltr,
+    );
+    textPainter.layout();
+    textPainter.paint(canvas, Offset(size.width / 2 - 10, size.height * 0.25));
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+}
+
+class UniformModel {
+  final Color shirtColor;
+  final Color shortsColor;
+  final Color stripeColor;
+  final int number;
+  final StripeStyle stripeStyle;
+
+  UniformModel({
+    required this.shirtColor,
+    required this.shortsColor,
+    required this.stripeColor,
+    required this.number,
+    required this.stripeStyle,
+  });
+}
+
+enum StripeStyle { horizontal, vertical, diagonal }
 
 class TitleWidget extends StatelessWidget {
   final String title;
