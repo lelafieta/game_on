@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:game_on/src/features/competitions/presentation/pages/competion_details_page.dart';
+import 'package:game_on/src/features/competitions/presentation/pages/my_competition_details_page.dart';
 import 'package:game_on/src/features/competitions/presentation/pages/my_competitions_list_page.dart';
 import 'package:game_on/src/features/game_on/presentation/game_on_page.dart';
 import 'package:game_on/src/features/live_games/presentation/pages/live_game_page.dart';
@@ -73,6 +74,20 @@ class AppPages {
         return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) {
             return const MyCompetitionsListPage();
+          },
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return SharedAxisTransition(
+              animation: animation,
+              secondaryAnimation: secondaryAnimation,
+              transitionType: SharedAxisTransitionType.vertical,
+              child: child,
+            );
+          },
+        );
+      case AppRoutes.myCompetitionsDetails:
+        return PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) {
+            return const MyCompetitionsDetailsPage();
           },
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SharedAxisTransition(
