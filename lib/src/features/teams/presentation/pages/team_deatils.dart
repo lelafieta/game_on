@@ -109,7 +109,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
             Tab(icon: Icon(Icons.emoji_events), text: 'Jogos'),
             Tab(icon: Icon(Icons.leaderboard), text: 'Histórico de partidas'),
             Tab(icon: Icon(Icons.group), text: 'Configuração'),
-            Tab(icon: Icon(Icons.star), text: 'Estatísticas'),
+            Tab(icon: Icon(Icons.star), text: 'Jogadores'),
             Tab(icon: Icon(Icons.article), text: 'News'),
           ],
         ),
@@ -122,43 +122,127 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
           _buildTable(),
           _buildSettings(),
           // _buildTeamsList(),
-          _buildStats(),
+          // _buildStats(),
+          _buildPlyer(),
           _buildTabContentNews()
         ],
       ),
     );
   }
 
-  Widget _buildStats() {
-    return DefaultTabController(
-      length: 3,
-      child: Column(
-        children: [
-          const TabBar(
-            indicatorColor: AppColors.primary,
-            labelColor: AppColors.primary,
-            unselectedLabelColor: Colors.grey,
-            isScrollable: true,
-            tabAlignment: TabAlignment.center,
-            tabs: [
-              Tab(
-                text: 'Gols',
+  Widget _buildPlyer() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: DefaultTabController(
+        length: 3,
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.yellow.shade50,
               ),
-              Tab(text: 'Assistências'),
-              // Tab(text: 'Defesas'),
-              Tab(text: 'Cartões'),
-            ],
-          ),
-          Expanded(
-            child: TabBarView(
-              children: [
-                _buildGoalsWidget(),
-                _buildAssistsWidget(),
-                _buildCardsWidget(),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          initialValue: "as9931GK2",
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 50),
+                            prefixIcon: IconButton(
+                              style: const ButtonStyle(
+                                backgroundColor: MaterialStatePropertyAll(
+                                  AppColors.primary,
+                                ),
+                              ),
+                              onPressed: () {},
+                              icon: const Icon(
+                                Icons.refresh,
+                                color: Colors.white,
+                              ),
+                            ),
+                            suffixIcon: IconButton(
+                              style: const ButtonStyle(
+                                backgroundColor: MaterialStatePropertyAll(
+                                  AppColors.primary,
+                                ),
+                              ),
+                              onPressed: () {},
+                              icon: const Icon(
+                                Icons.copy,
+                                color: Colors.white,
+                              ),
+                            ),
+                            label: Text("Código para confidar jogadores"),
+                          ),
+                        ),
+                      ),
+                      // OutlinedButton(
+                      //   onPressed: () {},
+                      //   child: const Row(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     children: [
+                      //       Icon(Icons.link),
+                      //       SizedBox(
+                      //         width: 10,
+                      //       ),
+                      //       Text("Partilhar link"),
+                      //     ],
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            ElevatedButton(
+              onPressed: () {},
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.link),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text("Partilhar link"),
+                ],
+              ),
+            ),
+            const TabBar(
+              indicatorColor: AppColors.primary,
+              labelColor: AppColors.primary,
+              unselectedLabelColor: Colors.grey,
+              isScrollable: true,
+              tabAlignment: TabAlignment.center,
+              tabs: [
+                Tab(
+                  text: 'Jogadores Fictícios',
+                ),
+                Tab(text: 'Jogadores Reais'),
+                // Tab(text: 'Defesas'),
+                Tab(text: 'Cartões'),
               ],
             ),
-          ),
-        ],
+            Expanded(
+              child: TabBarView(
+                children: [
+                  _buildGoalsWidget(),
+                  _buildAssistsWidget(),
+                  _buildCardsWidget(),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
