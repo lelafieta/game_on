@@ -30,4 +30,27 @@ class AppIcons {
   static const String barsSort = "assets/icons/bars-sort.svg";
   static const String settings = "assets/icons/settings.svg";
   static const String convertShapes = "assets/icons/convert-shapes.svg";
+
+  static const String medalChampionAward1 =
+      "assets/icons/medal-champion-award-1.svg";
+  static const String medalChampionAward2 =
+      "assets/icons/medal-champion-award-2.svg";
+  static const String medalChampionAward3 =
+      "assets/icons/medal-champion-award-3.svg";
+
+  static const String footballJersey =
+      "assets/icons/football-jersey-svgrepo-com.svg";
+
+  static const String gendersGender =
+      "assets/icons/genders-gender-svgrepo-com.svg";
+  static const String calendarColor = "assets/icons/calendar-svgrepo-com.svg";
+  static const String category2 = "assets/icons/category-2-svgrepo-com.svg";
+
+  static const String userColor = "assets/icons/user-svgrepo-com.svg";
+  static const String money = "assets/icons/money-svgrepo-com.svg";
+
+  static const String locationIndicatorRed =
+      "assets/icons/location-indicator-red-svgrepo-com.svg";
+  static const String ballOfWoolSewing =
+      "assets/icons/ball-of-wool-sewing-svgrepo-com.svg";
 }

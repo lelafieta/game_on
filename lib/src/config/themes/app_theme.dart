@@ -98,8 +98,16 @@ class AppTheme {
             fontFamily: AppStrings.fontFamily,
           ),
           titleMedium: TextStyle(
-            color: Color(0xFF777777),
+            color: Colors.black,
             fontFamily: AppStrings.fontFamily,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+          titleLarge: TextStyle(
+            color: AppColors.primary,
+            fontFamily: AppStrings.fontFamily,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
         ),
       );

@@ -241,7 +241,7 @@ class _GameOnPageState extends State<GameOnPage> {
 
     return Scaffold(
       body: widgets[_currentIndex],
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: AnimatedBottomNavigationBar.builder(
         backgroundColor: Colors.white,
         itemCount: 5,
@@ -274,9 +274,7 @@ class _GameOnPageState extends State<GameOnPage> {
         openForegroundColor: Colors.white,
         closedBackgroundColor: Colors.white,
         openBackgroundColor: Colors.black,
-        // labelsStyle: ,
         labelsBackgroundColor: Colors.white,
-        // controller: ,
         speedDialChildren: <SpeedDialChild>[
           SpeedDialChild(
             child: Icon(Icons.directions_run),
@@ -301,7 +299,6 @@ class _GameOnPageState extends State<GameOnPage> {
               });
             },
           ),
-          //  Your other SpeedDialChildren go here.
         ],
       ),
     );

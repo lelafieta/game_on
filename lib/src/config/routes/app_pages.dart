@@ -43,7 +43,7 @@ class AppPages {
       case AppRoutes.competionDetails:
         return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) {
-            return const CompetitionDetailsPage();
+            return CompetitionDetailsPage();
           },
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SharedAxisTransition(
