@@ -961,7 +961,7 @@ class _OrganizerDetailsPageState extends State<OrganizerDetailsPage> {
 
   Widget _buildOverview(String team1, String team2) {
     return ListView.separated(
-      itemCount: 20,
+      itemCount: 10,
       shrinkWrap: true,
       physics: const ClampingScrollPhysics(),
       itemBuilder: (context, index) {
