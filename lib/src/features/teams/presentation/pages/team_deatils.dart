@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:game_on/src/core/resources/app_images.dart';
 import 'package:game_on/src/core/strings/app_strings.dart';
 
 import '../../../../config/themes/app_colors.dart';
@@ -19,6 +21,34 @@ class TeamDetailsPage extends StatefulWidget {
 
 class _TeamDetailsPageState extends State<TeamDetailsPage>
     with SingleTickerProviderStateMixin {
+  final ValueNotifier<String?> selectedType =
+      ValueNotifier<String?>("treeBarras");
+  final ValueNotifier<Color> selectedMainShirtColor =
+      ValueNotifier<Color>(Colors.red);
+  final ValueNotifier<Color> selectedStyleShirtColor =
+      ValueNotifier<Color>(Colors.blue);
+
+  final Map<String, String> typeToImage = {
+    'treeBarras': AppImages.treeBarras,
+    'leftOneLongVerticalBar': AppImages.leftOneLongVerticalBar,
+  };
+
+  final List<Color> colors = [
+    Colors.red,
+    Colors.blue,
+    Colors.green,
+    Colors.orange,
+    Colors.purple,
+  ];
+
+  final List<Color> colorStyleShirtOptions = [
+    Colors.red,
+    Colors.blue,
+    Colors.green,
+    Colors.orange,
+    Colors.purple,
+  ];
+
   late TabController _tabController;
   final int totalPartidas = 6;
   final ValueNotifier<int> partidaAtual = ValueNotifier<int>(3);
@@ -75,6 +105,9 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
   @override
   void dispose() {
     _tabController.dispose();
+    selectedType.dispose();
+    selectedMainShirtColor.dispose();
+    selectedStyleShirtColor.dispose();
     super.dispose();
   }
 
@@ -124,13 +157,13 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
       length: 3,
       child: Column(
         children: [
-          TabBar(
+          const TabBar(
             indicatorColor: AppColors.primary,
             labelColor: AppColors.primary,
             unselectedLabelColor: Colors.grey,
             isScrollable: true,
             tabAlignment: TabAlignment.center,
-            tabs: const [
+            tabs: [
               Tab(
                 text: 'Gols',
               ),
@@ -647,78 +680,271 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
   }
 
   Widget _buildPlantel() {
-    return ListView.builder(
-      itemCount: matches.length,
-      itemBuilder: (context, index) {
-        final match = matches[index];
-        return Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.09),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: ListTile(
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(50),
-              child: Image.network(
-                "https://fpfimagehandler.fpf.pt/FPFImageHandler.ashx?type=Person&id=3883014&op=t&w=325&h=378",
-                width: 40,
-                height: 40,
-                fit: BoxFit.cover,
-              ),
-            ),
-            title: Text(
-              'Bayern Munich',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(top: 5),
-              child: Row(
+    return Column(
+      children: [
+        Expanded(
+          child: Center(
+            child: Container(
+              width: 250,
+              height: 300,
+              child: Stack(
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: Container(
-                      width: 20,
-                      height: 20,
-                      child: CachedNetworkImage(imageUrl: match.homeLogo),
-                    ),
+                  ValueListenableBuilder<Color>(
+                    valueListenable: selectedMainShirtColor,
+                    builder: (_, color, __) {
+                      return Image.asset(
+                        AppImages.freeTShirt,
+                        color: color,
+                      );
+                    },
                   ),
-                  Text("Real Madrid"),
+                  ValueListenableBuilder(
+                      valueListenable: selectedStyleShirtColor,
+                      builder: (___, color, ____) {
+                        return ValueListenableBuilder<String?>(
+                          valueListenable: selectedType,
+                          builder: (_, type, __) {
+                            if (type == null) return SizedBox.shrink();
+                            return Positioned(
+                              left: 0,
+                              right: 0,
+                              top: 0,
+                              child: Image.asset(
+                                typeToImage[type]!,
+                                color: color,
+                              ),
+                            );
+                          },
+                        );
+                      }),
                 ],
               ),
             ),
-            trailing: RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: "20 ",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
+          ),
+        ),
+
+        // Selector dos tipos
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Wrap(
+            spacing: 8,
+            children: typeToImage.entries.map((entry) {
+              final imagePath = entry.value;
+              return InkWell(
+                onTap: () {
+                  selectedType.value = entry.key;
+                },
+                child: Stack(
+                  children: [
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      top: 0,
+                      child: Image.asset(
+                        AppImages.freeTShirt,
                         color: Colors.black,
-                        fontSize: 18,
-                        fontFamily: AppStrings.fontFamily),
-                  ),
-                  TextSpan(
-                    text: "Gol.",
-                    style: TextStyle(
-                        color: Colors.grey, fontFamily: AppStrings.fontFamily),
-                  ),
-                ],
-              ),
-            ),
+                      ),
+                    ),
+                    ValueListenableBuilder(
+                        valueListenable: selectedType,
+                        builder: (_, selected, __) {
+                          return (selected == entry.key)
+                              ? Positioned(
+                                  right: 0,
+                                  bottom: 0,
+                                  child: Container(
+                                    child: Icon(
+                                      Icons.check_circle,
+                                      color: Colors.blue.shade900,
+                                      size: 15,
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox.shrink();
+                        }),
+                    Image.asset(
+                      imagePath,
+                      width: 50,
+                      height: 50,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
           ),
-        );
-      },
+        ),
+
+        // Selector de cores
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: ValueListenableBuilder(
+              valueListenable: selectedMainShirtColor,
+              builder: (_, theColor, __) {
+                return Wrap(
+                  spacing: 8,
+                  children: colors.map((color) {
+                    return GestureDetector(
+                      onTap: () {
+                        selectedMainShirtColor.value = color;
+                      },
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: 30,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              color: color,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: theColor == color
+                                    ? Colors.black
+                                    : Colors.transparent,
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                          (theColor == color)
+                              ? const Positioned(
+                                  left: 0,
+                                  right: 0,
+                                  top: 0,
+                                  bottom: 0,
+                                  child: Icon(
+                                    Icons.check_circle,
+                                    color: Colors.black,
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                );
+              }),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: ValueListenableBuilder(
+              valueListenable: selectedStyleShirtColor,
+              builder: (_, theColor, __) {
+                return Wrap(
+                  spacing: 8,
+                  children: colors.map((color) {
+                    return GestureDetector(
+                      onTap: () {
+                        selectedStyleShirtColor.value = color;
+                      },
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: 30,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              color: color,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: theColor == color
+                                    ? Colors.black
+                                    : Colors.transparent,
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                          (theColor == color)
+                              ? const Positioned(
+                                  left: 0,
+                                  right: 0,
+                                  top: 0,
+                                  bottom: 0,
+                                  child: Icon(
+                                    Icons.check_circle,
+                                    color: Colors.black,
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                );
+              }),
+        ),
+      ],
     );
+    // return ListView.builder(
+    //   itemCount: matches.length,
+    //   itemBuilder: (context, index) {
+    //     final match = matches[index];
+    //     return Container(
+    //       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    //       decoration: BoxDecoration(
+    //         color: Colors.white,
+    //         borderRadius: BorderRadius.circular(10),
+    //         boxShadow: [
+    //           BoxShadow(
+    //             color: Colors.black.withOpacity(0.09),
+    //             blurRadius: 12,
+    //             offset: const Offset(0, 4),
+    //           ),
+    //         ],
+    //       ),
+    //       child: ListTile(
+    //         leading: ClipRRect(
+    //           borderRadius: BorderRadius.circular(50),
+    //           child: Image.network(
+    //             "https://fpfimagehandler.fpf.pt/FPFImageHandler.ashx?type=Person&id=3883014&op=t&w=325&h=378",
+    //             width: 40,
+    //             height: 40,
+    //             fit: BoxFit.cover,
+    //           ),
+    //         ),
+    //         title: Text(
+    //           'Bayern Munich',
+    //           style: TextStyle(
+    //             fontWeight: FontWeight.w600,
+    //           ),
+    //         ),
+    //         subtitle: Padding(
+    //           padding: const EdgeInsets.only(top: 5),
+    //           child: Row(
+    //             children: [
+    //               ClipRRect(
+    //                 borderRadius: BorderRadius.circular(50),
+    //                 child: Container(
+    //                   width: 20,
+    //                   height: 20,
+    //                   child: CachedNetworkImage(imageUrl: match.homeLogo),
+    //                 ),
+    //               ),
+    //               Text("Real Madrid"),
+    //             ],
+    //           ),
+    //         ),
+    //         trailing: RichText(
+    //           text: TextSpan(
+    //             children: [
+    //               TextSpan(
+    //                 text: "20 ",
+    //                 style: TextStyle(
+    //                     fontWeight: FontWeight.bold,
+    //                     color: Colors.black,
+    //                     fontSize: 18,
+    //                     fontFamily: AppStrings.fontFamily),
+    //               ),
+    //               TextSpan(
+    //                 text: "Gol.",
+    //                 style: TextStyle(
+    //                     color: Colors.grey, fontFamily: AppStrings.fontFamily),
+    //               ),
+    //             ],
+    //           ),
+    //         ),
+    //       ),
+    //     );
+    //   },
+    // );
   }
 
   Widget _buildTeamsList() {
