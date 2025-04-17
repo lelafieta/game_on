@@ -97,8 +97,8 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
           tabs: const [
             Tab(icon: Icon(Icons.sports_soccer), text: 'Detalhes'),
             Tab(icon: Icon(Icons.emoji_events), text: 'Jogos'),
-            Tab(icon: Icon(Icons.leaderboard), text: 'Classificação'),
-            Tab(icon: Icon(Icons.group), text: 'Equipes'),
+            Tab(icon: Icon(Icons.leaderboard), text: 'Histórico de partidas'),
+            Tab(icon: Icon(Icons.group), text: 'Plantel'),
             Tab(icon: Icon(Icons.star), text: 'Estatísticas'),
             Tab(icon: Icon(Icons.article), text: 'News'),
           ],
@@ -110,7 +110,8 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
           _contantTeam(),
           _buildTabContentMatch(),
           _buildTable(),
-          _buildTeamsList(),
+          _buildPlantel(),
+          // _buildTeamsList(),
           _buildStats(),
           _buildTabContentNews()
         ],
@@ -300,71 +301,15 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
               ),
               ListTile(
                 leading: SvgPicture.asset(
-                  AppIcons.calendarColor,
+                  AppIcons.flag2,
                   width: 26,
                 ),
                 title: Text(
-                  'Fundado',
+                  'Fondado aos',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 subtitle: Text(
-                  '17 abr 2025 - 17 abr 2025',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-              ),
-              ListTile(
-                leading: SvgPicture.asset(
-                  AppIcons.category2,
-                  width: 26,
-                ),
-                title: Text(
-                  'Categoria',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                subtitle: Text(
-                  'Torneio local',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-              ),
-              ListTile(
-                leading: SvgPicture.asset(
-                  AppIcons.locationIndicatorRed,
-                  width: 26,
-                ),
-                title: Text(
-                  'Pitch localização',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                subtitle: Text(
-                  'CXCXCXCXCX CXC',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-              ),
-              ListTile(
-                leading: SvgPicture.asset(
-                  AppIcons.ballOfWoolSewing,
-                  width: 26,
-                ),
-                title: Text(
-                  'Tipo de competição',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                subtitle: Text(
-                  'Liga',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-              ),
-              ListTile(
-                leading: SvgPicture.asset(
-                  AppIcons.gendersGender,
-                  width: 26,
-                ),
-                title: Text(
-                  'Tipo de jogadores',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                subtitle: Text(
-                  'Homens',
+                  '10 abr 2023',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
@@ -374,11 +319,11 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                   width: 26,
                 ),
                 title: Text(
-                  'Tipo de jogo',
+                  'QTD. Jogadores',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 subtitle: Text(
-                  '7x7',
+                  '10',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
@@ -413,7 +358,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                             ),
                             const SizedBox(height: 5),
                             Text(
-                              "200mi",
+                              "10",
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ],
@@ -431,7 +376,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                             ),
                             const SizedBox(height: 5),
                             Text(
-                              "1M",
+                              "1",
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ],
@@ -449,7 +394,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                             ),
                             const SizedBox(height: 5),
                             Text(
-                              "600mi",
+                              "2",
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ],
@@ -472,12 +417,6 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                 title: const Text('Taxa de registro'),
                 subtitle: const Text('10 \$'),
               ),
-              const Divider(height: 32),
-              Text(
-                'Informações',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 8),
             ],
           ),
         ],
@@ -662,6 +601,81 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
             ),
             title: Text(
               'Cristiano Ronaldo',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      child: CachedNetworkImage(imageUrl: match.homeLogo),
+                    ),
+                  ),
+                  Text("Real Madrid"),
+                ],
+              ),
+            ),
+            trailing: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: "20 ",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontFamily: AppStrings.fontFamily),
+                  ),
+                  TextSpan(
+                    text: "Gol.",
+                    style: TextStyle(
+                        color: Colors.grey, fontFamily: AppStrings.fontFamily),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildPlantel() {
+    return ListView.builder(
+      itemCount: matches.length,
+      itemBuilder: (context, index) {
+        final match = matches[index];
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.09),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: ListTile(
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: Image.network(
+                "https://fpfimagehandler.fpf.pt/FPFImageHandler.ashx?type=Person&id=3883014&op=t&w=325&h=378",
+                width: 40,
+                height: 40,
+                fit: BoxFit.cover,
+              ),
+            ),
+            title: Text(
+              'Bayern Munich',
               style: TextStyle(
                 fontWeight: FontWeight.w600,
               ),
