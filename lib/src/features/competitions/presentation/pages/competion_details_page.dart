@@ -20,6 +20,8 @@ class CompetitionDetailsPage extends StatefulWidget {
 class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  final int totalPartidas = 6;
+  final ValueNotifier<int> partidaAtual = ValueNotifier<int>(3);
 
   final String backgroundUrl =
       'https://scontent.flad5-1.fna.fbcdn.net/v/t39.30808-6/481972096_1207928134015658_4427683262273356979_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=zV_8X74IuyoQ7kNvwFNQ4ob&_nc_oc=AdkuSLXzaRPCkaG4Rk49w94sTBmd8Fhxnz2QazxYg2iIpuENHNFuCjDX0VJn-DIsKu_tpPTIOY-QLCN9VE_o77Vv&_nc_zt=23&_nc_ht=scontent.flad5-1.fna&_nc_gid=6g5SEc_mHR1ryf38jcOikw&oh=00_AfHwiN08xuDHuwgUxbjxBUvvfo7y6kwFlL6d0wj-XXV6kA&oe=68047308';
@@ -105,11 +107,11 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
       body: TabBarView(
         controller: _tabController,
         children: [
-          Expanded(child: _contantGame()),
-          Expanded(child: _buildTabContentMatch()),
-          Expanded(child: _buildTable()),
-          Expanded(child: _buildTeamsList()),
-          Expanded(child: _buildStats()),
+          _contantGame(),
+          _buildTabContentMatch(),
+          _buildTable(),
+          _buildTeamsList(),
+          _buildStats(),
           _buildTabContentNews()
         ],
       ),
@@ -659,95 +661,207 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
   Widget _buildTabContentMatch() {
     return Column(
       children: [
-        SafeArea(
-          child: Container(
-            child: EasyDateTimeLine(
-              initialDate: DateTime.now(),
-              locale: "pt_BR",
-            ),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.09),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
-        ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: matches.length,
-            itemBuilder: (context, index) {
-              final match = matches[index];
-              return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.09),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
+          child: ValueListenableBuilder<int>(
+            valueListenable: partidaAtual,
+            builder: (context, value, _) {
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Botão esquerda
+                  Expanded(
+                    child: IconButton(
+                      icon: const Icon(Icons.chevron_left),
+                      onPressed: value > 1 ? () => partidaAtual.value-- : null,
                     ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: AppColors.primary.withOpacity(.1),
-                        ),
-                        child: Center(
-                          child: Text("Primeira Jornada"),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: _buildTeam(
-                              match.homeLogo,
-                              match.homeTeam,
-                              CrossAxisAlignment.start,
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              children: [
-                                Text(
-                                  '${match.homeScore} - ${match.awayScore}',
-                                  style: const TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                Text(
-                                  "${match.minute}'",
-                                  style: const TextStyle(
-                                      fontSize: 16, color: Colors.grey),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: _buildTeam(
-                              match.awayLogo,
-                              match.awayTeam,
-                              CrossAxisAlignment.end,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                    ],
                   ),
-                ),
+
+                  // Dropdown com estilo
+                  Center(
+                    child: ValueListenableBuilder<int>(
+                      valueListenable: partidaAtual,
+                      builder: (context, value, _) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade300),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(12),
+                            onTap: () => _showPartidasBottomSheet(context),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 25, vertical: 16),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text('Partida $value / $totalPartidas'),
+                                  const SizedBox(width: 8),
+                                  const Icon(Icons.arrow_drop_down),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  // Botão direita
+                  Expanded(
+                    child: IconButton(
+                      icon: const Icon(Icons.chevron_right),
+                      onPressed: value < totalPartidas
+                          ? () => partidaAtual.value++
+                          : null,
+                    ),
+                  ),
+                ],
               );
             },
           ),
         ),
+        Expanded(
+          // child: ListView.builder(
+          //   itemCount: matches.length,
+          //   itemBuilder: (context, index) {
+          //     final match = matches[index];
+          //     return Container(
+          //       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          //       decoration: BoxDecoration(
+          //         color: Colors.white,
+          //         borderRadius: BorderRadius.circular(10),
+          //         boxShadow: [
+          //           BoxShadow(
+          //             color: Colors.black.withOpacity(0.09),
+          //             blurRadius: 12,
+          //             offset: const Offset(0, 4),
+          //           ),
+          //         ],
+          //       ),
+          //       child: Padding(
+          //         padding: const EdgeInsets.all(16),
+          //         child: Column(
+          //           crossAxisAlignment: CrossAxisAlignment.start,
+          //           children: [
+          //             Container(
+          //               padding:
+          //                   EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          //               decoration: BoxDecoration(
+          //                 borderRadius: BorderRadius.circular(50),
+          //                 color: AppColors.primary.withOpacity(.1),
+          //               ),
+          //               child: Center(
+          //                 child: Text("Primeira Jornada"),
+          //               ),
+          //             ),
+          //             const SizedBox(height: 8),
+          //             Row(
+          //               children: [
+          //                 Expanded(
+          //                   child: _buildTeam(
+          //                     match.homeLogo,
+          //                     match.homeTeam,
+          //                     CrossAxisAlignment.start,
+          //                   ),
+          //                 ),
+          //                 Expanded(
+          //                   child: Column(
+          //                     children: [
+          //                       Text(
+          //                         '${match.homeScore} - ${match.awayScore}',
+          //                         style: const TextStyle(
+          //                           fontSize: 24,
+          //                           fontWeight: FontWeight.bold,
+          //                           color: Colors.black,
+          //                         ),
+          //                       ),
+          //                       Text(
+          //                         "${match.minute}'",
+          //                         style: const TextStyle(
+          //                             fontSize: 16, color: Colors.grey),
+          //                       ),
+          //                     ],
+          //                   ),
+          //                 ),
+          //                 Expanded(
+          //                   child: _buildTeam(
+          //                     match.awayLogo,
+          //                     match.awayTeam,
+          //                     CrossAxisAlignment.end,
+          //                   ),
+          //                 ),
+          //               ],
+          //             ),
+          //             const SizedBox(height: 12),
+          //           ],
+          //         ),
+          //       ),
+          //     );
+          //   },
+          // ),
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              const PlayerHighlightCard(),
+              const SizedBox(height: 16),
+              const Text(
+                "Sem Data Ainda",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 12),
+              MatchGroupCard(
+                team1: "Equipe 2",
+                team2: "Equipe 3",
+                group: "GRUPO A",
+              ),
+              MatchGroupCard(
+                team1: "Equipe 2",
+                team2: "Equipe 3",
+                group: "GRUPO A",
+              ),
+            ],
+          ),
+        ),
       ],
+    );
+  }
+
+  void _showPartidasBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return ListView.builder(
+          shrinkWrap: true,
+          itemCount: totalPartidas,
+          itemBuilder: (context, index) {
+            int num = index + 1;
+            return ListTile(
+              title: Text('Partida $num / $totalPartidas'),
+              onTap: () {
+                partidaAtual.value = num;
+                Navigator.pop(
+                    context); // Fecha o bottom sheet depois de selecionar
+              },
+            );
+          },
+        );
+      },
     );
   }
 
@@ -1364,6 +1478,172 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
         },
         itemCount: news.length,
       ),
+    );
+  }
+}
+
+class PlayerHighlightCard extends StatelessWidget {
+  const PlayerHighlightCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          height: 150,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            image: const DecorationImage(
+              image: CachedNetworkImageProvider(
+                  scale: 2.5,
+                  // 'https://lh3.googleusercontent.com/gps-cs-s/AB5caB_xM6ql3O50gDkC8Xzk-VYnE0gDSk5WJKT0n7k_eHjSWh6Bp-u8vsFjjly3bupWhkl5BvJ8xIgpc4WVeNU-KZovlL1YhHIbnYxGS2zKElZLvUa6wG-uKoOwdX_CV0sltZ2yvd3z=s1360-w1360-h1020',
+                  'https://lh3.googleusercontent.com/gps-cs-s/AB5caB8inwH_KFKJm-45QElqe4RYAnwkGyWXDnPucd-VR3Y4b1rMeOpALAn3gtOjFdI-gYmdSwM1NIU2YdgQ7CI5yBvLfnDOoCVnzpxEK3WUeiUbkbUp8uvP6GPe_mg12WT2_rRJ2ZU=s1360-w1360-h1020'),
+              fit: BoxFit.fill,
+            ),
+          ),
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          top: 0,
+          child: Container(
+            color: AppColors.black.withOpacity(.2),
+          ),
+        ),
+        Positioned(
+          top: 8,
+          right: 8,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: AppColors.primary,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Text(
+              'NOVO',
+              style: TextStyle(color: Colors.white, fontSize: 12),
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 16,
+          left: 16,
+          right: 16,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+            decoration: BoxDecoration(
+              color: AppColors.primary,
+              borderRadius: BorderRadius.circular(24),
+            ),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.emoji_events, color: Colors.white, size: 20),
+                SizedBox(width: 8),
+                Text(
+                  'Jogador da semana 1',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class MatchGroupCard extends StatelessWidget {
+  final String team1;
+  final String team2;
+  final String group;
+
+  const MatchGroupCard({
+    super.key,
+    required this.team1,
+    required this.team2,
+    required this.group,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.primary.withOpacity(.04),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              width: 1,
+              color: Colors.black12,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TeamRow(name: team1),
+                    const SizedBox(height: 8),
+                    TeamRow(name: team2),
+                  ],
+                ),
+                // const Column(
+                //   children: [
+                //     Text("-", style: TextStyle(fontSize: 18)),
+                //     SizedBox(height: 8),
+                //     Text("-", style: TextStyle(fontSize: 18)),
+                //   ],
+                // ),
+                const Icon(Icons.edit, color: Colors.blueAccent),
+              ],
+            ),
+          ),
+        ),
+        Container(
+          alignment: Alignment.centerRight,
+          padding: const EdgeInsets.only(right: 0, top: 4, bottom: 12),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              group,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class TeamRow extends StatelessWidget {
+  final String name;
+
+  const TeamRow({super.key, required this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const Icon(Icons.shield, size: 25, color: Colors.grey),
+        const SizedBox(width: 8),
+        Text(
+          name,
+          style: const TextStyle(fontWeight: FontWeight.w500),
+        ),
+      ],
     );
   }
 }

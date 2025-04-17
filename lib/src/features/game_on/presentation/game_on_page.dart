@@ -27,10 +27,15 @@ class _GameOnPageState extends State<GameOnPage> {
   List<Widget> widgets = [
     // HomePage(),
     CompetitionDetailsPage(),
+    // Text("data"),
     OrganizerPage(),
-    MyCompetitionsListPage(),
-    LiveGamePage(),
-    MenuPage(),
+    // Text("data"),
+    // MyCompetitionsListPage(),
+    Text("data"),
+    // LiveGamePage(),
+    Text("data"),
+    // MenuPage(),
+    Text("data"),
   ];
 
   List<String> iconList = [
