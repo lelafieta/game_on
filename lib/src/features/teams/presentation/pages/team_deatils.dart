@@ -10,14 +10,14 @@ import '../../../../config/themes/app_colors.dart';
 import '../../../../core/resources/app_icons.dart';
 import '../../../home/presentantion/home_page.dart';
 
-class CompetitionDetailsPage extends StatefulWidget {
-  const CompetitionDetailsPage({super.key});
+class TeamDetailsPage extends StatefulWidget {
+  const TeamDetailsPage({super.key});
 
   @override
-  State<CompetitionDetailsPage> createState() => _CompetitionDetailsPageState();
+  State<TeamDetailsPage> createState() => _TeamDetailsPageState();
 }
 
-class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
+class _TeamDetailsPageState extends State<TeamDetailsPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final int totalPartidas = 6;
@@ -107,7 +107,7 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
       body: TabBarView(
         controller: _tabController,
         children: [
-          _contantGame(),
+          _contantTeam(),
           _buildTabContentMatch(),
           _buildTable(),
           _buildTeamsList(),
@@ -152,7 +152,7 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
     );
   }
 
-  Widget _contantGame() {
+  Widget _contantTeam() {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -178,9 +178,8 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
                       color: Colors.black54,
                     ),
                   ),
-
                   Positioned(
-                    bottom: -60, // ajustado para acomodar o tamanho maior
+                    bottom: -60,
                     child: Stack(
                       children: [
                         CircleAvatar(
@@ -285,21 +284,112 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
             shrinkWrap: true,
             physics: ClampingScrollPhysics(),
             children: [
+              ListTile(
+                leading: SvgPicture.asset(
+                  AppIcons.userColor,
+                  width: 26,
+                ),
+                title: Text(
+                  'Gerente',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                subtitle: Text(
+                  'Lela Fieta',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+              ListTile(
+                leading: SvgPicture.asset(
+                  AppIcons.calendarColor,
+                  width: 26,
+                ),
+                title: Text(
+                  'Fundado',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                subtitle: Text(
+                  '17 abr 2025 - 17 abr 2025',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+              ListTile(
+                leading: SvgPicture.asset(
+                  AppIcons.category2,
+                  width: 26,
+                ),
+                title: Text(
+                  'Categoria',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                subtitle: Text(
+                  'Torneio local',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+              ListTile(
+                leading: SvgPicture.asset(
+                  AppIcons.locationIndicatorRed,
+                  width: 26,
+                ),
+                title: Text(
+                  'Pitch localização',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                subtitle: Text(
+                  'CXCXCXCXCX CXC',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+              ListTile(
+                leading: SvgPicture.asset(
+                  AppIcons.ballOfWoolSewing,
+                  width: 26,
+                ),
+                title: Text(
+                  'Tipo de competição',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                subtitle: Text(
+                  'Liga',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+              ListTile(
+                leading: SvgPicture.asset(
+                  AppIcons.gendersGender,
+                  width: 26,
+                ),
+                title: Text(
+                  'Tipo de jogadores',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                subtitle: Text(
+                  'Homens',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+              ListTile(
+                leading: SvgPicture.asset(
+                  AppIcons.footballJersey,
+                  width: 26,
+                ),
+                title: Text(
+                  'Tipo de jogo',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                subtitle: Text(
+                  '7x7',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
               RichText(
                 text: TextSpan(
                   style: Theme.of(context).textTheme.bodyMedium,
                   children: [
                     TextSpan(
-                      text: 'Prêmio',
+                      text: 'Trofeos',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
-                    TextSpan(
-                      text: " (AOA)",
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleLarge!
-                          .copyWith(color: Colors.red),
-                    )
                   ],
                 ),
               ),
@@ -388,258 +478,8 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 8),
-              ListTile(
-                leading: SvgPicture.asset(
-                  AppIcons.userColor,
-                  width: 26,
-                ),
-                title: Text(
-                  'Organizador da competição',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                subtitle: Text(
-                  'Nome do organizador aqui',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-              ),
-              ListTile(
-                leading: SvgPicture.asset(
-                  AppIcons.calendarColor,
-                  width: 26,
-                ),
-                title: Text(
-                  'Duração do torneio',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                subtitle: Text(
-                  '17 abr 2025 - 17 abr 2025',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-              ),
-              ListTile(
-                leading: SvgPicture.asset(
-                  AppIcons.category2,
-                  width: 26,
-                ),
-                title: Text(
-                  'Categoria',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                subtitle: Text(
-                  'Torneio local',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-              ),
-              ListTile(
-                leading: SvgPicture.asset(
-                  AppIcons.locationIndicatorRed,
-                  width: 26,
-                ),
-                title: Text(
-                  'Pitch localização',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                subtitle: Text(
-                  'CXCXCXCXCX CXC',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-              ),
-              ListTile(
-                leading: SvgPicture.asset(
-                  AppIcons.ballOfWoolSewing,
-                  width: 26,
-                ),
-                title: Text(
-                  'Tipo de competição',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                subtitle: Text(
-                  'Liga',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-              ),
-              ListTile(
-                leading: SvgPicture.asset(
-                  AppIcons.gendersGender,
-                  width: 26,
-                ),
-                title: Text(
-                  'Tipo de jogadores',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                subtitle: Text(
-                  'Homens',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-              ),
-              ListTile(
-                leading: SvgPicture.asset(
-                  AppIcons.footballJersey,
-                  width: 26,
-                ),
-                title: Text(
-                  'Tipo de jogo',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                subtitle: Text(
-                  '7x7',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-              ),
             ],
           ),
-          // const SizedBox(height: 25),
-          // Container(
-          //   decoration: BoxDecoration(
-          //     color: Colors.white,
-          //     borderRadius: BorderRadius.circular(10),
-          //     boxShadow: [
-          //       BoxShadow(
-          //         color: Colors.black.withOpacity(0.1),
-          //         blurRadius: 8,
-          //         offset: const Offset(0, 10),
-          //       ),
-          //     ],
-          //   ),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: [
-          //       Expanded(
-          //         child: Container(
-          //           padding: const EdgeInsets.all(16),
-          //           child: const Column(
-          //             children: [
-          //               Icon(Icons.calendar_today,
-          //                   color: AppColors.primary, size: 30),
-          //               SizedBox(height: 10),
-          //               Text(
-          //                 "Data de Início",
-          //                 style: TextStyle(
-          //                   fontSize: 16,
-          //                   fontWeight: FontWeight.bold,
-          //                   color: Colors.black,
-          //                 ),
-          //               ),
-          //               SizedBox(height: 5),
-          //               Text(
-          //                 "01/01/2023",
-          //                 style: TextStyle(
-          //                   fontSize: 14,
-          //                   color: Colors.grey,
-          //                 ),
-          //               ),
-          //             ],
-          //           ),
-          //         ),
-          //       ),
-          //       // const SizedBox(width: 10),
-          //       Expanded(
-          //         child: Container(
-          //           padding: const EdgeInsets.all(16),
-          //           child: const Column(
-          //             children: [
-          //               Icon(Icons.calendar_month,
-          //                   color: AppColors.primary, size: 30),
-          //               SizedBox(height: 10),
-          //               Text(
-          //                 "Data de Fim",
-          //                 style: TextStyle(
-          //                   fontSize: 16,
-          //                   fontWeight: FontWeight.bold,
-          //                   color: Colors.black,
-          //                 ),
-          //               ),
-          //               SizedBox(height: 5),
-          //               Text(
-          //                 "31/12/2023",
-          //                 style: TextStyle(
-          //                   fontSize: 14,
-          //                   color: Colors.grey,
-          //                 ),
-          //               ),
-          //             ],
-          //           ),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          // const SizedBox(height: 10),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: [
-          //     IconButton(
-          //       onPressed: () {},
-          //       icon: SvgPicture.asset(
-          //         AppIcons.facebook,
-          //         width: 30,
-          //         height: 30,
-          //       ),
-          //     ),
-          //     const SizedBox(width: 10),
-          //     IconButton(
-          //       onPressed: () {},
-          //       icon: SvgPicture.asset(
-          //         AppIcons.instagram,
-          //         width: 30,
-          //         height: 30,
-          //       ),
-          //     ),
-          //     const SizedBox(width: 10),
-          //     IconButton(
-          //       onPressed: () {},
-          //       icon: SvgPicture.asset(
-          //         AppIcons.link,
-          //         width: 30,
-          //         height: 30,
-          //       ),
-          //     ),
-          //     const SizedBox(width: 10),
-          //     IconButton(
-          //       onPressed: () {},
-          //       icon: SvgPicture.asset(
-          //         AppIcons.whatsapp,
-          //         width: 30,
-          //         height: 30,
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          // const SizedBox(height: 10),
-          // GridView.count(
-          //   crossAxisCount: 2,
-          //   crossAxisSpacing: 10,
-          //   mainAxisSpacing: 10,
-          //   shrinkWrap: true,
-          //   physics: const ClampingScrollPhysics(),
-          //   padding: const EdgeInsets.all(16),
-          //   children: [
-          //     _buildStatCard(
-          //       icon: Icons.group,
-          //       title: "Equipes",
-          //       value: "20",
-          //       color: Colors.blue,
-          //     ),
-          //     _buildStatCard(
-          //       icon: Icons.sports_soccer,
-          //       title: "Jogos Disputados",
-          //       value: "57",
-          //       color: Colors.green,
-          //     ),
-          //     _buildStatCard(
-          //       icon: Icons.emoji_events,
-          //       title: "Títulos",
-          //       value: "5",
-          //       color: Colors.orange,
-          //     ),
-          //     _buildStatCard(
-          //       icon: Icons.star,
-          //       title: "Jogadores Destaque",
-          //       value: "12",
-          //       color: Colors.purple,
-          //     ),
-          //   ],
-          // ),
         ],
       ),
     );
@@ -734,84 +574,6 @@ class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
           ),
         ),
         Expanded(
-          // child: ListView.builder(
-          //   itemCount: matches.length,
-          //   itemBuilder: (context, index) {
-          //     final match = matches[index];
-          //     return Container(
-          //       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          //       decoration: BoxDecoration(
-          //         color: Colors.white,
-          //         borderRadius: BorderRadius.circular(10),
-          //         boxShadow: [
-          //           BoxShadow(
-          //             color: Colors.black.withOpacity(0.09),
-          //             blurRadius: 12,
-          //             offset: const Offset(0, 4),
-          //           ),
-          //         ],
-          //       ),
-          //       child: Padding(
-          //         padding: const EdgeInsets.all(16),
-          //         child: Column(
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           children: [
-          //             Container(
-          //               padding:
-          //                   EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          //               decoration: BoxDecoration(
-          //                 borderRadius: BorderRadius.circular(50),
-          //                 color: AppColors.primary.withOpacity(.1),
-          //               ),
-          //               child: Center(
-          //                 child: Text("Primeira Jornada"),
-          //               ),
-          //             ),
-          //             const SizedBox(height: 8),
-          //             Row(
-          //               children: [
-          //                 Expanded(
-          //                   child: _buildTeam(
-          //                     match.homeLogo,
-          //                     match.homeTeam,
-          //                     CrossAxisAlignment.start,
-          //                   ),
-          //                 ),
-          //                 Expanded(
-          //                   child: Column(
-          //                     children: [
-          //                       Text(
-          //                         '${match.homeScore} - ${match.awayScore}',
-          //                         style: const TextStyle(
-          //                           fontSize: 24,
-          //                           fontWeight: FontWeight.bold,
-          //                           color: Colors.black,
-          //                         ),
-          //                       ),
-          //                       Text(
-          //                         "${match.minute}'",
-          //                         style: const TextStyle(
-          //                             fontSize: 16, color: Colors.grey),
-          //                       ),
-          //                     ],
-          //                   ),
-          //                 ),
-          //                 Expanded(
-          //                   child: _buildTeam(
-          //                     match.awayLogo,
-          //                     match.awayTeam,
-          //                     CrossAxisAlignment.end,
-          //                   ),
-          //                 ),
-          //               ],
-          //             ),
-          //             const SizedBox(height: 12),
-          //           ],
-          //         ),
-          //       ),
-          //     );
-          //   },
-          // ),
           child: ListView(
             padding: const EdgeInsets.all(16),
             children: [

@@ -53,4 +53,8 @@ class AppIcons {
       "assets/icons/location-indicator-red-svgrepo-com.svg";
   static const String ballOfWoolSewing =
       "assets/icons/ball-of-wool-sewing-svgrepo-com.svg";
+
+  static const String security = "assets/icons/security-svgrepo-com.svg";
+  static const String fileEdit = "assets/icons/file-edit.svg";
+  static const String flag2 = "assets/icons/flag-2-svgrepo-com.svg";
 }

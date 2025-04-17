@@ -6,6 +6,7 @@ import 'package:game_on/src/features/competitions/presentation/pages/competion_d
 import 'package:game_on/src/features/competitions/presentation/pages/my_competitions_list_page.dart';
 import 'package:game_on/src/features/live_games/presentation/pages/live_game_page.dart';
 import 'package:game_on/src/features/organizers/presentation/pages/organizer_page.dart';
+import 'package:game_on/src/features/teams/presentation/pages/team_deatils.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 import '../../../config/themes/app_colors.dart';
@@ -25,8 +26,8 @@ class _GameOnPageState extends State<GameOnPage> {
   var _currentIndex = 0;
 
   List<Widget> widgets = [
-    // HomePage(),
-    CompetitionDetailsPage(),
+    TeamDetailsPage(),
+    // CompetitionDetailsPage(),
     // Text("data"),
     OrganizerPage(),
     // Text("data"),
@@ -34,14 +35,13 @@ class _GameOnPageState extends State<GameOnPage> {
     Text("data"),
     // LiveGamePage(),
     Text("data"),
-    // MenuPage(),
-    Text("data"),
+    MenuPage(),
   ];
 
   List<String> iconList = [
     AppIcons.houseChimney,
     AppIcons.whistle,
-    AppIcons.memoPad,
+    AppIcons.bellNotificationSocialMedia,
     AppIcons.videoCameraAlt,
     AppIcons.barsStaggered
   ];
@@ -49,7 +49,7 @@ class _GameOnPageState extends State<GameOnPage> {
   List<String> iconListBold = [
     AppIcons.houseChimneyBold,
     AppIcons.whistleBold,
-    AppIcons.memoPadBold,
+    AppIcons.bellNotificationSocialMedia,
     AppIcons.videoCameraAltBold,
     AppIcons.barsStaggered
   ];
