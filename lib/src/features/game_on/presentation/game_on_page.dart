@@ -6,6 +6,7 @@ import 'package:game_on/src/features/competitions/presentation/pages/competion_d
 import 'package:game_on/src/features/competitions/presentation/pages/my_competitions_list_page.dart';
 import 'package:game_on/src/features/live_games/presentation/pages/live_game_page.dart';
 import 'package:game_on/src/features/organizers/presentation/pages/organizer_page.dart';
+import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 import '../../../config/themes/app_colors.dart';
 import '../../../core/resources/app_icons.dart';
@@ -266,6 +267,42 @@ class _GameOnPageState extends State<GameOnPage> {
             onPressed: () => setState(() => _currentIndex = index),
           );
         },
+      ),
+      floatingActionButton: SpeedDial(
+        child: Icon(Icons.add),
+        closedForegroundColor: Colors.black,
+        openForegroundColor: Colors.white,
+        closedBackgroundColor: Colors.white,
+        openBackgroundColor: Colors.black,
+        // labelsStyle: ,
+        labelsBackgroundColor: Colors.white,
+        // controller: ,
+        speedDialChildren: <SpeedDialChild>[
+          SpeedDialChild(
+            child: Icon(Icons.directions_run),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.red,
+            label: 'Let\'s start a run!',
+            onPressed: () {
+              setState(() {
+                // _text = 'You pressed \"Let\'s start a run!\"';
+              });
+            },
+            closeSpeedDialOnPressed: false,
+          ),
+          SpeedDialChild(
+            child: Icon(Icons.directions_walk),
+            foregroundColor: Colors.black,
+            backgroundColor: Colors.yellow,
+            label: 'Let\'s go for a walk!',
+            onPressed: () {
+              setState(() {
+                // _text = 'You pressed \"Let\'s go for a walk!\"';
+              });
+            },
+          ),
+          //  Your other SpeedDialChildren go here.
+        ],
       ),
     );
   }
