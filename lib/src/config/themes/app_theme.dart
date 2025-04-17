@@ -64,10 +64,50 @@ class AppTheme {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
+            backgroundColor: const MaterialStatePropertyAll(AppColors.primary),
+            foregroundColor: const MaterialStatePropertyAll(AppColors.white),
+            textStyle: const MaterialStatePropertyAll(
+              TextStyle(
+                fontFamily: AppStrings.fontFamily,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(100),
               ),
+            ),
+            padding: const MaterialStatePropertyAll(
+              EdgeInsets.symmetric(vertical: 15),
+            ),
+          ),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: ButtonStyle(
+            side: const MaterialStatePropertyAll(
+              BorderSide(
+                color: AppColors.primary,
+                width: 2,
+              ),
+            ),
+            backgroundColor:
+                MaterialStatePropertyAll(AppColors.primary.withOpacity(.2)),
+            foregroundColor: const MaterialStatePropertyAll(AppColors.primary),
+            textStyle: const MaterialStatePropertyAll(
+              TextStyle(
+                fontFamily: AppStrings.fontFamily,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(100),
+              ),
+            ),
+            padding: const MaterialStatePropertyAll(
+              EdgeInsets.symmetric(vertical: 15),
             ),
           ),
         ),
