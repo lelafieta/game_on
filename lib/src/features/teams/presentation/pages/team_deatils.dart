@@ -929,6 +929,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             OutlinedButton(
               onPressed: () {},
@@ -946,7 +947,147 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
             SizedBox(
               height: 20,
             ),
-            TextFormField(),
+            Text(
+              "Configurações da Equipe",
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    color: Colors.black,
+                  ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TextFormField(
+              initialValue: "Dourada FC",
+              decoration: const InputDecoration(
+                label: Text("Nome da Equipe"),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TextFormField(
+              initialValue: "Gerente",
+              decoration: const InputDecoration(
+                label: Text("Helder Supremo"),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: const EdgeInsets.symmetric(
+                vertical: 20,
+                horizontal: 16,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "EQUIPAMENTO / LOGOTIPO",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            border: Border.all(
+                              width: 1,
+                              color: Colors.grey.shade400,
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      child: Image.asset(
+                                        AppImages.freeTShirt,
+                                        width: 20,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      child: Image.asset(AppImages.freeTShirt),
+                                    ),
+                                  ),
+
+                                  // const Text("Equipamento")
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text("Equipamento")
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            border: Border.all(
+                              width: 1,
+                              color: Colors.grey.shade400,
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      child: SvgPicture.asset(
+                                        width: 55,
+                                        AppIcons.security,
+                                      ),
+                                    ),
+                                  ),
+
+                                  // const Text("Equipamento")
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text("Logotipo")
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TextFormField(
+              initialValue: "11 de abr. de 2013",
+              decoration: const InputDecoration(
+                label: Text("Data de Criação"),
+              ),
+            ),
           ],
         ),
       ),

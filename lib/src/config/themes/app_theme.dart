@@ -50,6 +50,8 @@ class AppTheme {
           selectedItemColor: Colors.white,
         ),
         inputDecorationTheme: InputDecorationTheme(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+          labelStyle: const TextStyle(fontSize: 14),
           border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(100)),
           ),
