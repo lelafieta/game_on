@@ -51,7 +51,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                         _currentStep--;
                       });
                     },
-                    child: Text('Voltar'),
+                    child: Text('Voltasr'),
                   ),
                 ElevatedButton(
                   onPressed: () {
