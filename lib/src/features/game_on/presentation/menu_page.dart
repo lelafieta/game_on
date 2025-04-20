@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:game_on/src/config/routes/app_routes.dart';
 import 'package:game_on/src/core/strings/app_strings.dart';
-import 'package:game_on/src/secrets/app_secrets.dart';
 
 import '../../../config/themes/app_colors.dart';
 import '../../../core/resources/app_icons.dart';

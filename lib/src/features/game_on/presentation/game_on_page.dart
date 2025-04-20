@@ -6,7 +6,7 @@ import 'package:game_on/src/features/competitions/presentation/pages/competion_d
 import 'package:game_on/src/features/competitions/presentation/pages/my_competitions_list_page.dart';
 import 'package:game_on/src/features/live_games/presentation/pages/live_game_page.dart';
 import 'package:game_on/src/features/organizers/presentation/pages/organizer_page.dart';
-import 'package:game_on/src/features/teams/presentation/pages/team_deatils.dart';
+import 'package:game_on/src/features/teams/presentation/pages/team_deatils_page.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 import '../../../config/themes/app_colors.dart';

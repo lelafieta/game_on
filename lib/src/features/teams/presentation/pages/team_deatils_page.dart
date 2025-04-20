@@ -8,6 +8,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:game_on/src/core/resources/app_images.dart';
 import 'package:game_on/src/core/strings/app_strings.dart';
+import 'package:game_on/src/features/teams/presentation/pages/build_equipament_page.dart';
+import 'package:get/get.dart';
 
 import '../../../../config/themes/app_colors.dart';
 import '../../../../core/resources/app_icons.dart';
@@ -198,7 +200,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                 children: [
                   _buildPlayerRealWidget(),
                   _buildPlayerImaginaryWidget(),
-                  _buildCardsWidget(),
+                  _buildNewPlayerWidget(),
                 ],
               ),
             ),
@@ -776,42 +778,46 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                   Row(
                     children: [
                       Expanded(
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                            border: Border.all(
-                              width: 1,
-                              color: Colors.grey.shade400,
+                        child: InkWell(
+                          onTap: () {
+                            print("object");
+                            Get.to(BuildEquipamentPage());
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                              border: Border.all(
+                                width: 1,
+                                color: Colors.grey.shade400,
+                              ),
                             ),
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      child: Image.asset(
-                                        AppImages.freeTShirt,
-                                        width: 20,
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        child: Image.asset(
+                                          AppImages.freeTShirt,
+                                          width: 20,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      child: Image.asset(AppImages.freeTShirt),
+                                    Expanded(
+                                      child: Container(
+                                        child:
+                                            Image.asset(AppImages.freeTShirt),
+                                      ),
                                     ),
-                                  ),
 
-                                  // const Text("Equipamento")
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Text("Equipamento")
-                            ],
+                                    // const Text("Equipamento")
+                                  ],
+                                ),
+                                Text("Equipamentos")
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -1085,110 +1091,20 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     );
   }
 
-  Widget _buildCardsWidget() {
-    return GridView.builder(
-      padding: const EdgeInsets.all(16),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 15,
-        mainAxisSpacing: 15,
+  Widget _buildNewPlayerWidget() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.09),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
-      itemCount: matches.length,
-      itemBuilder: (context, index) {
-        final match = matches[index];
-        return Stack(
-          children: [
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.09),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ClipOval(
-                    child: Image.network(
-                        "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
-                        width: 50,
-                        height: 50),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    "Sergio Ramos",
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 4),
-                  Column(
-                    children: [
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 20,
-                            height: 30,
-                            decoration: BoxDecoration(
-                              color: Colors.yellow,
-                              borderRadius: BorderRadius.circular(3),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "2",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Container(
-                            width: 20,
-                            height: 30,
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(3),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "2",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            Positioned(
-              top: 16,
-              left: 16,
-              child: Container(
-                width: 30,
-                height: 30,
-                child: CachedNetworkImage(
-                  imageUrl: match.homeLogo,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 
