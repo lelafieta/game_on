@@ -274,37 +274,81 @@ class _GameOnPageState extends State<GameOnPage> {
         },
       ),
       floatingActionButton: SpeedDial(
-        child: Icon(Icons.add),
-        closedForegroundColor: Colors.black,
+        closedForegroundColor: Colors.white,
         openForegroundColor: Colors.white,
-        closedBackgroundColor: Colors.white,
-        openBackgroundColor: Colors.black,
+        closedBackgroundColor: AppColors.primary,
+        openBackgroundColor: AppColors.black,
         labelsBackgroundColor: Colors.white,
+        labelsStyle: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
         speedDialChildren: <SpeedDialChild>[
           SpeedDialChild(
-            child: Icon(Icons.directions_run),
+            child: Padding(
+              padding: EdgeInsets.all(5),
+              child: SvgPicture.asset(
+                AppIcons.competitionchampion,
+              ),
+            ),
             foregroundColor: Colors.white,
-            backgroundColor: Colors.red,
-            label: 'Let\'s start a run!',
+            backgroundColor: Colors.blue.shade900,
+            label: 'Novo Torneio',
             onPressed: () {
-              setState(() {
-                // _text = 'You pressed \"Let\'s start a run!\"';
-              });
+              setState(() {});
             },
             closeSpeedDialOnPressed: false,
           ),
           SpeedDialChild(
-            child: Icon(Icons.directions_walk),
+            child: Padding(
+              padding: EdgeInsets.all(5),
+              child: SvgPicture.asset(
+                AppIcons.footballJersey,
+              ),
+            ),
             foregroundColor: Colors.black,
-            backgroundColor: Colors.yellow,
-            label: 'Let\'s go for a walk!',
+            backgroundColor: Colors.indigoAccent.shade700,
+            label: 'Nova Equipe',
             onPressed: () {
               setState(() {
                 // _text = 'You pressed \"Let\'s go for a walk!\"';
               });
             },
           ),
+          SpeedDialChild(
+            child: Padding(
+              padding: EdgeInsets.all(5),
+              child: SvgPicture.asset(
+                AppIcons.copyLink,
+              ),
+            ),
+            foregroundColor: Colors.black,
+            backgroundColor: Colors.red,
+            label: 'Conectar-se a um torneio',
+            onPressed: () {
+              setState(() {
+                // _text = 'You pressed \"Let\'s go for a walk!\"';
+              });
+            },
+          ),
+          // SpeedDialChild(
+          //   child: Padding(
+          //     padding: EdgeInsets.all(5),
+          //     child: SvgPicture.asset(
+          //       AppIcons.copyLink,
+          //     ),
+          //   ),
+          //   foregroundColor: Colors.black,
+          //   backgroundColor: Colors.yellow,
+          //   label: 'Convidar equipe',
+          //   onPressed: () {
+          //     setState(() {
+          //       // _text = 'You pressed \"Let\'s go for a walk!\"';
+          //     });
+          //   },
+          // ),
         ],
+        child: Icon(Icons.add),
       ),
     );
   }

@@ -107,12 +107,12 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
         centerTitle: true,
         iconTheme: IconThemeData(color: Colors.white),
         actions: [
-          IconButton(
-            onPressed: () {
-              pickImage();
-            },
-            icon: SvgPicture.asset(AppIcons.security),
-          ),
+          // IconButton(
+          //   onPressed: () {
+          //     pickImage();
+          //   },
+          //   icon: SvgPicture.asset(AppIcons.security),
+          // ),
           IconButton(
             icon: Icon(Icons.more_vert),
             onPressed: () {

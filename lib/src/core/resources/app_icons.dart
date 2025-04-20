@@ -57,4 +57,9 @@ class AppIcons {
   static const String security = "assets/icons/security-svgrepo-com.svg";
   static const String fileEdit = "assets/icons/file-edit.svg";
   static const String flag2 = "assets/icons/flag-2-svgrepo-com.svg";
+
+  static const String copyLink = "assets/icons/copy-link-svgrepo-com.svg";
+  static const String share = "assets/icons/share-svgrepo-com.svg";
+  static const String competitionchampion =
+      "assets/icons/competition-champion-svgrepo-com.svg";
 }
