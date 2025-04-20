@@ -807,15 +807,15 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                                     ),
                                     Expanded(
                                       child: Container(
-                                        child:
-                                            Image.asset(AppImages.mainTShirt),
+                                        child: Image.asset(
+                                            AppImages.backPartTShirt),
                                       ),
                                     ),
 
                                     // const Text("Equipamento")
                                   ],
                                 ),
-                                Text("Equipamentos")
+                                const Text("Equipamentos")
                               ],
                             ),
                           ),

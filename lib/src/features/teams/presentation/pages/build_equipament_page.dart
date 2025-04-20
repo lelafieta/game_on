@@ -1,11 +1,16 @@
+import 'dart:io';
+
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../config/themes/app_colors.dart';
+import '../../../../core/resources/app_icons.dart';
 import '../../../../core/resources/app_images.dart';
 
 class BuildEquipamentPage extends StatefulWidget {
@@ -24,6 +29,9 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
 
   final ValueNotifier<Color> selectedNumberColor =
       ValueNotifier<Color>(Colors.blue);
+
+  final ValueNotifier<File?> imageFile = ValueNotifier<File?>(null);
+  final ImagePicker picker = ImagePicker();
 
   final Map<String, String> typeToImage = {
     'main': AppImages.typeEmpty,
@@ -72,6 +80,20 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
       'https://scontent.flad5-1.fna.fbcdn.net/v/t39.30808-1/449761244_1062646795218211_4139834764378388664_n.jpg?stp=c196.196.1199.1199a_dst-jpg_s200x200_tt6&_nc_cat=1&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=2PIv9d0zbT4Q7kNvwFrDdyl&_nc_oc=Adnbea-uBG6-Yjz-swaIok52lxeGLlxbFYlST90cK4dm1KdQveMu-MleJfCBBy4zbgL6PbCyY77uA-Jx-87CXmsf&_nc_zt=24&_nc_ht=scontent.flad5-1.fna&_nc_gid=b_6-6aTZFayQsgqhCcyxhQ&oh=00_AfE78XoqOuYLsaL3vLfGnPlltyuw8ZA_dK-vkLTcnXYkEA&oe=68047744';
   final String team2Logo =
       'https://scontent.flad5-1.fna.fbcdn.net/v/t39.30808-1/273144602_10152602977424953_1955203260619408476_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=1&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=q-W_7Ofx0GIQ7kNvwGEJVrU&_nc_oc=Adnh-RBMtZE6Kr9ubdATmRiKH6NAEiVO92HwxQXcJXb10vyt6hqv1nhkO14Pimi4X05KqocWeD2Q83HP7vsW3Xw6&_nc_zt=24&_nc_ht=scontent.flad5-1.fna&_nc_gid=tINtmFSQ5O2qx6UrzJ1Xjg&oh=00_AfFWaHkb26Gz6qnHdeiku917wrHIZY8eRqAgYFACd31o-Q&oe=68047B4B';
+  Future<void> pickImage() async {
+    print("object");
+    final XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      imageFile.value = File(pickedFile.path);
+    }
+  }
+
+  @override
+  void dispose() {
+    imageFile.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +106,45 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
         ),
         centerTitle: true,
         iconTheme: IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            onPressed: () {
+              pickImage();
+            },
+            icon: SvgPicture.asset(AppIcons.security),
+          ),
+          IconButton(
+            icon: Icon(Icons.more_vert),
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ListTile(
+                        leading: Icon(Icons.add),
+                        title: Text('Adicionar Logotipo'),
+                        onTap: () {
+                          pickImage();
+                          Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.add_business),
+                        title: Text('Adicionar Patrocinador'),
+                        onTap: () {
+                          Navigator.pop(context);
+                          // Adicionar lógica para adicionar patrocinador
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -145,7 +206,41 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
                               },
                             );
                           },
-                        )
+                        ),
+                        Positioned(
+                          top: 45,
+                          right: 65,
+                          child: ValueListenableBuilder<File?>(
+                            valueListenable: imageFile,
+                            builder: (context, file, _) {
+                              if (file == null) {
+                                return SizedBox.shrink();
+                              } else {
+                                return Image.file(
+                                  file,
+                                  width: 30,
+                                  height: 30,
+                                  fit: BoxFit.contain,
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                        Positioned(
+                          top: 80,
+                          right: 50,
+                          left: 50,
+                          child: Container(
+                            width: 30,
+                            height: 25,
+                            // child: Center(
+                            //   child: Text(
+                            //     "Sonangols",
+                            //     style: TextStyle(fontWeight: FontWeight.bold0),
+                            //   ),
+                            // ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
