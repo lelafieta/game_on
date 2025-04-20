@@ -800,7 +800,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                                     Expanded(
                                       child: Container(
                                         child: Image.asset(
-                                          AppImages.freeTShirt,
+                                          AppImages.mainTShirt,
                                           width: 20,
                                         ),
                                       ),
@@ -808,7 +808,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                                     Expanded(
                                       child: Container(
                                         child:
-                                            Image.asset(AppImages.freeTShirt),
+                                            Image.asset(AppImages.mainTShirt),
                                       ),
                                     ),
 

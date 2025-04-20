@@ -27,4 +27,6 @@ class AppImages {
   static const String backPartTShirt = "assets/images/back-part-t-shirt.png";
   static const String body = "assets/images/body.png";
   static const String mainTShirt = "assets/images/main-t-shirt.png";
+  static const String bodyBack = "assets/images/body-back.png";
+  static const String typeEmpty = "assets/images/type-empty.png";
 }
