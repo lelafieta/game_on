@@ -31,6 +31,7 @@ class AppTheme {
           backgroundColor: AppColors.background,
           toolbarHeight: 50,
           scrolledUnderElevation: 5,
+          centerTitle: true,
           systemOverlayStyle: SystemUiOverlayStyle(),
           iconTheme: IconThemeData(
             color: AppColors.color,
@@ -50,17 +51,19 @@ class AppTheme {
           selectedItemColor: Colors.white,
         ),
         inputDecorationTheme: InputDecorationTheme(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-          labelStyle: const TextStyle(fontSize: 14),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          hintStyle: const TextStyle(
+              fontSize: 14, fontWeight: FontWeight.normal, color: Colors.grey),
           border: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(100)),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(100)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
           ),
           focusedBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(100)),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(color: Colors.grey),
           ),
         ),

@@ -1,12 +1,17 @@
+import 'dart:ui';
+
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:game_on/src/config/routes/app_routes.dart';
 import 'package:game_on/src/features/competitions/presentation/pages/competion_details_page.dart';
 import 'package:game_on/src/features/competitions/presentation/pages/my_competitions_list_page.dart';
 import 'package:game_on/src/features/live_games/presentation/pages/live_game_page.dart';
 import 'package:game_on/src/features/organizers/presentation/pages/organizer_page.dart';
 import 'package:game_on/src/features/teams/presentation/pages/team_deatils_page.dart';
+import 'package:get/get.dart';
+import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 import '../../../config/themes/app_colors.dart';
@@ -273,83 +278,148 @@ class _GameOnPageState extends State<GameOnPage> {
           );
         },
       ),
-      floatingActionButton: SpeedDial(
-        closedForegroundColor: Colors.white,
-        openForegroundColor: Colors.white,
-        closedBackgroundColor: AppColors.primary,
-        openBackgroundColor: AppColors.black,
-        labelsBackgroundColor: Colors.white,
-        labelsStyle: TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
-        speedDialChildren: <SpeedDialChild>[
-          SpeedDialChild(
-            child: Padding(
-              padding: EdgeInsets.all(5),
-              child: SvgPicture.asset(
-                AppIcons.competitionchampion,
-              ),
-            ),
-            foregroundColor: Colors.white,
-            backgroundColor: Colors.blue.shade900,
-            label: 'Novo Torneio',
-            onPressed: () {
-              setState(() {});
-            },
-            closeSpeedDialOnPressed: false,
-          ),
-          SpeedDialChild(
-            child: Padding(
-              padding: EdgeInsets.all(5),
-              child: SvgPicture.asset(
-                AppIcons.footballJersey,
-              ),
-            ),
-            foregroundColor: Colors.black,
-            backgroundColor: Colors.indigoAccent.shade700,
-            label: 'Nova Equipe',
-            onPressed: () {
-              setState(() {
-                // _text = 'You pressed \"Let\'s go for a walk!\"';
-              });
-            },
-          ),
-          SpeedDialChild(
-            child: Padding(
-              padding: EdgeInsets.all(5),
-              child: SvgPicture.asset(
-                AppIcons.copyLink,
-              ),
-            ),
-            foregroundColor: Colors.black,
-            backgroundColor: Colors.red,
-            label: 'Conectar-se a um torneio',
-            onPressed: () {
-              setState(() {
-                // _text = 'You pressed \"Let\'s go for a walk!\"';
-              });
-            },
-          ),
-          // SpeedDialChild(
-          //   child: Padding(
-          //     padding: EdgeInsets.all(5),
-          //     child: SvgPicture.asset(
-          //       AppIcons.copyLink,
-          //     ),
-          //   ),
-          //   foregroundColor: Colors.black,
-          //   backgroundColor: Colors.yellow,
-          //   label: 'Convidar equipe',
-          //   onPressed: () {
-          //     setState(() {
-          //       // _text = 'You pressed \"Let\'s go for a walk!\"';
-          //     });
-          //   },
-          // ),
-        ],
+      // floatingActionButton: SpeedDial(
+      //   closedForegroundColor: Colors.white,
+      //   openForegroundColor: Colors.white,
+      //   closedBackgroundColor: AppColors.primary,
+      //   openBackgroundColor: AppColors.black,
+      //   labelsBackgroundColor: Colors.white,
+      //   labelsStyle: const TextStyle(
+      //     fontWeight: FontWeight.bold,
+      //     color: Colors.black,
+      //   ),
+      //   speedDialChildren: <SpeedDialChild>[
+      //     SpeedDialChild(
+      //       child: Padding(
+      //         padding: const EdgeInsets.all(5),
+      //         child: SvgPicture.asset(
+      //           AppIcons.competitionchampion,
+      //         ),
+      //       ),
+      //       foregroundColor: Colors.white,
+      //       backgroundColor: Colors.blue.shade900,
+      //       label: 'Novo Torneio',
+      //       onPressed: () {
+      //         Get.toNamed(AppRoutes.createCompetition);
+      //       },
+      //       closeSpeedDialOnPressed: false,
+      //     ),
+      //     SpeedDialChild(
+      //       child: Padding(
+      //         padding: EdgeInsets.all(5),
+      //         child: SvgPicture.asset(
+      //           AppIcons.footballJersey,
+      //         ),
+      //       ),
+      //       foregroundColor: Colors.black,
+      //       backgroundColor: Colors.indigoAccent.shade700,
+      //       label: 'Nova Equipe',
+      //       onPressed: () {
+      //         setState(() {
+      //           // _text = 'You pressed \"Let\'s go for a walk!\"';
+      //         });
+      //       },
+      //     ),
+      //     SpeedDialChild(
+      //       child: Padding(
+      //         padding: EdgeInsets.all(5),
+      //         child: SvgPicture.asset(
+      //           AppIcons.copyLink,
+      //         ),
+      //       ),
+      //       foregroundColor: Colors.black,
+      //       backgroundColor: Colors.red,
+      //       label: 'Conectar-se a um torneio',
+      //       onPressed: () {
+      //         setState(() {
+      //           // _text = 'You pressed \"Let\'s go for a walk!\"';
+      //         });
+      //       },
+      //     ),
+      //     // SpeedDialChild(
+      //     //   child: Padding(
+      //     //     padding: EdgeInsets.all(5),
+      //     //     child: SvgPicture.asset(
+      //     //       AppIcons.copyLink,
+      //     //     ),
+      //     //   ),
+      //     //   foregroundColor: Colors.black,
+      //     //   backgroundColor: Colors.yellow,
+      //     //   label: 'Convidar equipe',
+      //     //   onPressed: () {
+      //     //     setState(() {
+      //     //       // _text = 'You pressed \"Let\'s go for a walk!\"';
+      //     //     });
+      //     //   },
+      //     // ),
+      //   ],
+      //   child: Icon(Icons.add),
+      // ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showBlurModal(context),
         child: Icon(Icons.add),
       ),
+    );
+  }
+
+  Widget _buildItem(String iconPath, String label, Callback onTap) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 0),
+      child: ListTile(
+        leading: SvgPicture.asset(
+          iconPath,
+          width: 24,
+          height: 24,
+        ),
+        title: Text(
+          label,
+          style: const TextStyle(fontSize: 18),
+        ),
+        onTap: onTap,
+      ),
+    );
+  }
+
+  void _showBlurModal(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.5),
+      builder: (context) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+          child: Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Material(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "MENU BÁSICO",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    Divider(color: Colors.grey.shade300),
+                    _buildItem(AppIcons.competitionchampion, "Novo Campeonato",
+                        () {
+                      Get.toNamed(AppRoutes.createCompetition);
+                    }),
+                    _buildItem(AppIcons.footballJersey, "Nova Equipe", () {}),
+                    _buildItem(AppIcons.userColor, "Novo Jogador", () {}),
+                    _buildItem(
+                        AppIcons.copyLink, "Participar em torneio", () {}),
+                    _buildItem(AppIcons.copyLink, "Convidar Equipes", () {}),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -319,7 +319,7 @@ packages:
     source: hosted
     version: "2.1.0"
   flutter_form_builder:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_form_builder
       sha256: "560eb5e367d81170c6ade1e7ae63ecc5167936ae2cdfaae8a345e91bce19d2f2"
@@ -768,6 +768,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.2"
+  progress_stepper:
+    dependency: "direct main"
+    description:
+      name: progress_stepper
+      sha256: cd822639bd536c92cdc99b8fbed66e6c642761fb26d05c0aa5e1a37cded5d24a
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0"
   provider:
     dependency: transitive
     description:
@@ -893,6 +901,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.1"
+  step_progress:
+    dependency: "direct main"
+    description:
+      name: step_progress
+      sha256: beb7119a891333d3576ba516b49ca77ed391a7d0a1ca0a8b13a3c87f60730392
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
+  step_progress_indicator:
+    dependency: "direct main"
+    description:
+      name: step_progress_indicator
+      sha256: b51bb1fcfc78454359f0658c5a2c21548c3825ebf76e826308e9ca10f383bbb8
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   stream_channel:
     dependency: transitive
     description:
