@@ -55,7 +55,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                   ),
                 ElevatedButton(
                   onPressed: () {
-                    if (_currentStep < 2) {
+                    if (_currentStep < 4) {
                       setState(() {
                         _currentStep++;
                       });
@@ -78,7 +78,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
       'Configuração',
       'Informações',
       'Informações',
-      'Conclusão',
+      'Regulamentos',
       'Conclusão'
     ];
     return Row(
@@ -115,6 +115,8 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
         return stepThree();
       case 3:
         return stepFour();
+      case 3:
+        return stepFive();
       default:
         return Container();
     }
@@ -512,6 +514,12 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Competição criada com sucesso!')),
+    );
+  }
+
+  Widget stepFive() {
+    return Column(
+      children: [],
     );
   }
 }
