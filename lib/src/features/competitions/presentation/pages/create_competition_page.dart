@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:game_on/src/core/strings/app_strings.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
@@ -29,7 +30,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
         child: Column(
           children: [
             StepProgressIndicator(
-              totalSteps: 4,
+              totalSteps: 5,
               currentStep: _currentStep + 1,
               size: 8,
               padding: 6,
@@ -45,25 +46,29 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 if (_currentStep > 0)
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _currentStep--;
-                      });
-                    },
-                    child: Text('Voltasr'),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _currentStep--;
+                        });
+                      },
+                      child: Text('Voltar'),
+                    ),
                   ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_currentStep < 4) {
-                      setState(() {
-                        _currentStep++;
-                      });
-                    } else {
-                      _submit();
-                    }
-                  },
-                  child: Text(_currentStep == 2 ? 'Criar' : 'Próximo'),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_currentStep < 4) {
+                        setState(() {
+                          _currentStep++;
+                        });
+                      } else {
+                        _submit();
+                      }
+                    },
+                    child: Text(_currentStep == 2 ? 'Criar' : 'Próximo'),
+                  ),
                 ),
               ],
             ),
@@ -84,7 +89,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
     return Row(
       children: [
         Text(
-          "Configurações",
+          labels[_currentStep],
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ],
@@ -115,7 +120,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
         return stepThree();
       case 3:
         return stepFour();
-      case 3:
+      case 4:
         return stepFive();
       default:
         return Container();
