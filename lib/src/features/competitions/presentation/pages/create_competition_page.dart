@@ -528,7 +528,6 @@
 //     );
 //   }
 // }
-
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -541,8 +540,7 @@ class CreateCompetitionPage extends StatefulWidget {
 }
 
 class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
-  final _formKey = GlobalKey<FormBuilderState>();
-
+  final _formKeys = List.generate(5, (_) => GlobalKey<FormBuilderState>());
   int _currentStep = 0;
 
   // Dados da competição
@@ -553,19 +551,18 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
   bool hasGroupStage = false;
   int? numberOfGroups;
   String? organizer;
+  String? rulesUrl;
+  String? prize;
   String? level;
   DateTime? startDate;
   DateTime? endDate;
 
   final types = ['league', 'cup', 'friendly'];
-  final levels = ['local', 'national', 'international'];
+  final levels = ['local', 'national', 'international', 'regional'];
 
   void nextStep() {
-    final requiresValidation =
-        _currentStep == 0 || (_currentStep == 2 && level == null);
-
-    if (!requiresValidation ||
-        (_formKey.currentState?.saveAndValidate() ?? false)) {
+    final currentForm = _formKeys[_currentStep].currentState;
+    if (currentForm?.saveAndValidate() ?? false) {
       setState(() {
         if (_currentStep < 4) {
           _currentStep++;
@@ -573,16 +570,12 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
           _submit();
         }
       });
-    } else {
-      print("⚠️ Formulário inválido.");
     }
   }
 
   void previousStep() {
     if (_currentStep > 0) {
-      setState(() {
-        _currentStep--;
-      });
+      setState(() => _currentStep--);
     }
   }
 
@@ -596,6 +589,8 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
       'has_group_stage': hasGroupStage,
       'number_of_groups': hasGroupStage ? numberOfGroups : null,
       'organizer': organizer,
+      'rules_url': rulesUrl,
+      'prize': prize,
       'level': level,
       'start_date': startDate?.toIso8601String(),
       'end_date': endDate?.toIso8601String(),
@@ -621,15 +616,14 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
       case 4:
         return _reviewStep();
       default:
-        return const SizedBox();
+        return Container();
     }
   }
 
   Widget _basicInfoStep() {
     return FormBuilder(
-      key: _formKey,
+      key: _formKeys[0],
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           FormBuilderTextField(
             name: 'name',
@@ -660,41 +654,59 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
   }
 
   Widget _formatStep() {
-    return Column(
-      children: [
-        SwitchListTile(
-          title: const Text('Jogos ida e volta?'),
-          value: isHomeAndAway,
-          onChanged: (v) => setState(() => isHomeAndAway = v),
-        ),
-        SwitchListTile(
-          title: const Text('Tem fase de grupos?'),
-          value: hasGroupStage,
-          onChanged: (v) => setState(() => hasGroupStage = v),
-        ),
-        if (hasGroupStage)
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: TextFormField(
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(labelText: 'Número de grupos'),
-              onChanged: (v) => numberOfGroups = int.tryParse(v),
-            ),
+    return FormBuilder(
+      key: _formKeys[1],
+      child: Column(
+        children: [
+          SwitchListTile(
+            title: const Text('Jogos ida e volta?'),
+            value: isHomeAndAway,
+            onChanged: (v) => setState(() => isHomeAndAway = v),
           ),
-      ],
+          SwitchListTile(
+            title: const Text('Tem fase de grupos?'),
+            value: hasGroupStage,
+            onChanged: (v) => setState(() => hasGroupStage = v),
+          ),
+          if (hasGroupStage)
+            FormBuilderTextField(
+              name: 'numberOfGroups',
+              decoration: const InputDecoration(labelText: 'Número de grupos'),
+              keyboardType: TextInputType.number,
+              onChanged: (v) => numberOfGroups = int.tryParse(v ?? ''),
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.required(),
+                FormBuilderValidators.integer(),
+                FormBuilderValidators.min(1),
+              ]),
+            ),
+        ],
+      ),
     );
   }
 
   Widget _organizerStep() {
     return FormBuilder(
-      key: _formKey,
+      key: _formKeys[2],
       child: Column(
         children: [
           FormBuilderTextField(
             name: 'organizer',
             decoration:
-                const InputDecoration(labelText: 'Organizador (opcional)'),
-            onChanged: (v) => organizer = v ?? '',
+                const InputDecoration(labelText: 'Organizador (ex: FIFA)'),
+            onChanged: (v) => organizer = v,
+          ),
+          FormBuilderTextField(
+            name: 'rules_url',
+            decoration:
+                const InputDecoration(labelText: 'Link para regulamento'),
+            onChanged: (v) => rulesUrl = v,
+            validator: FormBuilderValidators.url(),
+          ),
+          FormBuilderTextField(
+            name: 'prize',
+            decoration: const InputDecoration(labelText: 'Prêmio ou troféu'),
+            onChanged: (v) => prize = v,
           ),
           FormBuilderDropdown<String>(
             name: 'level',
@@ -712,57 +724,65 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
   }
 
   Widget _datesStep() {
-    return Column(
-      children: [
-        ListTile(
-          title: Text(startDate == null
-              ? 'Selecionar data de início'
-              : 'Início: ${startDate!.toLocal().toString().split(' ')[0]}'),
-          trailing: const Icon(Icons.calendar_today),
-          onTap: () async {
-            final picked = await showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime(2020),
-              lastDate: DateTime(2030),
-            );
-            if (picked != null) setState(() => startDate = picked);
-          },
-        ),
-        ListTile(
-          title: Text(endDate == null
-              ? 'Selecionar data de término'
-              : 'Término: ${endDate!.toLocal().toString().split(' ')[0]}'),
-          trailing: const Icon(Icons.calendar_today),
-          onTap: () async {
-            final picked = await showDatePicker(
-              context: context,
-              initialDate: startDate ?? DateTime.now(),
-              firstDate: DateTime(2020),
-              lastDate: DateTime(2030),
-            );
-            if (picked != null) setState(() => endDate = picked);
-          },
-        ),
-      ],
+    return FormBuilder(
+      key: _formKeys[3],
+      child: Column(
+        children: [
+          ListTile(
+            title: Text(startDate == null
+                ? 'Selecionar data de início'
+                : 'Início: ${startDate!.toLocal()}'),
+            trailing: const Icon(Icons.calendar_today),
+            onTap: () async {
+              final picked = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(2020),
+                lastDate: DateTime(2035),
+              );
+              if (picked != null) setState(() => startDate = picked);
+            },
+          ),
+          ListTile(
+            title: Text(endDate == null
+                ? 'Selecionar data de término'
+                : 'Término: ${endDate!.toLocal()}'),
+            trailing: const Icon(Icons.calendar_today),
+            onTap: () async {
+              final picked = await showDatePicker(
+                context: context,
+                initialDate: startDate ?? DateTime.now(),
+                firstDate: DateTime(2020),
+                lastDate: DateTime(2035),
+              );
+              if (picked != null) setState(() => endDate = picked);
+            },
+          ),
+        ],
+      ),
     );
   }
 
   Widget _reviewStep() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text("📝 Nome: $name"),
-        Text("📆 Temporada: $season"),
-        Text("🏁 Tipo: $type"),
-        Text("🔁 Ida e volta: $isHomeAndAway"),
-        Text("👥 Fase de grupos: $hasGroupStage"),
-        if (hasGroupStage) Text("🔢 Grupos: $numberOfGroups"),
-        Text("🏢 Organizador: ${organizer ?? 'N/A'}"),
-        Text("🌍 Nível: ${level ?? 'N/A'}"),
-        Text("📅 Início: ${startDate?.toLocal().toString().split(' ')[0]}"),
-        Text("📅 Fim: ${endDate?.toLocal().toString().split(' ')[0]}"),
-      ],
+    return FormBuilder(
+      key: _formKeys[4],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("📝 Nome: $name"),
+          Text("📆 Temporada: $season"),
+          Text("🏁 Tipo: $type"),
+          Text("🔁 Ida e volta: $isHomeAndAway"),
+          Text("👥 Fase de grupos: $hasGroupStage"),
+          if (hasGroupStage) Text("🔢 Grupos: $numberOfGroups"),
+          Text("🏢 Organizador: ${organizer ?? 'N/A'}"),
+          Text("📎 Regulamento: ${rulesUrl ?? 'N/A'}"),
+          Text("🏆 Prêmio: ${prize ?? 'N/A'}"),
+          Text("🌍 Nível: ${level ?? 'N/A'}"),
+          Text("📅 Início: ${startDate?.toLocal()}"),
+          Text("📅 Fim: ${endDate?.toLocal()}"),
+        ],
+      ),
     );
   }
 
@@ -795,7 +815,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                   child: Text(_currentStep < 4 ? 'Próximo' : 'Criar'),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
