@@ -528,6 +528,7 @@
 //     );
 //   }
 // }
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -540,13 +541,12 @@ class CreateCompetitionPage extends StatefulWidget {
 }
 
 class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
-  final _formKeys = List.generate(5, (_) => GlobalKey<FormBuilderState>());
+  final _formKey = GlobalKey<FormBuilderState>();
   int _currentStep = 0;
 
-  // Dados da competição
   String name = '';
   String season = '';
-  String type = 'league'; // league, cup, friendly
+  String type = 'league';
   bool isHomeAndAway = false;
   bool hasGroupStage = false;
   int? numberOfGroups;
@@ -558,24 +558,27 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
   DateTime? endDate;
 
   final types = ['league', 'cup', 'friendly'];
-  final levels = ['local', 'national', 'international', 'regional'];
+  final levels = ['local', 'regional', 'national', 'international'];
 
   void nextStep() {
-    final currentForm = _formKeys[_currentStep].currentState;
-    if (currentForm?.saveAndValidate() ?? false) {
-      setState(() {
-        if (_currentStep < 4) {
+    if (_formKey.currentState?.saveAndValidate() ?? false) {
+      if (_currentStep < 5) {
+        setState(() {
           _currentStep++;
-        } else {
-          _submit();
-        }
-      });
+        });
+      } else {
+        _submit();
+      }
+    } else {
+      print("Formulário inválido");
     }
   }
 
   void previousStep() {
     if (_currentStep > 0) {
-      setState(() => _currentStep--);
+      setState(() {
+        _currentStep--;
+      });
     }
   }
 
@@ -606,183 +609,185 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
   Widget _buildStep() {
     switch (_currentStep) {
       case 0:
-        return _basicInfoStep();
+        return _stepSection("Informações Básicas", _basicInfoStep());
       case 1:
-        return _formatStep();
+        return _stepSection("Formato da Competição", _formatStep());
       case 2:
-        return _organizerStep();
+        return _stepSection("Organização e Regras", _organizerStep());
       case 3:
-        return _datesStep();
+        return _stepSection("Datas", _datesStep());
       case 4:
-        return _reviewStep();
+        return _stepSection("Resumo", _reviewStep());
       default:
         return Container();
     }
   }
 
+  Widget _stepSection(String title, Widget child) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title,
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 16),
+        FormBuilder(key: _formKey, child: child),
+      ],
+    );
+  }
+
   Widget _basicInfoStep() {
-    return FormBuilder(
-      key: _formKeys[0],
-      child: Column(
-        children: [
-          FormBuilderTextField(
-            name: 'name',
-            decoration: const InputDecoration(labelText: 'Nome da competição'),
-            onChanged: (v) => name = v ?? '',
-            validator: FormBuilderValidators.required(),
-          ),
-          FormBuilderTextField(
-            name: 'season',
-            decoration:
-                const InputDecoration(labelText: 'Temporada (ex: 2025)'),
-            onChanged: (v) => season = v ?? '',
-            validator: FormBuilderValidators.required(),
-          ),
-          FormBuilderDropdown<String>(
-            name: 'type',
-            initialValue: type,
-            items: types
-                .map((t) => DropdownMenuItem(value: t, child: Text(t)))
-                .toList(),
-            onChanged: (v) => setState(() => type = v!),
-            decoration: const InputDecoration(labelText: 'Tipo de competição'),
-            validator: FormBuilderValidators.required(),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        FormBuilderTextField(
+          name: 'name',
+          decoration: const InputDecoration(labelText: 'Nome da competição'),
+          onChanged: (v) => name = v ?? '',
+          validator: FormBuilderValidators.required(
+              errorText: 'O nome é obrigatório.'),
+        ),
+        FormBuilderTextField(
+          name: 'season',
+          decoration: const InputDecoration(labelText: 'Temporada (ex: 2025)'),
+          onChanged: (v) => season = v ?? '',
+          validator: FormBuilderValidators.required(
+              errorText: 'A temporada é obrigatória.'),
+        ),
+        FormBuilderDropdown<String>(
+          name: 'type',
+          initialValue: type,
+          items: types
+              .map((t) => DropdownMenuItem(value: t, child: Text(t)))
+              .toList(),
+          onChanged: (v) => setState(() => type = v!),
+          decoration: const InputDecoration(labelText: 'Tipo de competição'),
+          validator: FormBuilderValidators.required(
+              errorText: 'O tipo é obrigatório.'),
+        ),
+      ],
     );
   }
 
   Widget _formatStep() {
-    return FormBuilder(
-      key: _formKeys[1],
-      child: Column(
-        children: [
-          SwitchListTile(
-            title: const Text('Jogos ida e volta?'),
-            value: isHomeAndAway,
-            onChanged: (v) => setState(() => isHomeAndAway = v),
+    return Column(
+      children: [
+        SwitchListTile(
+          title: const Text('Jogos ida e volta?'),
+          value: isHomeAndAway,
+          onChanged: (v) => setState(() => isHomeAndAway = v),
+        ),
+        SwitchListTile(
+          title: const Text('Tem fase de grupos?'),
+          value: hasGroupStage,
+          onChanged: (v) => setState(() => hasGroupStage = v),
+        ),
+        if (hasGroupStage)
+          FormBuilderTextField(
+            name: 'numberOfGroups',
+            decoration: const InputDecoration(labelText: 'Número de grupos'),
+            keyboardType: TextInputType.number,
+            onChanged: (v) => numberOfGroups = int.tryParse(v ?? ''),
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(
+                  errorText: 'Número de grupos é obrigatório.'),
+              FormBuilderValidators.integer(
+                  errorText: 'Informe um número inteiro.'),
+              FormBuilderValidators.min(1, errorText: 'Mínimo 1 grupo.'),
+            ]),
           ),
-          SwitchListTile(
-            title: const Text('Tem fase de grupos?'),
-            value: hasGroupStage,
-            onChanged: (v) => setState(() => hasGroupStage = v),
-          ),
-          if (hasGroupStage)
-            FormBuilderTextField(
-              name: 'numberOfGroups',
-              decoration: const InputDecoration(labelText: 'Número de grupos'),
-              keyboardType: TextInputType.number,
-              onChanged: (v) => numberOfGroups = int.tryParse(v ?? ''),
-              validator: FormBuilderValidators.compose([
-                FormBuilderValidators.required(),
-                FormBuilderValidators.integer(),
-                FormBuilderValidators.min(1),
-              ]),
-            ),
-        ],
-      ),
+      ],
     );
   }
 
   Widget _organizerStep() {
-    return FormBuilder(
-      key: _formKeys[2],
-      child: Column(
-        children: [
-          FormBuilderTextField(
-            name: 'organizer',
-            decoration:
-                const InputDecoration(labelText: 'Organizador (ex: FIFA)'),
-            onChanged: (v) => organizer = v,
-          ),
-          FormBuilderTextField(
-            name: 'rules_url',
-            decoration:
-                const InputDecoration(labelText: 'Link para regulamento'),
-            onChanged: (v) => rulesUrl = v,
-            validator: FormBuilderValidators.url(),
-          ),
-          FormBuilderTextField(
-            name: 'prize',
-            decoration: const InputDecoration(labelText: 'Prêmio ou troféu'),
-            onChanged: (v) => prize = v,
-          ),
-          FormBuilderDropdown<String>(
-            name: 'level',
-            initialValue: level,
-            decoration: const InputDecoration(labelText: 'Nível da competição'),
-            items: levels
-                .map((l) => DropdownMenuItem(value: l, child: Text(l)))
-                .toList(),
-            onChanged: (v) => setState(() => level = v),
-            validator: FormBuilderValidators.required(),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        FormBuilderTextField(
+          name: 'organizer',
+          decoration:
+              const InputDecoration(labelText: 'Organizador (CAF, FIFA...)'),
+          onChanged: (v) => organizer = v ?? '',
+        ),
+        FormBuilderTextField(
+          name: 'rules_url',
+          decoration: const InputDecoration(labelText: 'Link para regulamento'),
+          onChanged: (v) => rulesUrl = v ?? '',
+          validator:
+              FormBuilderValidators.url(errorText: 'Informe uma URL válida.'),
+        ),
+        FormBuilderTextField(
+          name: 'prize',
+          decoration: const InputDecoration(labelText: 'Prêmio ou troféu'),
+          onChanged: (v) => prize = v ?? '',
+        ),
+        FormBuilderDropdown<String>(
+          name: 'level',
+          initialValue: level,
+          decoration: const InputDecoration(labelText: 'Nível da competição'),
+          items: levels
+              .map((l) => DropdownMenuItem(value: l, child: Text(l)))
+              .toList(),
+          onChanged: (v) => setState(() => level = v),
+          validator: FormBuilderValidators.required(
+              errorText: 'O nível é obrigatório.'),
+        ),
+      ],
     );
   }
 
   Widget _datesStep() {
-    return FormBuilder(
-      key: _formKeys[3],
-      child: Column(
-        children: [
-          ListTile(
-            title: Text(startDate == null
-                ? 'Selecionar data de início'
-                : 'Início: ${startDate!.toLocal()}'),
-            trailing: const Icon(Icons.calendar_today),
-            onTap: () async {
-              final picked = await showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(2020),
-                lastDate: DateTime(2035),
-              );
-              if (picked != null) setState(() => startDate = picked);
-            },
-          ),
-          ListTile(
-            title: Text(endDate == null
-                ? 'Selecionar data de término'
-                : 'Término: ${endDate!.toLocal()}'),
-            trailing: const Icon(Icons.calendar_today),
-            onTap: () async {
-              final picked = await showDatePicker(
-                context: context,
-                initialDate: startDate ?? DateTime.now(),
-                firstDate: DateTime(2020),
-                lastDate: DateTime(2035),
-              );
-              if (picked != null) setState(() => endDate = picked);
-            },
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        ListTile(
+          title: Text(startDate == null
+              ? 'Selecionar data de início'
+              : 'Início: ${startDate!.toLocal()}'),
+          trailing: const Icon(Icons.calendar_today),
+          onTap: () async {
+            final picked = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(2020),
+              lastDate: DateTime(2030),
+            );
+            if (picked != null) setState(() => startDate = picked);
+          },
+        ),
+        ListTile(
+          title: Text(endDate == null
+              ? 'Selecionar data de término'
+              : 'Término: ${endDate!.toLocal()}'),
+          trailing: const Icon(Icons.calendar_today),
+          onTap: () async {
+            final picked = await showDatePicker(
+              context: context,
+              initialDate: startDate ?? DateTime.now(),
+              firstDate: DateTime(2020),
+              lastDate: DateTime(2030),
+            );
+            if (picked != null) setState(() => endDate = picked);
+          },
+        ),
+      ],
     );
   }
 
   Widget _reviewStep() {
-    return FormBuilder(
-      key: _formKeys[4],
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("📝 Nome: $name"),
-          Text("📆 Temporada: $season"),
-          Text("🏁 Tipo: $type"),
-          Text("🔁 Ida e volta: $isHomeAndAway"),
-          Text("👥 Fase de grupos: $hasGroupStage"),
-          if (hasGroupStage) Text("🔢 Grupos: $numberOfGroups"),
-          Text("🏢 Organizador: ${organizer ?? 'N/A'}"),
-          Text("📎 Regulamento: ${rulesUrl ?? 'N/A'}"),
-          Text("🏆 Prêmio: ${prize ?? 'N/A'}"),
-          Text("🌍 Nível: ${level ?? 'N/A'}"),
-          Text("📅 Início: ${startDate?.toLocal()}"),
-          Text("📅 Fim: ${endDate?.toLocal()}"),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("📝 Nome: $name"),
+        Text("📆 Temporada: $season"),
+        Text("🏁 Tipo: $type"),
+        Text("🔁 Ida e volta: $isHomeAndAway"),
+        Text("👥 Fase de grupos: $hasGroupStage"),
+        if (hasGroupStage) Text("🔢 Grupos: $numberOfGroups"),
+        Text("🏢 Organizador: ${organizer ?? 'N/A'}"),
+        Text("📜 Regras: ${rulesUrl ?? 'N/A'}"),
+        Text("🏆 Prêmio: ${prize ?? 'N/A'}"),
+        Text("🌍 Nível: ${level ?? 'N/A'}"),
+        Text("📅 Início: ${startDate?.toLocal()}"),
+        Text("📅 Fim: ${endDate?.toLocal()}"),
+      ],
     );
   }
 
@@ -815,7 +820,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                   child: Text(_currentStep < 4 ? 'Próximo' : 'Criar'),
                 ),
               ],
-            ),
+            )
           ],
         ),
       ),
