@@ -701,11 +701,199 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
   Widget _organizerStep() {
     return Column(
       children: [
+        const Text("📜 Informações do Regulamento",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 10),
+        const Text("📊 Critérios de Desempate",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        FormBuilderCheckboxGroup(
+          name: 'tiebreakers',
+          options: const [
+            FormBuilderFieldOption(value: 'Diferença de gols'),
+            FormBuilderFieldOption(value: 'Gols marcados'),
+            FormBuilderFieldOption(value: 'Confronto direto'),
+            FormBuilderFieldOption(value: 'Cartões (fair play)'),
+            FormBuilderFieldOption(value: 'Sorteio'),
+          ],
+        ),
+        const SizedBox(height: 16),
+        const Text("🏆 Sistema de Pontuação",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        FormBuilderDropdown(
+          name: 'point_system',
+          decoration: const InputDecoration(labelText: 'Sistema de Pontuação'),
+          items: const [
+            DropdownMenuItem(
+                value: '3-1-0',
+                child: Text('Vitória: 3, Empate: 1, Derrota: 0')),
+            DropdownMenuItem(
+                value: '2-1-0',
+                child: Text('Vitória: 2, Empate: 1, Derrota: 0')),
+          ],
+          validator: FormBuilderValidators.required(errorText: 'Obrigatório'),
+        ),
+        const SizedBox(height: 16),
+        const Text("📌 Formato da Competição",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        FormBuilderDropdown(
+          name: 'match_format',
+          decoration: const InputDecoration(labelText: 'Formato da competição'),
+          items: const [
+            DropdownMenuItem(
+                value: 'Grupos + Mata-mata',
+                child: Text('Fase de grupos + mata-mata')),
+            DropdownMenuItem(
+                value: 'Liga', child: Text('Todos contra todos (liga)')),
+            DropdownMenuItem(
+                value: 'Eliminatória direta',
+                child: Text('Eliminatória direta')),
+          ],
+        ),
+        FormBuilderDropdown(
+          name: 'match_leg',
+          decoration: const InputDecoration(labelText: 'Tipo de confronto'),
+          items: const [
+            DropdownMenuItem(value: 'Ida e volta', child: Text('Ida e volta')),
+            DropdownMenuItem(value: 'Jogo único', child: Text('Jogo único')),
+          ],
+        ),
+        const SizedBox(height: 16),
+        const Text("🔄 Substituições",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         FormBuilderTextField(
-          name: 'organizer',
+          name: 'max_subs',
           decoration:
-              const InputDecoration(labelText: 'Organizador (CAF, FIFA...)'),
-          onChanged: (v) => organizer = v ?? '',
+              const InputDecoration(labelText: 'Número máximo permitido'),
+          keyboardType: TextInputType.number,
+          validator: FormBuilderValidators.numeric(
+              errorText: 'Informe um número válido'),
+        ),
+        FormBuilderSwitch(
+          name: 'extra_subs_et',
+          title: const Text('Permite substituições extras na prorrogação?'),
+        ),
+        const SizedBox(height: 16),
+        const Text("⏱️ Tempo de Jogo",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        FormBuilderDropdown(
+          name: 'match_duration',
+          decoration: const InputDecoration(labelText: 'Duração do jogo'),
+          items: const [
+            DropdownMenuItem(value: '2x45', child: Text('90 minutos (2x45)')),
+            DropdownMenuItem(value: '2x30', child: Text('60 minutos (2x30)')),
+          ],
+        ),
+        FormBuilderSwitch(
+          name: 'extra_time',
+          title: const Text('Adiciona prorrogação? (2x15)'),
+        ),
+        FormBuilderSwitch(
+          name: 'penalties',
+          title: const Text('Pênaltis em caso de empate?'),
+        ),
+        const SizedBox(height: 16),
+        const Text("👥 Inscrição de Jogadores",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        FormBuilderTextField(
+          name: 'max_players',
+          decoration: const InputDecoration(
+              labelText: 'Número máximo de jogadores por equipe'),
+          keyboardType: TextInputType.number,
+        ),
+        FormBuilderDateTimePicker(
+          name: 'registration_deadline',
+          decoration:
+              const InputDecoration(labelText: 'Data limite de inscrição'),
+          inputType: InputType.date,
+        ),
+        FormBuilderSwitch(
+          name: 'foreign_players',
+          title: const Text('Permitir jogadores estrangeiros?'),
+        ),
+        const SizedBox(height: 16),
+        const Text("🚫 Punições",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        FormBuilderCheckboxGroup(
+          name: 'punishments',
+          options: const [
+            FormBuilderFieldOption(value: 'Acúmulo de cartões'),
+            FormBuilderFieldOption(value: 'Suspensões automáticas'),
+            FormBuilderFieldOption(value: 'Protestos e recursos'),
+          ],
+        ),
+        const SizedBox(height: 16),
+        const Text("🏅 Premiações",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        FormBuilderSwitch(
+          name: 'prize_champion',
+          title: const Text('Premiação para o campeão'),
+        ),
+        FormBuilderSwitch(
+          name: 'prize_top_scorer',
+          title: const Text('Premiação para artilheiro'),
+        ),
+        FormBuilderSwitch(
+          name: 'prize_fair_play',
+          title: const Text('Equipe mais disciplinada'),
+        ),
+        const SizedBox(height: 30),
+        ElevatedButton(
+          onPressed: () {
+            if (_formKey.currentState?.saveAndValidate() ?? false) {
+              final rules = _formKey.currentState!.value;
+              print('✔️ Regulamento salvo:\n$rules');
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Regulamento salvo com sucesso!")),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                    content: Text("Preencha os campos obrigatórios")),
+              );
+            }
+          },
+          child: const Text('Salvar Regulamento'),
+        ),
+        FormBuilderDropdown(
+          name: 'match_time',
+          decoration: const InputDecoration(labelText: 'Tempo de Jogo'),
+          items: const [
+            DropdownMenuItem(value: '2x45', child: Text('2x45 minutos')),
+            DropdownMenuItem(value: '2x30', child: Text('2x30 minutos')),
+          ],
+        ),
+        FormBuilderSwitch(
+          name: 'extra_time',
+          title: const Text('Permite prorrogação?'),
+          initialValue: false,
+        ),
+        FormBuilderSwitch(
+          name: 'penalties',
+          title: const Text('Permite disputa por pênaltis?'),
+          initialValue: false,
+        ),
+        const SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: () {
+            if (_formKey.currentState?.saveAndValidate() ?? false) {
+              final rules = _formKey.currentState!.value;
+              print('📝 Regulamento criado: $rules');
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Regulamento salvo com sucesso")),
+              );
+
+              // Aqui você pode salvar no backend ou local
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                    content: Text(
+                        "Por favor, preencha todos os campos obrigatórios")),
+              );
+            }
+          },
+          child: const Text('Salvar Regulamento'),
         ),
         FormBuilderTextField(
           name: 'rules_url',
