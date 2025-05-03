@@ -123,7 +123,8 @@ class AppTheme {
         ),
         textTheme: const TextTheme(
           bodyLarge: TextStyle(
-            color: Color(0xFF777777),
+            // color: Color(0xFF777777),
+            color: Colors.black,
             fontFamily: AppStrings.fontFamily,
           ),
           bodyMedium: TextStyle(
@@ -142,12 +143,12 @@ class AppTheme {
             color: Color(0xFF777777),
             fontFamily: AppStrings.fontFamily,
           ),
-          titleMedium: TextStyle(
-            color: Colors.black,
-            fontFamily: AppStrings.fontFamily,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+          // titleMedium: TextStyle(
+          //   color: Colors.black,
+          //   fontFamily: AppStrings.fontFamily,
+          //   fontSize: 14,
+          //   fontWeight: FontWeight.bold,
+          // ),
           titleLarge: TextStyle(
             color: AppColors.primary,
             fontFamily: AppStrings.fontFamily,

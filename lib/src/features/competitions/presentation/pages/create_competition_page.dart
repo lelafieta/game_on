@@ -528,6 +528,9 @@
 //     );
 //   }
 // }
+import 'package:bottom_picker/bottom_picker.dart';
+import 'package:bottom_picker/resources/arrays.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -714,17 +717,60 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
     );
   }
 
+  void _openDatePicker(BuildContext context) {
+    BottomPicker.date(
+      pickerTitle: Text(
+        'Set your Birthday',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 15,
+          color: Colors.blue,
+        ),
+      ),
+      dateOrder: DatePickerDateOrder.dmy,
+      initialDateTime: DateTime(1996, 10, 22),
+      maxDateTime: DateTime(1998),
+      minDateTime: DateTime(1980),
+      pickerTextStyle: TextStyle(
+        color: Colors.blue,
+        fontWeight: FontWeight.bold,
+        fontSize: 16,
+      ),
+      onChange: (index) {
+        print(index);
+      },
+      onSubmit: (index) {
+        print(index);
+      },
+      onDismiss: (p0) {
+        print(p0);
+      },
+      bottomPickerTheme: BottomPickerTheme.plumPlate,
+    ).show(context);
+  }
+
   Widget _datesStep() {
     return FormBuilder(
       key: _formKey,
       child: Column(
         children: [
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                _openDatePicker(context);
+              },
+              child: Text('Date Picker with button style',
+                  textAlign: TextAlign.center),
+            ),
+          ),
           FormBuilderDateTimePicker(
             name: 'start_date',
             decoration: const InputDecoration(labelText: 'Data de início'),
             inputType: InputType.date,
             onChanged: (v) => startDate = v,
           ),
+          const SizedBox(height: 15),
           FormBuilderDateTimePicker(
             name: 'end_date',
             decoration: const InputDecoration(labelText: 'Data de término'),
