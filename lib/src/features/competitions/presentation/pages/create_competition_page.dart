@@ -534,6 +534,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:game_on/src/config/themes/app_colors.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:uuid/uuid.dart';
 
@@ -719,20 +720,20 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
 
   void _openDatePicker(BuildContext context) {
     BottomPicker.date(
-      pickerTitle: Text(
-        'Set your Birthday',
+      pickerTitle: const Text(
+        'Data de início',
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 15,
-          color: Colors.blue,
+          color: AppColors.primary,
         ),
       ),
       dateOrder: DatePickerDateOrder.dmy,
       initialDateTime: DateTime(1996, 10, 22),
       maxDateTime: DateTime(1998),
       minDateTime: DateTime(1980),
-      pickerTextStyle: TextStyle(
-        color: Colors.blue,
+      pickerTextStyle: const TextStyle(
+        color: AppColors.primary,
         fontWeight: FontWeight.bold,
         fontSize: 16,
       ),
