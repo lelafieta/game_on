@@ -612,10 +612,14 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
       case 0:
         return _basicInfoStep();
       case 1:
+        return _formatStep();
+      case 2:
         return _organizerStep();
       case 3:
-        return _rulesStep();
+        return _datesStep();
       case 4:
+        return _rulesStep();
+      case 5:
         return _reviewStep();
       default:
         return const SizedBox();
@@ -655,32 +659,6 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
             decoration: const InputDecoration(labelText: 'Tipo de competição'),
             validator:
                 FormBuilderValidators.required(errorText: "Campo obrigatório"),
-          ),
-          const SizedBox(height: 15),
-          FormBuilderDropdown<String>(
-            name: 'level',
-            initialValue: level,
-            decoration: const InputDecoration(labelText: 'Nível da competição'),
-            items: levels
-                .map((l) => DropdownMenuItem(value: l, child: Text(l)))
-                .toList(),
-            onChanged: (v) => setState(() => level = v),
-            validator:
-                FormBuilderValidators.required(errorText: "Campo obrigatório"),
-          ),
-          const SizedBox(height: 15),
-          FormBuilderDateTimePicker(
-            name: 'start_date',
-            decoration: const InputDecoration(labelText: 'Data de início'),
-            inputType: InputType.date,
-            onChanged: (v) => startDate = v,
-          ),
-          const SizedBox(height: 15),
-          FormBuilderDateTimePicker(
-            name: 'end_date',
-            decoration: const InputDecoration(labelText: 'Data de término'),
-            inputType: InputType.date,
-            onChanged: (v) => endDate = v,
           ),
         ],
       ),
