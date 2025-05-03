@@ -535,6 +535,8 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateCompetitionPage extends StatefulWidget {
+  const CreateCompetitionPage({super.key});
+
   @override
   State<CreateCompetitionPage> createState() => _CreateCompetitionPageState();
 }
@@ -741,8 +743,13 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("📊 Critérios de Desempate",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 15),
+            const Text("Critérios de Desempate",
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black)),
+            const SizedBox(height: 10),
             FormBuilderCheckboxGroup(name: 'tiebreakers', options: const [
               FormBuilderFieldOption(value: 'Diferença de gols'),
               FormBuilderFieldOption(value: 'Gols marcados'),
@@ -750,9 +757,13 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
               FormBuilderFieldOption(value: 'Cartões (fair play)'),
               FormBuilderFieldOption(value: 'Sorteio'),
             ]),
-            const SizedBox(height: 16),
-            const Text("🏆 Sistema de Pontuação",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 15),
+            const Text("Sistema de pontuação",
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black)),
+            const SizedBox(height: 10),
             FormBuilderDropdown(
                 name: 'point_system',
                 decoration:
@@ -767,9 +778,13 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                 ],
                 validator: FormBuilderValidators.required(
                     errorText: "Campo obrigatório")),
-            const SizedBox(height: 16),
-            const Text("📌 Formato da Competição",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 15),
+            const Text("Formato da Competição",
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black)),
+            const SizedBox(height: 10),
             FormBuilderDropdown(
                 name: 'match_format',
                 decoration:
@@ -784,6 +799,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                       value: 'Eliminatória direta',
                       child: Text('Eliminatória direta')),
                 ]),
+            const SizedBox(height: 15),
             FormBuilderDropdown(
                 name: 'match_leg',
                 decoration:
@@ -794,22 +810,31 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                   DropdownMenuItem(
                       value: 'Jogo único', child: Text('Jogo único')),
                 ]),
-            const SizedBox(height: 16),
-            const Text("🔄 Substituições",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 15),
+            const Text("Substituição",
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black)),
+            const SizedBox(height: 10),
             FormBuilderTextField(
                 name: 'max_subs',
                 decoration:
                     const InputDecoration(labelText: 'Número máximo permitido'),
                 keyboardType: TextInputType.number,
                 validator: FormBuilderValidators.numeric()),
+            const SizedBox(height: 15),
             FormBuilderSwitch(
                 name: 'extra_subs_et',
                 title:
                     const Text('Permite substituições extras na prorrogação?')),
-            const SizedBox(height: 16),
-            const Text("⏱️ Tempo de Jogo",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 15),
+            const Text("Tempo de jogo",
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black)),
+            const SizedBox(height: 10),
             FormBuilderDropdown(
                 name: 'match_duration',
                 decoration: const InputDecoration(labelText: 'Duração do jogo'),
@@ -819,45 +844,63 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                   DropdownMenuItem(
                       value: '2x30', child: Text('60 minutos (2x30)')),
                 ]),
+            const SizedBox(height: 15),
             FormBuilderSwitch(
                 name: 'extra_time',
                 title: const Text('Adiciona prorrogação? (2x15)')),
+            const SizedBox(height: 15),
             FormBuilderSwitch(
                 name: 'penalties',
                 title: const Text('Pênaltis em caso de empate?')),
-            const SizedBox(height: 16),
-            const Text("👥 Inscrição de Jogadores",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 15),
+            const Text("Inscrição de Jogadores",
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black)),
+            const SizedBox(height: 10),
             FormBuilderTextField(
                 name: 'max_players',
                 decoration: const InputDecoration(
                     labelText: 'Número máximo de jogadores por equipe'),
                 keyboardType: TextInputType.number),
+            const SizedBox(height: 15),
             FormBuilderDateTimePicker(
                 name: 'registration_deadline',
                 decoration: const InputDecoration(
                     labelText: 'Data limite de inscrição'),
                 inputType: InputType.date),
+            const SizedBox(height: 15),
             FormBuilderSwitch(
                 name: 'foreign_players',
                 title: const Text('Permitir jogadores estrangeiros?')),
-            const SizedBox(height: 16),
-            const Text("🚫 Punições",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 15),
+            const Text("Punições",
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black)),
+            const SizedBox(height: 10),
             FormBuilderCheckboxGroup(name: 'punishments', options: const [
               FormBuilderFieldOption(value: 'Acúmulo de cartões'),
               FormBuilderFieldOption(value: 'Suspensões automáticas'),
               FormBuilderFieldOption(value: 'Protestos e recursos'),
             ]),
-            const SizedBox(height: 16),
-            const Text("🏅 Premiações",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 15),
+            const Text("Premiações",
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black)),
+            const SizedBox(height: 10),
             FormBuilderSwitch(
                 name: 'prize_champion',
                 title: const Text('Premiação para o campeão')),
+            const SizedBox(height: 15),
             FormBuilderSwitch(
                 name: 'prize_top_scorer',
                 title: const Text('Premiação para artilheiro')),
+            const SizedBox(height: 15),
             FormBuilderSwitch(
                 name: 'prize_fair_play',
                 title: const Text('Equipe mais disciplinada')),
@@ -900,8 +943,21 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
               children: [
                 if (_currentStep > 0)
                   TextButton(
-                      onPressed: previousStep, child: const Text('Voltar')),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                      ),
+                      onPressed: previousStep,
+                      child: const Text('Voltar')),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                  ),
                   onPressed: nextStep,
                   child: Text(_currentStep == 5 ? 'Finalizar' : 'Próximo'),
                 ),
