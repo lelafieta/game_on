@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 
 import '../config/routes/app_pages.dart';
@@ -9,11 +10,15 @@ class GameOnApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final FlutterLocalization localization = FlutterLocalization.instance;
     return GetMaterialApp(
       title: 'GameOn',
       darkTheme: AppTheme.lightTheme,
       theme: AppTheme.lightTheme,
       onGenerateRoute: AppPages.generateRoute,
+      locale: const Locale('pt', 'PT'),
+      supportedLocales: localization.supportedLocales,
+      localizationsDelegates: localization.localizationsDelegates,
     );
   }
 }

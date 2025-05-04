@@ -532,6 +532,7 @@ import 'package:bottom_picker/bottom_picker.dart';
 import 'package:bottom_picker/resources/arrays.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:game_on/src/config/themes/app_colors.dart';
@@ -719,35 +720,62 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
   }
 
   void _openDatePicker(BuildContext context) {
-    BottomPicker.date(
-      pickerTitle: const Text(
-        'Data de início',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 15,
-          color: AppColors.primary,
-        ),
-      ),
-      dateOrder: DatePickerDateOrder.dmy,
-      initialDateTime: DateTime(1996, 10, 22),
-      maxDateTime: DateTime(1998),
-      minDateTime: DateTime(1980),
-      pickerTextStyle: const TextStyle(
-        color: AppColors.primary,
-        fontWeight: FontWeight.bold,
-        fontSize: 16,
-      ),
-      onChange: (index) {
-        print(index);
-      },
-      onSubmit: (index) {
-        print(index);
-      },
-      onDismiss: (p0) {
-        print(p0);
-      },
-      bottomPickerTheme: BottomPickerTheme.plumPlate,
-    ).show(context);
+    // BottomPicker.date(
+    //   pickerTitle: const Text(
+    //     'Data de início',
+    //     style: TextStyle(
+    //       fontWeight: FontWeight.bold,
+    //       fontSize: 16,
+    //       color: AppColors.primary,
+    //     ),
+    //   ),
+    //   buttonContent: const Center(
+    //     child: Text(
+    //       "Selecionar",
+    //       style: TextStyle(
+    //         fontWeight: FontWeight.bold,
+    //         fontSize: 16,
+    //         color: Colors.white,
+    //       ),
+    //     ),
+    //   ),
+    //   buttonWidth: MediaQuery.sizeOf(context).width - 20,
+    //   buttonPadding: 16,
+    //   gradientColors: const [
+    //     // AppColors.secondary,
+    //     AppColors.primary,
+    //     Color(0xFF6A1B9A)
+    //   ],
+    //   dateOrder: DatePickerDateOrder.dmy,
+    //   initialDateTime: DateTime(1996, 10, 22),
+    //   maxDateTime: DateTime(1998),
+    //   minDateTime: DateTime(1980),
+    //   pickerTextStyle: const TextStyle(
+    //     color: AppColors.primary,
+    //     fontWeight: FontWeight.bold,
+    //     fontSize: 16,
+    //   ),
+    //   onChange: (index) {
+    //     print(index);
+    //   },
+    //   onSubmit: (index) {
+    //     print(index);
+    //   },
+    //   onDismiss: (p0) {
+    //     print(p0);
+    //   },
+    //   bottomPickerTheme: BottomPickerTheme.plumPlate,
+    // ).show(context);
+
+    DatePicker.showDatePicker(context,
+        showTitleActions: true,
+        minTime: DateTime.now(),
+        maxTime: DateTime.now().add(const Duration(days: 365 * 2)),
+        onChanged: (date) {
+      print('change $date');
+    }, onConfirm: (date) {
+      print('confirm $date');
+    }, currentTime: DateTime.now(), locale: LocaleType.pt);
   }
 
   Widget _datesStep() {
@@ -755,21 +783,21 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
       key: _formKey,
       child: Column(
         children: [
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                _openDatePicker(context);
-              },
-              child: Text('Date Picker with button style',
-                  textAlign: TextAlign.center),
-            ),
-          ),
-          FormBuilderDateTimePicker(
-            name: 'start_date',
+          // SizedBox(
+          //   width: double.infinity,
+          //   child: ElevatedButton(
+          //     onPressed: () {},
+          //     child: const Text('Date Picker with button style',
+          //         textAlign: TextAlign.center),
+          //   ),
+          // ),
+          FormBuilderTextField(
+            name: "start_date",
             decoration: const InputDecoration(labelText: 'Data de início'),
-            inputType: InputType.date,
-            onChanged: (v) => startDate = v,
+            readOnly: true,
+            onTap: () {
+              _openDatePicker(context);
+            },
           ),
           const SizedBox(height: 15),
           FormBuilderDateTimePicker(
