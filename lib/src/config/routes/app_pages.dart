@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:game_on/src/features/auth/presentation/pages/login_page.dart';
 import 'package:game_on/src/features/competitions/presentation/pages/competion_details_page.dart';
 import 'package:game_on/src/features/competitions/presentation/pages/create_competition_page.dart';
 import 'package:game_on/src/features/competitions/presentation/pages/my_competition_details_page.dart';
@@ -104,6 +105,21 @@ class AppPages {
         return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) {
             return CreateCompetitionPage();
+          },
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return SharedAxisTransition(
+              animation: animation,
+              secondaryAnimation: secondaryAnimation,
+              transitionType: SharedAxisTransitionType.vertical,
+              child: child,
+            );
+          },
+        );
+
+      case AppRoutes.home:
+        return PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) {
+            return LoginPage();
           },
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SharedAxisTransition(
