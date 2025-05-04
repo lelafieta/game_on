@@ -1,5 +1,14 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:game_on/src/features/auth/domain/usecases/login_usecase.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../features/auth/data/datasources/auth_remote_datasource.dart';
+import '../features/auth/data/datasources/i_auth_remote_datasource.dart';
+import '../features/auth/data/repositories/auth_repository.dart';
+import '../features/auth/domain/repositories/i_auth_repository.dart';
+import '../features/auth/presentation/cubit/auth_cubit.dart';
+// import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 
 GetIt sl = GetIt.instance;
 
@@ -7,17 +16,17 @@ Future<void> init() async {
   await _initSupabase();
   _registerCubits();
   _registerRepositories();
-  _registerIRepositories();
   _registerDatasources();
-  _registerIDatasources();
   _registerUseCases();
   _registerExternal();
 }
 
 Future<void> _initSupabase() async {
+  final supabaseUrl = dotenv.env["SUPABASE_URL"];
+  final supabaseAnon = dotenv.env["SUPABASE_ANON"];
   await Supabase.initialize(
-    url: 'https://your-supabase-url.supabase.co',
-    anonKey: 'your-anon-key',
+    url: supabaseUrl!,
+    anonKey: supabaseAnon!,
   );
   final supabase = Supabase.instance.client;
   sl.registerLazySingleton(() => supabase);
@@ -26,31 +35,29 @@ Future<void> _initSupabase() async {
 void _registerCubits() {
   // Registre seus Cubits aqui
   // Exemplo: sl.registerFactory(() => YourCubit(sl()));
-}
-
-void _registerIRepositories() {
-  // Registre suas interfaces de repositórios aqui
-  // Exemplo: sl.registerLazySingleton<IYourRepository>(() => YourRepository(sl()));
+  sl.registerFactory(
+      () => AuthCubit(loginUseCase: sl(), isLoggedInUseCase: sl()));
 }
 
 void _registerRepositories() {
   // Registre seus repositórios aqui
   // Exemplo: sl.registerLazySingleton(() => YourRepository(sl()));
-}
-
-void _registerIDatasources() {
-  // Registre suas interfaces de datasources aqui
-  // Exemplo: sl.registerLazySingleton<IYourDatasource>(() => YourDatasource(sl()));
+  sl.registerLazySingleton<IAuthRepository>(
+      () => AuthRepository(authRemoteDataSource: sl()));
 }
 
 void _registerDatasources() {
   // Registre seus datasources aqui
   // Exemplo: sl.registerLazySingleton(() => YourDatasource(sl()));
+
+  sl.registerLazySingleton<IAuthRemoteDataSource>(
+      () => AuthRemoteDataSource(client: sl()));
 }
 
 void _registerUseCases() {
   // Registre seus casos de uso aqui
   // Exemplo: sl.registerLazySingleton(() => YourUseCase(sl()));
+  sl.registerLazySingleton(() => LoginUseCase(authRepository: sl()));
 }
 
 void _registerExternal() {
