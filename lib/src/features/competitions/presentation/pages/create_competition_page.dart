@@ -107,6 +107,12 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Text(
+            "Nome da competição",
+            style: TextStyle(
+                fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+          const SizedBox(height: 10),
           FormBuilderTextField(
             name: 'name',
             decoration: const InputDecoration(hintText: 'Nome da competição'),
@@ -115,6 +121,12 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                 FormBuilderValidators.required(errorText: "Campo obrigatório"),
           ),
           const SizedBox(height: 15),
+          const Text(
+            "Temporada",
+            style: TextStyle(
+                fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+          const SizedBox(height: 10),
           FormBuilderTextField(
             name: 'season',
             decoration: const InputDecoration(hintText: 'Temporada (ex: 2025)'),
@@ -123,6 +135,12 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                 FormBuilderValidators.required(errorText: "Campo obrigatório"),
           ),
           const SizedBox(height: 15),
+          const Text(
+            "Tipo de competição",
+            style: TextStyle(
+                fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+          const SizedBox(height: 10),
           FormBuilderDropdown<String>(
             name: 'type',
             initialValue: type,
