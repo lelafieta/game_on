@@ -1,4 +1,4 @@
 class AppEntity {
-  static int? uId;
+  static String? uId;
   // static Profile? currentUser;
 }

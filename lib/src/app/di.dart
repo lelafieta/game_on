@@ -1,9 +1,12 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:game_on/src/core/cache/secure_storage_helper.dart';
 import 'package:game_on/src/features/auth/domain/usecases/is_logged_in_usecase.dart';
 import 'package:game_on/src/features/auth/domain/usecases/login_usecase.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../core/cache/i_secure_storage_helper.dart';
 import '../features/auth/data/datasources/auth_remote_datasource.dart';
 import '../features/auth/data/datasources/i_auth_remote_datasource.dart';
 import '../features/auth/data/repositories/auth_repository.dart';
@@ -36,8 +39,8 @@ Future<void> _initSupabase() async {
 void _registerCubits() {
   // Registre seus Cubits aqui
   // Exemplo: sl.registerFactory(() => YourCubit(sl()));
-  sl.registerFactory(
-      () => AuthCubit(loginUseCase: sl(), isLoggedInUseCase: sl()));
+  sl.registerFactory(() => AuthCubit(
+      loginUseCase: sl(), isLoggedInUseCase: sl(), secureStorageHelper: sl()));
 }
 
 void _registerRepositories() {
@@ -65,4 +68,8 @@ void _registerUseCases() {
 void _registerExternal() {
   // Registre dependências externas aqui
   // Exemplo: sl.registerLazySingleton(() => YourExternalService());
+
+  sl.registerLazySingleton<ISecureStorageHelper>(
+      () => SecureStorageHelper(secureStorage: sl()));
+  sl.registerLazySingleton(() => const FlutterSecureStorage());
 }
