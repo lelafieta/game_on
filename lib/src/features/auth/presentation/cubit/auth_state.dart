@@ -12,12 +12,10 @@ final class AuthInitial extends AuthState {}
 final class AuthLoading extends AuthState {}
 
 final class AuthAuthenticated extends AuthState {
-  final String userId;
-
-  const AuthAuthenticated(this.userId);
+  AuthAuthenticated();
 
   @override
-  List<Object> get props => [userId];
+  List<Object> get props => [];
 }
 
 final class AuthUnauthenticated extends AuthState {}

@@ -14,9 +14,10 @@ class AuthCubit extends Cubit<AuthState> {
       : super(AuthInitial());
 
   Future<void> login(LoginEntity params) async {
+    emit(AuthLoading());
     final result = await loginUseCase.call(params);
 
     result.fold((l) => emit(AuthError(message: l.message)),
-        (r) => emit(AuthUnauthenticated()));
+        (r) => emit(AuthAuthenticated()));
   }
 }

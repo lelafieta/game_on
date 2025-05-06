@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localization/flutter_localization.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 import '../config/routes/app_pages.dart';
 import '../config/themes/app_theme.dart';
+import '../features/auth/presentation/cubit/auth_cubit.dart';
+import 'di.dart' as di;
 
 class GameOnApp extends StatelessWidget {
   const GameOnApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final FlutterLocalization localization = FlutterLocalization.instance;
-    return GetMaterialApp(
-      title: 'GameOn',
-      darkTheme: AppTheme.lightTheme,
-      theme: AppTheme.lightTheme,
-      onGenerateRoute: AppPages.generateRoute,
-      locale: const Locale('pt', 'PT'),
-      supportedLocales: localization.supportedLocales,
-      localizationsDelegates: localization.localizationsDelegates,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => di.sl<AuthCubit>()),
+      ],
+      child: GetMaterialApp(
+        title: 'GameOn',
+        darkTheme: AppTheme.lightTheme,
+        theme: AppTheme.lightTheme,
+        onGenerateRoute: AppPages.generateRoute,
+        builder: EasyLoading.init(),
+      ),
     );
   }
 }

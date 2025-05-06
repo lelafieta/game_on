@@ -1,4 +1,5 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:game_on/src/features/auth/domain/usecases/is_logged_in_usecase.dart';
 import 'package:game_on/src/features/auth/domain/usecases/login_usecase.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -58,6 +59,7 @@ void _registerUseCases() {
   // Registre seus casos de uso aqui
   // Exemplo: sl.registerLazySingleton(() => YourUseCase(sl()));
   sl.registerLazySingleton(() => LoginUseCase(authRepository: sl()));
+  sl.registerLazySingleton(() => IsLoggedInUseCase(authRepository: sl()));
 }
 
 void _registerExternal() {

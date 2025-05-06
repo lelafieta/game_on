@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failure.dart';
+import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/i_auth_repository.dart';
 import '../datasources/i_auth_remote_datasource.dart';
 
@@ -21,12 +22,17 @@ class AuthRepository extends IAuthRepository {
   }
 
   @override
-  Future<Either<Failure, Unit>> login(String email, String password) async {
+  Future<Either<Failure, UserEntity>> login(
+      String email, String password) async {
     try {
-      await authRemoteDataSource.login(email, password);
-      return const Right(unit);
+      final response = await authRemoteDataSource.login(email, password);
+      return Right(response);
+    } on Failure catch (failure) {
+      return Left(failure);
     } catch (e) {
-      return Left(Failure(message: "$e"));
+      return Left(Failure(
+        message: e.toString(),
+      ));
     }
   }
 }
