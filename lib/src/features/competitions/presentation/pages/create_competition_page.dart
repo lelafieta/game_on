@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:input_quantity/input_quantity.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../config/themes/app_colors.dart';
+import '../../../../core/resources/app_icons.dart';
 
 class CreateCompetitionPage extends StatefulWidget {
   const CreateCompetitionPage({super.key});
@@ -61,6 +63,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
   TextEditingController type = TextEditingController(text: "league");
   TextEditingController startDate = TextEditingController();
   TextEditingController endDate = TextEditingController();
+  TextEditingController registrationDeadlineDate = TextEditingController();
   TextEditingController category = TextEditingController(text: "local");
   TextEditingController gameType = TextEditingController(text: "7X7");
   TextEditingController playerType = TextEditingController(text: "male");
@@ -69,11 +72,23 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
   TextEditingController pointsDraw = TextEditingController(text: "1");
   TextEditingController pointsLose = TextEditingController(text: "0");
   TextEditingController substitutionsAllowed = TextEditingController(text: "5");
+  TextEditingController maxPlayers = TextEditingController(text: "15");
+
+  TextEditingController isForChampionValue = TextEditingController(text: "0");
+  TextEditingController isForTopScorerValue = TextEditingController(text: "0");
+  TextEditingController isForFairPlayValue = TextEditingController(text: "0");
+
   bool drawsAllowed = true;
   bool extraTimeAllowed = true;
   int matchDuration = 60;
   int restTime = 10;
   int extraTimeDuration = 8;
+  bool penaltyAllowed = true;
+  bool isHomeAndAway = false;
+
+  bool isForChampion = true;
+  bool isForTopScorer = true;
+  bool isForFairPlay = true;
 
   List<String> tiebreakersSelected = ["goal_difference"];
   List<Map<String, String>> tiebreakers = [
@@ -86,20 +101,41 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
   ];
 
   void nextStep() {
-    final requiresValidation = _currentStep == 0 || (_currentStep == 2);
-
-    if (!requiresValidation ||
-        (_formKeyStep0.currentState?.saveAndValidate() ?? false)) {
+    if (_currentStep == 0 && _formKeyStep0.currentState!.saveAndValidate()) {
       setState(() {
-        if (_currentStep < 4) {
-          _currentStep++;
-        } else {
-          _submit();
-        }
+        _currentStep++;
       });
-    } else {
-      print("⚠️ Formulário inválido.");
+    } else if (_currentStep == 1 &&
+        _formKeyStep1.currentState!.saveAndValidate()) {
+      setState(() {
+        _currentStep++;
+      });
+    } else if (_currentStep == 2 &&
+        _formKeyStep2.currentState!.saveAndValidate()) {
+      setState(() {
+        _currentStep++;
+      });
+    } else if (_currentStep == 3 &&
+        _formKeyStep3.currentState!.saveAndValidate()) {
+      setState(() {
+        _currentStep++;
+      });
     }
+
+    // final requiresValidation = _currentStep == 0 || (_currentStep == 2);
+
+    // if (!requiresValidation ||
+    //     (_formKeyStep0.currentState?.saveAndValidate() ?? false)) {
+    //   setState(() {
+    //     if (_currentStep < 4) {
+    //       _currentStep++;
+    //     } else {
+    //       _submit();
+    //     }
+    //   });
+    // } else {
+    //   print(" Formulário inválido.");
+    // }
   }
 
   void previousStep() {
@@ -193,6 +229,35 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                   const InputDecoration(labelText: 'Tipo de competição'),
               validator: FormBuilderValidators.required(
                   errorText: "Campo obrigatório"),
+            ),
+            const SizedBox(height: 15),
+            const Text("Inscrição de Jogadores",
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black)),
+            const SizedBox(height: 10),
+            FormBuilderTextField(
+              name: 'max_players',
+              controller: maxPlayers,
+              decoration: const InputDecoration(
+                  hintText: 'Número máximo de jogadores por equipe'),
+              keyboardType: TextInputType.number,
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.required(errorText: "Campo obrigatório"),
+                FormBuilderValidators.numeric(
+                    errorText: "Apenas valor numérico")
+              ]),
+            ),
+            const SizedBox(height: 15),
+            FormBuilderTextField(
+              name: "registration_deadline",
+              controller: registrationDeadlineDate,
+              decoration: const InputDecoration(labelText: 'Última da registo'),
+              readOnly: true,
+              onTap: () {
+                _openDatePickerRegistrationDeadline(context);
+              },
             ),
             const SizedBox(height: 15),
             FormBuilderTextField(
@@ -539,42 +604,38 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
             ),
             const SizedBox(height: 15),
             FormBuilderSwitch(
-                name: 'penalties',
-                title: const Text('Pênaltis em caso de empate?')),
-            const SizedBox(height: 15),
-            const Text("Inscrição de Jogadores",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black)),
-            const SizedBox(height: 10),
-            FormBuilderTextField(
-                name: 'max_players',
-                decoration: const InputDecoration(
-                    hintText: 'Número máximo de jogadores por equipe'),
-                keyboardType: TextInputType.number),
-            const SizedBox(height: 15),
-            FormBuilderDateTimePicker(
-                name: 'registration_deadline',
-                decoration:
-                    const InputDecoration(hintText: 'Data limite de inscrição'),
-                inputType: InputType.date),
+              name: 'penalty_allowed',
+              initialValue: penaltyAllowed,
+              title: const Text('Pênaltis em caso de empate?'),
+              onChanged: (value) {
+                setState(() {
+                  penaltyAllowed = value!;
+                });
+              },
+            ),
             const SizedBox(height: 15),
             FormBuilderSwitch(
-                name: 'foreign_players',
-                title: const Text('Permitir jogadores estrangeiros?')),
+              name: 'penalties',
+              initialValue: isHomeAndAway,
+              title: const Text('Jogo de ida & volta'),
+              onChanged: (value) {
+                setState(() {
+                  isHomeAndAway = value!;
+                });
+              },
+            ),
             const SizedBox(height: 15),
-            const Text("Punições",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black)),
-            const SizedBox(height: 10),
-            FormBuilderCheckboxGroup(name: 'punishments', options: const [
-              FormBuilderFieldOption(value: 'Acúmulo de cartões'),
-              FormBuilderFieldOption(value: 'Suspensões automáticas'),
-              FormBuilderFieldOption(value: 'Protestos e recursos'),
-            ]),
+            // const Text("Punições",
+            //     style: TextStyle(
+            //         fontSize: 14,
+            //         fontWeight: FontWeight.bold,
+            //         color: Colors.black)),
+            // const SizedBox(height: 10),
+            // FormBuilderCheckboxGroup(name: 'punishments', options: const [
+            //   FormBuilderFieldOption(value: 'Acúmulo de cartões'),
+            //   FormBuilderFieldOption(value: 'Suspensões automáticas'),
+            //   FormBuilderFieldOption(value: 'Protestos e recursos'),
+            // ]),
             const SizedBox(height: 15),
           ],
         ),
@@ -596,31 +657,67 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                     color: Colors.black)),
             const SizedBox(height: 10),
             FormBuilderSwitch(
-                name: 'prize_champion',
-                title: const Text('Premiação para o campeão')),
+              name: 'is_for_champion',
+              title: const Text('Premiação para o campeão'),
+              onChanged: (value) {
+                setState(() {
+                  isForChampion = value!;
+                });
+              },
+            ),
             const SizedBox(height: 15),
             FormBuilderTextField(
-                name: 'max_players',
-                decoration: const InputDecoration(hintText: 'Valor'),
-                keyboardType: TextInputType.number),
+              name: 'is_for_champion_value',
+              controller: isForChampionValue,
+              decoration: const InputDecoration(hintText: 'Valor'),
+              keyboardType: TextInputType.number,
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.numeric(
+                    errorText: "Apenas valor numérico")
+              ]),
+            ),
             const SizedBox(height: 15),
             FormBuilderSwitch(
-                name: 'prize_top_scorer',
-                title: const Text('Premiação para artilheiro')),
+              name: 'is_for_top_scorer',
+              title: const Text('Premiação para artilheiro'),
+              onChanged: (value) {
+                setState(() {
+                  isForTopScorer = value!;
+                });
+              },
+            ),
             const SizedBox(height: 15),
             FormBuilderTextField(
-                name: 'max_players',
-                decoration: const InputDecoration(hintText: 'Valor'),
-                keyboardType: TextInputType.number),
+              name: 'is_for_top_scorer_value',
+              controller: isForTopScorerValue,
+              decoration: const InputDecoration(hintText: 'Valor'),
+              keyboardType: TextInputType.number,
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.numeric(
+                    errorText: "Apenas valor numérico")
+              ]),
+            ),
             const SizedBox(height: 15),
             FormBuilderSwitch(
-                name: 'prize_fair_play',
-                title: const Text('Equipe mais disciplinada')),
+              name: 'is_for_fair_play',
+              title: const Text('Equipe mais disciplinada'),
+              onChanged: (value) {
+                setState(() {
+                  isForFairPlay = value!;
+                });
+              },
+            ),
             const SizedBox(height: 15),
             FormBuilderTextField(
-                name: 'max_players',
-                decoration: const InputDecoration(hintText: 'Valor'),
-                keyboardType: TextInputType.number),
+              name: 'is_for_fair_play_value',
+              decoration: const InputDecoration(hintText: 'Valor'),
+              keyboardType: TextInputType.number,
+              controller: isForFairPlayValue,
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.numeric(
+                    errorText: "Apenas valor numérico")
+              ]),
+            ),
             const SizedBox(height: 15),
           ],
         ),
@@ -628,14 +725,122 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
     );
   }
 
+  Widget _infoTile(String icon, String titulo, String valor) {
+    return ListTile(
+      leading: SvgPicture.asset(
+        icon,
+        width: 32,
+      ),
+      title: Text(titulo),
+      subtitle: Text(valor),
+    );
+  }
+
+  Widget _boolTile(String icon, String titulo, bool valor) {
+    return ListTile(
+      leading: SvgPicture.asset(
+        icon,
+        width: 32,
+      ),
+      title: Text(titulo),
+      trailing: Icon(
+        valor ? Icons.check_circle : Icons.cancel,
+        color: valor ? Colors.green : Colors.red,
+      ),
+    );
+  }
+
+  Widget _sectionTitle(String titulo) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Text(
+        titulo,
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  String _translateCategory(String value) {
+    switch (value) {
+      case 'local':
+        return 'Local';
+      case 'national':
+        return 'Nacional';
+      case 'international':
+        return 'Internacional';
+      default:
+        return value;
+    }
+  }
+
+  String _translatePlayerType(String value) {
+    switch (value) {
+      case 'male':
+        return 'Masculino';
+      case 'female':
+        return 'Feminino';
+      case 'mixed':
+        return 'Misto';
+      default:
+        return value;
+    }
+  }
+
   Widget _reviewStep() {
-    return Column(
+    return ListView(
+      padding: const EdgeInsets.all(0),
       children: [
-        const Text(
-            'Revise as informações e clique em "Salvar" para criar a competição.'),
-        const SizedBox(height: 20),
-        ElevatedButton(
-            onPressed: _submit, child: const Text('Salvar Competição')),
+        _sectionTitle('Detalhes da Competição'),
+        _infoTile(AppIcons.competitionchampion, 'Nome', name.text),
+        _infoTile(AppIcons.calendarColor, 'Temporada', season.text),
+        _infoTile(AppIcons.competitionchampion, 'Formato',
+            type.text == "league" ? "Liga" : type.text),
+        _infoTile(
+            AppIcons.emblem, 'Categoria', _translateCategory(category.text)),
+        _infoTile(AppIcons.gendersGender, 'Tipo de Jogo', gameType.text),
+        _infoTile(AppIcons.competitionchampion, 'Tipo de Jogador',
+            _translatePlayerType(playerType.text)),
+        _infoTile(AppIcons.calendarColor, 'Data de Início', startDate.text),
+        _infoTile(AppIcons.calendarColor, 'Data de Término', endDate.text),
+        _infoTile(AppIcons.calendarColor, 'Data Limite para Inscrição',
+            registrationDeadlineDate.text),
+        _sectionTitle('Pontuação e Regras'),
+        _infoTile(
+            AppIcons.convertShapes, 'Pontos por Vitória', pointsVictory.text),
+        _infoTile(
+            AppIcons.competitionchampion, 'Pontos por Empate', pointsDraw.text),
+        _infoTile(AppIcons.competitionchampion, 'Pontos por Derrota',
+            pointsLose.text),
+        _infoTile(AppIcons.competitionchampion, 'Substituições Permitidas',
+            substitutionsAllowed.text),
+        _infoTile(AppIcons.competitionchampion, 'Máximo de Jogadores',
+            maxPlayers.text),
+        _boolTile(
+            AppIcons.competitionchampion, 'Permitir Empates', drawsAllowed),
+        _boolTile(AppIcons.competitionchampion, 'Permitir Prorrogação',
+            extraTimeAllowed),
+        _boolTile(
+            AppIcons.competitionchampion, 'Permitir Pênaltis', penaltyAllowed),
+        _boolTile(AppIcons.competitionchampion, 'Ida e Volta', isHomeAndAway),
+        _infoTile(AppIcons.competitionchampion, 'Duração da Partida',
+            '$matchDuration min'),
+        _infoTile(
+            AppIcons.competitionchampion, 'Tempo de Descanso', '$restTime min'),
+        _infoTile(AppIcons.competitionchampion, 'Duração da Prorrogação',
+            '$extraTimeDuration min'),
+        _sectionTitle('Premiação'),
+        _boolTile(AppIcons.competitionchampion, 'Premiação para Campeão',
+            isForChampion),
+        _infoTile(AppIcons.competitionchampion, 'Valor para Campeão',
+            'Kz ${isForChampionValue.text}'),
+        _boolTile(AppIcons.competitionchampion, 'Premiação para Artilheiro',
+            isForTopScorer),
+        _infoTile(AppIcons.competitionchampion, 'Valor para Artilheiro',
+            'Kz ${isForTopScorerValue.text}'),
+        _boolTile(
+            AppIcons.competitionchampion, 'Premiação Fair Play', isForFairPlay),
+        _infoTile(AppIcons.competitionchampion, 'Valor Fair Play',
+            'Kz ${isForFairPlayValue.text}'),
       ],
     );
   }
@@ -683,6 +888,23 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
       onConfirm: (date) {
         setState(() {
           endDate.text = date.toIso8601String().split('T').first;
+        });
+      },
+    );
+  }
+
+  void _openDatePickerRegistrationDeadline(BuildContext context) {
+    DatePicker.showDatePicker(
+      context,
+      showTitleActions: true,
+      minTime: DateTime.now(),
+      maxTime: DateTime.now().add(const Duration(days: 365 * 2)),
+      currentTime: DateTime.now(),
+      locale: LocaleType.pt,
+      onConfirm: (date) {
+        setState(() {
+          registrationDeadlineDate.text =
+              date.toIso8601String().split('T').first;
         });
       },
     );
