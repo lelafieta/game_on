@@ -62,4 +62,15 @@ class AppIcons {
   static const String share = "assets/icons/share-svgrepo-com.svg";
   static const String competitionchampion =
       "assets/icons/competition-champion-svgrepo-com.svg";
+
+  static const String contractPaper =
+      "assets/icons/contract-paper-svgrepo-com.svg";
+
+  static const String settings2 = "assets/icons/settings-svgrepo-com.svg";
+
+  static const String achievementChallengeMedal =
+      "assets/icons/achievement-challenge-medal-svgrepo-com.svg";
+
+  static const String emblem =
+      "assets/icons/emblem-police-badge-police-shield-security-badge-sheriff-badge-svgrepo-com.svg";
 }
