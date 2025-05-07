@@ -73,4 +73,23 @@ class AppIcons {
 
   static const String emblem =
       "assets/icons/emblem-police-badge-police-insignia-security-badge-sheriff-badge-svgrepo-com.svg";
+
+  static const String footballShoesShoe =
+      "assets/icons/football-shoes-shoe-svgrepo-com.svg";
+
+  static const String malesFriendsHug =
+      "assets/icons/males-friends-hug-side-by-side-svgrepo-com.svg";
+
+  static const String close = "assets/icons/close-svgrepo-com.svg";
+  static const String minus = "assets/icons/minus-svgrepo-com.svg";
+  static const String victory = "assets/icons/victory-medal-svgrepo-com.svg";
+
+  static const String changeSoccer =
+      "assets/icons/change-soccer-svgrepo-com.svg";
+
+  static const String stopwatch = "assets/icons/stopwatch-svgrepo-com.svg";
+  static const String soccerField = "assets/icons/soccer-field-svgrepo-com.svg";
+  static const String soccer = "assets/icons/soccer-svgrepo-com.svg";
+  static const String changePosition =
+      "assets/icons/change-position-svgrepo-com.svg";
 }

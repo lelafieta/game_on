@@ -66,6 +66,8 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
   TextEditingController registrationDeadlineDate = TextEditingController();
   TextEditingController category = TextEditingController(text: "local");
   TextEditingController gameType = TextEditingController(text: "7X7");
+  TextEditingController location = TextEditingController(text: "");
+
   TextEditingController playerType = TextEditingController(text: "male");
   TextEditingController level = TextEditingController();
   TextEditingController pointsVictory = TextEditingController(text: "3");
@@ -89,6 +91,8 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
   bool isForChampion = true;
   bool isForTopScorer = true;
   bool isForFairPlay = true;
+  double latitude = 0.0;
+  double longitude = 0.0;
 
   List<String> tiebreakersSelected = ["goal_difference"];
   List<Map<String, String>> tiebreakers = [
@@ -231,12 +235,37 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                   errorText: "Campo obrigatório"),
             ),
             const SizedBox(height: 15),
+            FormBuilderTextField(
+              name: 'location',
+              controller: location,
+              decoration: const InputDecoration(hintText: 'Localização'),
+              keyboardType: TextInputType.number,
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.required(errorText: "Campo obrigatório"),
+                FormBuilderValidators.numeric(
+                    errorText: "Apenas valor numérico")
+              ]),
+            ),
+            const SizedBox(height: 15),
             const Text("Inscrição de Jogadores",
                 style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Colors.black)),
             const SizedBox(height: 10),
+            FormBuilderTextField(
+              name: 'max_players',
+              controller: maxPlayers,
+              decoration: const InputDecoration(
+                  hintText: 'Número máximo de jogadores por equipe'),
+              keyboardType: TextInputType.number,
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.required(errorText: "Campo obrigatório"),
+                FormBuilderValidators.numeric(
+                    errorText: "Apenas valor numérico")
+              ]),
+            ),
+            const SizedBox(height: 15),
             FormBuilderTextField(
               name: 'max_players',
               controller: maxPlayers,
@@ -731,8 +760,21 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
         icon,
         width: 32,
       ),
-      title: Text(titulo),
-      subtitle: Text(valor),
+      title: Text(
+        valor,
+        style: const TextStyle(
+          fontSize: 16,
+          color: Colors.black,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      subtitle: Text(
+        titulo,
+        style: const TextStyle(
+          fontSize: 14,
+          color: Colors.grey,
+        ),
+      ),
     );
   }
 
@@ -791,55 +833,49 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
       padding: const EdgeInsets.all(0),
       children: [
         _sectionTitle('Detalhes da Competição'),
-        _infoTile(AppIcons.competitionchampion, 'Nome', name.text),
+        _infoTile(AppIcons.flag2, 'Nome', name.text),
         _infoTile(AppIcons.calendarColor, 'Temporada', season.text),
+        _infoTile(AppIcons.locationIndicatorRed, 'Localização', location.text),
         _infoTile(AppIcons.competitionchampion, 'Formato',
             type.text == "league" ? "Liga" : type.text),
         _infoTile(
-            AppIcons.emblem, 'Categoria', _translateCategory(category.text)),
-        _infoTile(AppIcons.gendersGender, 'Tipo de Jogo', gameType.text),
-        _infoTile(AppIcons.competitionchampion, 'Tipo de Jogador',
+            AppIcons.category2, 'Categoria', _translateCategory(category.text)),
+        _infoTile(AppIcons.ballOfWoolSewing, 'Tipo de Jogo', gameType.text),
+        _infoTile(AppIcons.userColor, 'Tipo de Jogador',
             _translatePlayerType(playerType.text)),
         _infoTile(AppIcons.calendarColor, 'Data de Início', startDate.text),
         _infoTile(AppIcons.calendarColor, 'Data de Término', endDate.text),
         _infoTile(AppIcons.calendarColor, 'Data Limite para Inscrição',
             registrationDeadlineDate.text),
         _sectionTitle('Pontuação e Regras'),
-        _infoTile(
-            AppIcons.convertShapes, 'Pontos por Vitória', pointsVictory.text),
-        _infoTile(
-            AppIcons.competitionchampion, 'Pontos por Empate', pointsDraw.text),
-        _infoTile(AppIcons.competitionchampion, 'Pontos por Derrota',
-            pointsLose.text),
-        _infoTile(AppIcons.competitionchampion, 'Substituições Permitidas',
+        _infoTile(AppIcons.victory, 'Pontos por Vitória', pointsVictory.text),
+        _infoTile(AppIcons.minus, 'Pontos por Empate', pointsDraw.text),
+        _infoTile(AppIcons.close, 'Pontos por Derrota', pointsLose.text),
+        _infoTile(AppIcons.changeSoccer, 'Substituições Permitidas',
             substitutionsAllowed.text),
-        _infoTile(AppIcons.competitionchampion, 'Máximo de Jogadores',
-            maxPlayers.text),
-        _boolTile(
-            AppIcons.competitionchampion, 'Permitir Empates', drawsAllowed),
+        _infoTile(AppIcons.soccerField, 'Máximo de Jogadores', maxPlayers.text),
+        _boolTile(AppIcons.minus, 'Permitir Empates', drawsAllowed),
         _boolTile(AppIcons.competitionchampion, 'Permitir Prorrogação',
             extraTimeAllowed),
-        _boolTile(
-            AppIcons.competitionchampion, 'Permitir Pênaltis', penaltyAllowed),
-        _boolTile(AppIcons.competitionchampion, 'Ida e Volta', isHomeAndAway),
-        _infoTile(AppIcons.competitionchampion, 'Duração da Partida',
-            '$matchDuration min'),
+        _boolTile(AppIcons.soccer, 'Permitir Pênaltis', penaltyAllowed),
+        _boolTile(AppIcons.changePosition, 'Ida e Volta', isHomeAndAway),
         _infoTile(
-            AppIcons.competitionchampion, 'Tempo de Descanso', '$restTime min'),
-        _infoTile(AppIcons.competitionchampion, 'Duração da Prorrogação',
+            AppIcons.stopwatch, 'Duração da Partida', '$matchDuration min'),
+        _infoTile(AppIcons.stopwatch, 'Tempo de Descanso', '$restTime min'),
+        _infoTile(AppIcons.stopwatch, 'Duração da Prorrogação',
             '$extraTimeDuration min'),
         _sectionTitle('Premiação'),
-        _boolTile(AppIcons.competitionchampion, 'Premiação para Campeão',
+        _boolTile(AppIcons.medalChampionAward1, 'Premiação para Campeão',
             isForChampion),
-        _infoTile(AppIcons.competitionchampion, 'Valor para Campeão',
+        _infoTile(AppIcons.medalChampionAward1, 'Valor para Campeão',
             'Kz ${isForChampionValue.text}'),
-        _boolTile(AppIcons.competitionchampion, 'Premiação para Artilheiro',
+        _boolTile(AppIcons.footballShoesShoe, 'Premiação para Artilheiro',
             isForTopScorer),
-        _infoTile(AppIcons.competitionchampion, 'Valor para Artilheiro',
+        _infoTile(AppIcons.footballShoesShoe, 'Valor para Artilheiro',
             'Kz ${isForTopScorerValue.text}'),
         _boolTile(
-            AppIcons.competitionchampion, 'Premiação Fair Play', isForFairPlay),
-        _infoTile(AppIcons.competitionchampion, 'Valor Fair Play',
+            AppIcons.malesFriendsHug, 'Premiação Fair Play', isForFairPlay),
+        _infoTile(AppIcons.malesFriendsHug, 'Valor Fair Play',
             'Kz ${isForFairPlayValue.text}'),
       ],
     );
