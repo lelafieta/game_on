@@ -18,6 +18,10 @@ class CreateCompetitionPage extends StatefulWidget {
 }
 
 class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
+  final _formKeyStep0 = GlobalKey<FormBuilderState>();
+  final _formKeyStep1 = GlobalKey<FormBuilderState>();
+  final _formKeyStep2 = GlobalKey<FormBuilderState>();
+  final _formKeyStep3 = GlobalKey<FormBuilderState>();
   final _formKey = GlobalKey<FormBuilderState>();
   int _currentStep = 0;
   int rounds = 13;
@@ -25,30 +29,26 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
   int pauseDuration = 0;
 
   // Dados da competição
-  String name = '';
-  String season = '';
-  String type = 'Liga';
-  bool isHomeAndAway = false;
-  bool hasGroupStage = false;
-  int? numberOfGroups;
-  String? organizer;
-  String? level;
-  DateTime? startDate;
-  DateTime? endDate;
-
-
-  Text
 
   final types = ['Liga', 'Copa', 'Torneio em Grupo'];
   final levels = ['Local', 'Nacional', 'Internacional'];
   final typeOfPlayers = ['Homens', 'Munlheres'];
 
+  TextEditingController name = TextEditingController();
+  TextEditingController season = TextEditingController();
+  TextEditingController type = TextEditingController();
+  TextEditingController dateStart = TextEditingController();
+  TextEditingController dateEnd = TextEditingController();
+  TextEditingController category = TextEditingController();
+  TextEditingController gameType = TextEditingController();
+  TextEditingController playerType = TextEditingController();
+  TextEditingController level = TextEditingController();
+
   void nextStep() {
-    final requiresValidation =
-        _currentStep == 0 || (_currentStep == 2 && level == null);
+    final requiresValidation = _currentStep == 0 || (_currentStep == 2);
 
     if (!requiresValidation ||
-        (_formKey.currentState?.saveAndValidate() ?? false)) {
+        (_formKeyStep0.currentState?.saveAndValidate() ?? false)) {
       setState(() {
         if (_currentStep < 4) {
           _currentStep++;
@@ -70,20 +70,20 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
   }
 
   void _submit() {
-    final competition = {
-      'id': const Uuid().v4(),
-      'name': name,
-      'season': season,
-      'type': type,
-      'is_home_and_away': isHomeAndAway,
-      'has_group_stage': hasGroupStage,
-      'number_of_groups': hasGroupStage ? numberOfGroups : null,
-      'organizer': organizer,
-      'level': level,
-      'start_date': startDate?.toIso8601String(),
-      'end_date': endDate?.toIso8601String(),
-      'rules': _formKey.currentState?.value,
-    };
+    // final competition = {
+    //   'id': const Uuid().v4(),
+    //   'name': name,
+    //   'season': season,
+    //   'type': type,
+    //   'is_home_and_away': isHomeAndAway,
+    //   'has_group_stage': hasGroupStage,
+    //   'number_of_groups': hasGroupStage ? numberOfGroups : null,
+    //   'organizer': organizer,
+    //   'level': level,
+    //   'start_date': startDate?.toIso8601String(),
+    //   'end_date': endDate?.toIso8601String(),
+    //   'rules': _formKey.currentState?.value,
+    // };
 
     print('✅ Competição criada com regulamento:\n\$competition');
 
@@ -97,10 +97,12 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
       case 0:
         return _basicInfoStep();
       case 1:
-        return _organizerStep();
+        return _basicInfoStep1();
       case 2:
         return _rulesStep();
       case 3:
+        return _prizesStep();
+      case 4:
         return _reviewStep();
       default:
         return const SizedBox();
@@ -109,36 +111,38 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
 
   Widget _basicInfoStep() {
     return FormBuilder(
-      key: _formKey,
+      key: _formKeyStep0,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             FormBuilderTextField(
               name: 'name',
+              controller: name,
               decoration:
                   const InputDecoration(labelText: 'Nome da competição'),
-              onChanged: (v) => name = v ?? '',
+              onChanged: (v) => name.text = v ?? '',
               validator: FormBuilderValidators.required(
                   errorText: "Campo obrigatório"),
             ),
             const SizedBox(height: 15),
             FormBuilderTextField(
               name: 'season',
+              controller: season,
               decoration:
                   const InputDecoration(labelText: 'Temporada (ex: 2025)'),
-              onChanged: (v) => season = v ?? '',
+              onChanged: (v) => season.text = v ?? '',
               validator: FormBuilderValidators.required(
                   errorText: "Campo obrigatório"),
             ),
             const SizedBox(height: 15),
             FormBuilderDropdown<String>(
               name: 'type',
-              initialValue: type,
+              initialValue: type.text,
               items: types
                   .map((t) => DropdownMenuItem(value: t, child: Text(t)))
                   .toList(),
-              onChanged: (v) => setState(() => type = v!),
+              onChanged: (v) => setState(() => type.text = v!),
               decoration:
                   const InputDecoration(labelText: 'Tipo de competição'),
               validator: FormBuilderValidators.required(
@@ -168,21 +172,21 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
     );
   }
 
-  Widget _organizerStep() {
+  Widget _basicInfoStep1() {
     return FormBuilder(
-      key: _formKey,
+      key: _formKeyStep1,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           FormBuilderDropdown<String>(
             name: 'level',
-            initialValue: level,
+            initialValue: level.text,
             decoration:
                 const InputDecoration(labelText: 'Categoria da competição'),
             items: levels
                 .map((l) => DropdownMenuItem(value: l, child: Text(l)))
                 .toList(),
-            onChanged: (v) => setState(() => level = v),
+            onChanged: (v) => setState(() => level.text = v!),
             validator:
                 FormBuilderValidators.required(errorText: "Campo obrigatório"),
           ),
@@ -251,52 +255,9 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
     );
   }
 
-  void _openDatePickerInitial(BuildContext context) {
-    DatePicker.showDatePicker(context,
-        showTitleActions: true,
-        minTime: DateTime.now(),
-        maxTime: DateTime.now().add(const Duration(days: 365 * 2)),
-        onChanged: (date) {
-      print('change $date');
-    }, onConfirm: (date) {
-      print('confirm $date');
-    }, currentTime: DateTime.now(), locale: LocaleType.pt);
-  }
-
-  void _openDatePickerEnd(BuildContext context) {
-    DatePicker.showDatePicker(context,
-        showTitleActions: true,
-        minTime: DateTime.now(),
-        maxTime: DateTime.now().add(const Duration(days: 365 * 2)),
-        onChanged: (date) {
-      print('change $date');
-    }, onConfirm: (date) {
-      print('confirm $date');
-    }, currentTime: DateTime.now(), locale: LocaleType.pt);
-  }
-
-  Widget _datesStep() {
-    return FormBuilder(
-      key: _formKey,
-      child: Column(
-        children: [
-          // SizedBox(
-          //   width: double.infinity,
-          //   child: ElevatedButton(
-          //     onPressed: () {},
-          //     child: const Text('Date Picker with button style',
-          //         textAlign: TextAlign.center),
-          //   ),
-          // ),
-        ],
-      ),
-    );
-  }
-
   Widget _rulesStep() {
-    int _currentValue = 3;
     return FormBuilder(
-      key: _formKey,
+      key: _formKeyStep2,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -525,6 +486,19 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
               FormBuilderFieldOption(value: 'Protestos e recursos'),
             ]),
             const SizedBox(height: 15),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _prizesStep() {
+    return SingleChildScrollView(
+      child: FormBuilder(
+        key: _formKeyStep3,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             const Text("Premiações",
                 style: TextStyle(
                     fontSize: 14,
@@ -535,13 +509,29 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                 name: 'prize_champion',
                 title: const Text('Premiação para o campeão')),
             const SizedBox(height: 15),
+            FormBuilderTextField(
+                name: 'max_players',
+                decoration: const InputDecoration(hintText: 'Valor'),
+                keyboardType: TextInputType.number),
+            const SizedBox(height: 15),
             FormBuilderSwitch(
                 name: 'prize_top_scorer',
                 title: const Text('Premiação para artilheiro')),
             const SizedBox(height: 15),
+            FormBuilderTextField(
+                name: 'max_players',
+                decoration: const InputDecoration(hintText: 'Valor'),
+                keyboardType: TextInputType.number),
+            const SizedBox(height: 15),
             FormBuilderSwitch(
                 name: 'prize_fair_play',
                 title: const Text('Equipe mais disciplinada')),
+            const SizedBox(height: 15),
+            FormBuilderTextField(
+                name: 'max_players',
+                decoration: const InputDecoration(hintText: 'Valor'),
+                keyboardType: TextInputType.number),
+            const SizedBox(height: 15),
           ],
         ),
       ),
@@ -576,6 +566,30 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
     );
   }
 
+  void _openDatePickerInitial(BuildContext context) {
+    DatePicker.showDatePicker(context,
+        showTitleActions: true,
+        minTime: DateTime.now(),
+        maxTime: DateTime.now().add(const Duration(days: 365 * 2)),
+        onChanged: (date) {
+      print('change $date');
+    }, onConfirm: (date) {
+      print('confirm $date');
+    }, currentTime: DateTime.now(), locale: LocaleType.pt);
+  }
+
+  void _openDatePickerEnd(BuildContext context) {
+    DatePicker.showDatePicker(context,
+        showTitleActions: true,
+        minTime: DateTime.now(),
+        maxTime: DateTime.now().add(const Duration(days: 365 * 2)),
+        onChanged: (date) {
+      print('change $date');
+    }, onConfirm: (date) {
+      print('confirm $date');
+    }, currentTime: DateTime.now(), locale: LocaleType.pt);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -585,7 +599,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
         child: Column(
           children: [
             StepProgressIndicator(
-              totalSteps: 4,
+              totalSteps: 5,
               currentStep: _currentStep + 1,
               selectedColor: AppColors.primary,
               unselectedColor: Colors.grey[300]!,
