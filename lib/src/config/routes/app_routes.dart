@@ -6,6 +6,8 @@ class AppRoutes {
   static const String home = '/home';
   static const String login = '/login';
   static const String organizerDetails = '/organizerDetails';
+  static const String organizerHome = '/organizerHome';
+  static const String organizer = '/organizer';
   static const String competionDetails = '/competionDetails';
   static const String liveGames = '/liveGames';
   static const String myCompetitionsList = '/myCompetitionsList';

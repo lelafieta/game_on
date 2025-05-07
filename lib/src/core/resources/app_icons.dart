@@ -72,5 +72,5 @@ class AppIcons {
       "assets/icons/achievement-challenge-medal-svgrepo-com.svg";
 
   static const String emblem =
-      "assets/icons/emblem-police-badge-police-shield-security-badge-sheriff-badge-svgrepo-com.svg";
+      "assets/icons/emblem-police-badge-police-insignia-security-badge-sheriff-badge-svgrepo-com.svg";
 }
