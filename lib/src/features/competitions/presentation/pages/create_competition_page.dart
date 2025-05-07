@@ -31,15 +31,19 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
   // Dados da competição
 
   final types = ['Liga', 'Copa', 'Torneio em Grupo'];
-  final levels = ['Local', 'Nacional', 'Internacional'];
+  final categories = {
+    'local': 'Local',
+    'national': 'Nacional',
+    'international': 'Internacional',
+  };
   final typeOfPlayers = ['Homens', 'Munlheres'];
 
   TextEditingController name = TextEditingController();
   TextEditingController season = TextEditingController();
   TextEditingController type = TextEditingController();
-  TextEditingController dateStart = TextEditingController();
-  TextEditingController dateEnd = TextEditingController();
-  TextEditingController category = TextEditingController();
+  TextEditingController startDate = TextEditingController();
+  TextEditingController endDate = TextEditingController();
+  TextEditingController category = TextEditingController(text: "local");
   TextEditingController gameType = TextEditingController();
   TextEditingController playerType = TextEditingController();
   TextEditingController level = TextEditingController();
@@ -132,8 +136,12 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
               decoration:
                   const InputDecoration(labelText: 'Temporada (ex: 2025)'),
               onChanged: (v) => season.text = v ?? '',
-              validator: FormBuilderValidators.required(
-                  errorText: "Campo obrigatório"),
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.required(errorText: "Campo obrigatório"),
+                FormBuilderValidators.numeric(
+                    errorText: "Apenas números são permitidos"),
+              ]),
+              keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 15),
             FormBuilderDropdown<String>(
@@ -151,6 +159,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
             const SizedBox(height: 15),
             FormBuilderTextField(
               name: "start_date",
+              controller: startDate,
               decoration: const InputDecoration(labelText: 'Data de início'),
               readOnly: true,
               onTap: () {
@@ -160,6 +169,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
             const SizedBox(height: 15),
             FormBuilderTextField(
               name: "end_date",
+              controller: endDate,
               decoration: const InputDecoration(labelText: 'Data de término'),
               readOnly: true,
               onTap: () {
@@ -179,14 +189,15 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           FormBuilderDropdown<String>(
-            name: 'level',
-            initialValue: level.text,
+            name: 'category',
+            initialValue: category.text,
             decoration:
                 const InputDecoration(labelText: 'Categoria da competição'),
-            items: levels
-                .map((l) => DropdownMenuItem(value: l, child: Text(l)))
+            items: categories.entries
+                .map(
+                    (l) => DropdownMenuItem(value: l.key, child: Text(l.value)))
                 .toList(),
-            onChanged: (v) => setState(() => level.text = v!),
+            onChanged: (v) => setState(() => category.text = v!),
             validator:
                 FormBuilderValidators.required(errorText: "Campo obrigatório"),
           ),
@@ -567,27 +578,35 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
   }
 
   void _openDatePickerInitial(BuildContext context) {
-    DatePicker.showDatePicker(context,
-        showTitleActions: true,
-        minTime: DateTime.now(),
-        maxTime: DateTime.now().add(const Duration(days: 365 * 2)),
-        onChanged: (date) {
-      print('change $date');
-    }, onConfirm: (date) {
-      print('confirm $date');
-    }, currentTime: DateTime.now(), locale: LocaleType.pt);
+    DatePicker.showDatePicker(
+      context,
+      showTitleActions: true,
+      minTime: DateTime.now(),
+      maxTime: DateTime.now().add(const Duration(days: 365 * 2)),
+      currentTime: DateTime.now(),
+      locale: LocaleType.pt,
+      onConfirm: (date) {
+        setState(() {
+          startDate.text = date.toIso8601String().split('T').first;
+        });
+      },
+    );
   }
 
   void _openDatePickerEnd(BuildContext context) {
-    DatePicker.showDatePicker(context,
-        showTitleActions: true,
-        minTime: DateTime.now(),
-        maxTime: DateTime.now().add(const Duration(days: 365 * 2)),
-        onChanged: (date) {
-      print('change $date');
-    }, onConfirm: (date) {
-      print('confirm $date');
-    }, currentTime: DateTime.now(), locale: LocaleType.pt);
+    DatePicker.showDatePicker(
+      context,
+      showTitleActions: true,
+      minTime: DateTime.now(),
+      maxTime: DateTime.now().add(const Duration(days: 365 * 2)),
+      currentTime: DateTime.now(),
+      locale: LocaleType.pt,
+      onConfirm: (date) {
+        setState(() {
+          endDate.text = date.toIso8601String().split('T').first;
+        });
+      },
+    );
   }
 
   @override
