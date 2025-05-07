@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:input_quantity/input_quantity.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:uuid/uuid.dart';
 
@@ -17,11 +20,14 @@ class CreateCompetitionPage extends StatefulWidget {
 class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
   final _formKey = GlobalKey<FormBuilderState>();
   int _currentStep = 0;
+  int rounds = 13;
+  int roundDuration = 7;
+  int pauseDuration = 0;
 
   // Dados da competição
   String name = '';
   String season = '';
-  String type = 'league';
+  String type = 'Liga';
   bool isHomeAndAway = false;
   bool hasGroupStage = false;
   int? numberOfGroups;
@@ -30,8 +36,12 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
   DateTime? startDate;
   DateTime? endDate;
 
-  final types = ['league', 'cup', 'friendly'];
-  final levels = ['local', 'national', 'international'];
+
+  Text
+
+  final types = ['Liga', 'Copa', 'Torneio em Grupo'];
+  final levels = ['Local', 'Nacional', 'Internacional'];
+  final typeOfPlayers = ['Homens', 'Munlheres'];
 
   void nextStep() {
     final requiresValidation =
@@ -40,7 +50,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
     if (!requiresValidation ||
         (_formKey.currentState?.saveAndValidate() ?? false)) {
       setState(() {
-        if (_currentStep < 5) {
+        if (_currentStep < 4) {
           _currentStep++;
         } else {
           _submit();
@@ -87,14 +97,10 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
       case 0:
         return _basicInfoStep();
       case 1:
-        return _formatStep();
-      case 2:
         return _organizerStep();
-      case 3:
-        return _datesStep();
-      case 4:
+      case 2:
         return _rulesStep();
-      case 5:
+      case 3:
         return _reviewStep();
       default:
         return const SizedBox();
@@ -104,82 +110,61 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
   Widget _basicInfoStep() {
     return FormBuilder(
       key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "Nome da competição",
-            style: TextStyle(
-                fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
-          ),
-          const SizedBox(height: 10),
-          FormBuilderTextField(
-            name: 'name',
-            decoration: const InputDecoration(hintText: 'Nome da competição'),
-            onChanged: (v) => name = v ?? '',
-            validator:
-                FormBuilderValidators.required(errorText: "Campo obrigatório"),
-          ),
-          const SizedBox(height: 15),
-          const Text(
-            "Temporada",
-            style: TextStyle(
-                fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
-          ),
-          const SizedBox(height: 10),
-          FormBuilderTextField(
-            name: 'season',
-            decoration: const InputDecoration(hintText: 'Temporada (ex: 2025)'),
-            onChanged: (v) => season = v ?? '',
-            validator:
-                FormBuilderValidators.required(errorText: "Campo obrigatório"),
-          ),
-          const SizedBox(height: 15),
-          const Text(
-            "Tipo de competição",
-            style: TextStyle(
-                fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
-          ),
-          const SizedBox(height: 10),
-          FormBuilderDropdown<String>(
-            name: 'type',
-            initialValue: type,
-            items: types
-                .map((t) => DropdownMenuItem(value: t, child: Text(t)))
-                .toList(),
-            onChanged: (v) => setState(() => type = v!),
-            decoration: const InputDecoration(hintText: 'Tipo de competição'),
-            validator:
-                FormBuilderValidators.required(errorText: "Campo obrigatório"),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _formatStep() {
-    return Column(
-      children: [
-        SwitchListTile(
-          title: const Text('Jogos ida e volta?'),
-          value: isHomeAndAway,
-          onChanged: (v) => setState(() => isHomeAndAway = v),
-        ),
-        SwitchListTile(
-          title: const Text('Tem fase de grupos?'),
-          value: hasGroupStage,
-          onChanged: (v) => setState(() => hasGroupStage = v),
-        ),
-        if (hasGroupStage)
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: TextFormField(
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(hintText: 'Número de grupos'),
-              onChanged: (v) => numberOfGroups = int.tryParse(v),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            FormBuilderTextField(
+              name: 'name',
+              decoration:
+                  const InputDecoration(labelText: 'Nome da competição'),
+              onChanged: (v) => name = v ?? '',
+              validator: FormBuilderValidators.required(
+                  errorText: "Campo obrigatório"),
             ),
-          ),
-      ],
+            const SizedBox(height: 15),
+            FormBuilderTextField(
+              name: 'season',
+              decoration:
+                  const InputDecoration(labelText: 'Temporada (ex: 2025)'),
+              onChanged: (v) => season = v ?? '',
+              validator: FormBuilderValidators.required(
+                  errorText: "Campo obrigatório"),
+            ),
+            const SizedBox(height: 15),
+            FormBuilderDropdown<String>(
+              name: 'type',
+              initialValue: type,
+              items: types
+                  .map((t) => DropdownMenuItem(value: t, child: Text(t)))
+                  .toList(),
+              onChanged: (v) => setState(() => type = v!),
+              decoration:
+                  const InputDecoration(labelText: 'Tipo de competição'),
+              validator: FormBuilderValidators.required(
+                  errorText: "Campo obrigatório"),
+            ),
+            const SizedBox(height: 15),
+            FormBuilderTextField(
+              name: "start_date",
+              decoration: const InputDecoration(labelText: 'Data de início'),
+              readOnly: true,
+              onTap: () {
+                _openDatePickerInitial(context);
+              },
+            ),
+            const SizedBox(height: 15),
+            FormBuilderTextField(
+              name: "end_date",
+              decoration: const InputDecoration(labelText: 'Data de término'),
+              readOnly: true,
+              onTap: () {
+                _openDatePickerEnd(context);
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -187,17 +172,79 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
     return FormBuilder(
       key: _formKey,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           FormBuilderDropdown<String>(
             name: 'level',
             initialValue: level,
-            decoration: const InputDecoration(hintText: 'Nível da competição'),
+            decoration:
+                const InputDecoration(labelText: 'Categoria da competição'),
             items: levels
                 .map((l) => DropdownMenuItem(value: l, child: Text(l)))
                 .toList(),
             onChanged: (v) => setState(() => level = v),
             validator:
                 FormBuilderValidators.required(errorText: "Campo obrigatório"),
+          ),
+          const SizedBox(height: 15),
+          FormBuilderDropdown<int>(
+            name: 'match_type',
+            decoration:
+                const InputDecoration(labelText: 'Selecione o tipo de jogo'),
+            onTap: () async {
+              // final selectedValue = await showModalBottomSheet<int>(
+              //   context: context,
+              //   builder: (BuildContext context) {
+              //     return ListView.builder(
+              //       itemCount: 10,
+              //       itemBuilder: (context, index) {
+              //         final value = index + 2;
+              //         return ListTile(
+              //           title: Text('$value x $value'),
+              //           onTap: () {
+              //             Navigator.pop(context, value);
+              //           },
+              //         );
+              //       },
+              //     );
+              //   },
+              // );
+              // if (selectedValue != null) {
+              //   setState(() {
+              //     _formKey.currentState?.fields['match_type']
+              //         ?.didChange(selectedValue);
+              //   });
+              // }
+            },
+            items: List.generate(
+              10,
+              (index) => DropdownMenuItem(
+                value: index + 2,
+                child: Text('${index + 2} x ${index + 2}'),
+              ),
+            ),
+            validator:
+                FormBuilderValidators.required(errorText: "Campo obrigatório"),
+          ),
+          const SizedBox(height: 15),
+          const Text("Tipo de jogadores",
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black)),
+          const SizedBox(height: 10),
+          FormBuilderRadioGroup<String>(
+            name: 'gender',
+            options: const [
+              FormBuilderFieldOption(value: 'Homens', child: Text('Homens')),
+              FormBuilderFieldOption(
+                  value: 'Mulheres', child: Text('Mulheres')),
+            ],
+            validator:
+                FormBuilderValidators.required(errorText: "Campo obrigatório"),
+            onChanged: (value) {
+              // Handle gender selection if needed
+            },
           ),
         ],
       ),
@@ -241,29 +288,13 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
           //         textAlign: TextAlign.center),
           //   ),
           // ),
-          FormBuilderTextField(
-            name: "start_date",
-            decoration: const InputDecoration(hintText: 'Data de início'),
-            readOnly: true,
-            onTap: () {
-              _openDatePickerInitial(context);
-            },
-          ),
-          const SizedBox(height: 15),
-          FormBuilderTextField(
-            name: "end_date",
-            decoration: const InputDecoration(hintText: 'Data de término'),
-            readOnly: true,
-            onTap: () {
-              _openDatePickerEnd(context);
-            },
-          ),
         ],
       ),
     );
   }
 
   Widget _rulesStep() {
+    int _currentValue = 3;
     return FormBuilder(
       key: _formKey,
       child: SingleChildScrollView(
@@ -271,13 +302,11 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 15),
-            const Text(
-              "Critérios de Desempate",
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
-            ),
+            const Text("Critério de desempate",
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black)),
             const SizedBox(height: 10),
             FormBuilderCheckboxGroup(name: 'tiebreakers', options: const [
               FormBuilderFieldOption(value: 'Diferença de gols'),
@@ -287,47 +316,74 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
               FormBuilderFieldOption(value: 'Sorteio'),
             ]),
             const SizedBox(height: 15),
-            const Text("Sistema de pontuação",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black)),
-            const SizedBox(height: 10),
-            FormBuilderDropdown(
-                name: 'point_system',
-                decoration:
-                    const InputDecoration(hintText: 'Sistema de Pontuação'),
-                items: const [
-                  DropdownMenuItem(
-                      value: '3-1-0',
-                      child: Text('Vitória: 3, Empate: 1, Derrota: 0')),
-                  DropdownMenuItem(
-                      value: '2-1-0',
-                      child: Text('Vitória: 2, Empate: 1, Derrota: 0')),
-                ],
-                validator: FormBuilderValidators.required(
-                    errorText: "Campo obrigatório")),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FormBuilderDropdown(
+                  name: 'points_victory',
+                  decoration: const InputDecoration(labelText: 'Vitória'),
+                  items: List.generate(
+                    5,
+                    (index) => DropdownMenuItem(
+                      value: index,
+                      child: Text(index == 0
+                          ? '0'
+                          : index == 1
+                              ? '$index pt'
+                              : '$index pts'),
+                    ),
+                  ),
+                  validator: FormBuilderValidators.required(
+                      errorText: "Campo obrigatório"),
+                ),
+              ],
+            ),
             const SizedBox(height: 15),
-            const Text("Formato da Competição",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black)),
-            const SizedBox(height: 10),
-            FormBuilderDropdown(
-                name: 'match_format',
-                decoration:
-                    const InputDecoration(hintText: 'Formato da competição'),
-                items: const [
-                  DropdownMenuItem(
-                      value: 'Grupos + Mata-mata',
-                      child: Text('Fase de grupos + mata-mata')),
-                  DropdownMenuItem(
-                      value: 'Liga', child: Text('Todos contra todos (liga)')),
-                  DropdownMenuItem(
-                      value: 'Eliminatória direta',
-                      child: Text('Eliminatória direta')),
-                ]),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FormBuilderDropdown(
+                  name: 'points_draw',
+                  decoration: const InputDecoration(labelText: 'Empate'),
+                  items: List.generate(
+                    5,
+                    (index) => DropdownMenuItem(
+                      value: index,
+                      child: Text(index == 0
+                          ? '0'
+                          : index == 1
+                              ? '$index pt'
+                              : '$index pts'),
+                    ),
+                  ),
+                  validator: FormBuilderValidators.required(
+                      errorText: "Campo obrigatório"),
+                ),
+              ],
+            ),
+            const SizedBox(height: 15),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FormBuilderDropdown(
+                  name: 'points_lose',
+                  decoration: const InputDecoration(labelText: 'Derrota'),
+                  items: List.generate(
+                    5,
+                    (index) => DropdownMenuItem(
+                      value: index,
+                      child: Text(index == 0
+                          ? '0'
+                          : index == 1
+                              ? '$index pt'
+                              : '$index pts'),
+                    ),
+                  ),
+                  validator: FormBuilderValidators.required(
+                      errorText: "Campo obrigatório"),
+                ),
+              ],
+            ),
             const SizedBox(height: 15),
             FormBuilderDropdown(
                 name: 'match_leg',
@@ -340,43 +396,96 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                       value: 'Jogo único', child: Text('Jogo único')),
                 ]),
             const SizedBox(height: 15),
-            const Text("Substituição",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black)),
-            const SizedBox(height: 10),
             FormBuilderTextField(
                 name: 'max_subs',
-                decoration:
-                    const InputDecoration(hintText: 'Número máximo permitido'),
+                decoration: const InputDecoration(hintText: 'Substituição'),
                 keyboardType: TextInputType.number,
                 validator: FormBuilderValidators.numeric()),
             const SizedBox(height: 15),
             FormBuilderSwitch(
                 name: 'extra_subs_et',
-                title:
-                    const Text('Permite substituições extras na prorrogação?')),
-            const SizedBox(height: 15),
-            const Text("Tempo de jogo",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black)),
-            const SizedBox(height: 10),
-            FormBuilderDropdown(
-                name: 'match_duration',
-                decoration: const InputDecoration(hintText: 'Duração do jogo'),
-                items: const [
-                  DropdownMenuItem(
-                      value: '2x45', child: Text('90 minutos (2x45)')),
-                  DropdownMenuItem(
-                      value: '2x30', child: Text('60 minutos (2x30)')),
-                ]),
+                title: const Text(
+                  'Permite substituições extras na prorrogação?',
+                )),
             const SizedBox(height: 15),
             FormBuilderSwitch(
                 name: 'extra_time',
                 title: const Text('Adiciona prorrogação? (2x15)')),
+            const SizedBox(height: 15),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Expanded(
+                  child: Text("Munutos de jogo",
+                      style: const TextStyle(fontSize: 16, color: Colors.grey)),
+                ),
+                Row(
+                  children: [
+                    _counterButton("-", () {}),
+                    const SizedBox(width: 16),
+                    const Column(
+                      children: [
+                        Text('30', style: TextStyle(fontSize: 18)),
+                        Text("min"),
+                      ],
+                    ),
+                    const SizedBox(width: 16),
+                    _counterButton("+", () {}),
+                  ],
+                ),
+                const SizedBox(height: 24),
+              ],
+            ),
+            const SizedBox(height: 15),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Expanded(
+                  child: Text("Munutos de prolongamento",
+                      style: const TextStyle(fontSize: 16, color: Colors.grey)),
+                ),
+                Row(
+                  children: [
+                    _counterButton("-", () {}),
+                    const SizedBox(width: 16),
+                    const Column(
+                      children: [
+                        Text('30', style: TextStyle(fontSize: 18)),
+                        Text("min"),
+                      ],
+                    ),
+                    const SizedBox(width: 16),
+                    _counterButton("+", () {}),
+                  ],
+                ),
+                const SizedBox(height: 24),
+              ],
+            ),
+            const SizedBox(height: 15),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Expanded(
+                  child: Text("Munutos de Descanso",
+                      style: const TextStyle(fontSize: 16, color: Colors.grey)),
+                ),
+                Row(
+                  children: [
+                    _counterButton("-", () {}),
+                    const SizedBox(width: 16),
+                    const Column(
+                      children: [
+                        Text('30', style: TextStyle(fontSize: 18)),
+                        Text("min"),
+                      ],
+                    ),
+                    const SizedBox(width: 16),
+                    _counterButton("+", () {}),
+                  ],
+                ),
+                const SizedBox(height: 24),
+              ],
+            ),
             const SizedBox(height: 15),
             FormBuilderSwitch(
                 name: 'penalties',
@@ -451,6 +560,22 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
     );
   }
 
+  Widget _counterButton(String symbol, VoidCallback onPressed) {
+    return SizedBox(
+      width: 40,
+      height: 40,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          padding: EdgeInsets.zero,
+        ),
+        child: Text(symbol, style: const TextStyle(fontSize: 20)),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -460,7 +585,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
         child: Column(
           children: [
             StepProgressIndicator(
-              totalSteps: 6,
+              totalSteps: 4,
               currentStep: _currentStep + 1,
               selectedColor: AppColors.primary,
               unselectedColor: Colors.grey[300]!,
