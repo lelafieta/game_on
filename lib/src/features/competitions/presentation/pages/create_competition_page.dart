@@ -30,23 +30,60 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
 
   // Dados da competição
 
-  final types = ['Liga', 'Copa', 'Torneio em Grupo'];
+  final types = {
+    'league': 'Liga',
+    'cup': 'Copa',
+    'group_tournament': 'Torneio em Grupo'
+  };
+
   final categories = {
     'local': 'Local',
     'national': 'Nacional',
     'international': 'Internacional',
   };
+  final gameTypes = {
+    '2X2': '2X2',
+    '3X3': '3X3',
+    '4X4': '4X4',
+    '5X5': '5X5',
+    '6X6': '6X6',
+    '7X7': '7X7',
+    '8X8': '8X8',
+    '9X9': '9X9',
+    '10X10': '10X10',
+    '11X11': '11X11',
+  };
+
   final typeOfPlayers = ['Homens', 'Munlheres'];
 
   TextEditingController name = TextEditingController();
   TextEditingController season = TextEditingController();
-  TextEditingController type = TextEditingController();
+  TextEditingController type = TextEditingController(text: "league");
   TextEditingController startDate = TextEditingController();
   TextEditingController endDate = TextEditingController();
   TextEditingController category = TextEditingController(text: "local");
-  TextEditingController gameType = TextEditingController();
-  TextEditingController playerType = TextEditingController();
+  TextEditingController gameType = TextEditingController(text: "7X7");
+  TextEditingController playerType = TextEditingController(text: "male");
   TextEditingController level = TextEditingController();
+  TextEditingController pointsVictory = TextEditingController(text: "3");
+  TextEditingController pointsDraw = TextEditingController(text: "1");
+  TextEditingController pointsLose = TextEditingController(text: "0");
+  TextEditingController substitutionsAllowed = TextEditingController(text: "5");
+  bool drawsAllowed = true;
+  bool extraTimeAllowed = true;
+  int matchDuration = 60;
+  int restTime = 10;
+  int extraTimeDuration = 8;
+
+  List<String> tiebreakersSelected = ["goal_difference"];
+  List<Map<String, String>> tiebreakers = [
+    {'goal_difference': 'Diferença de gols'},
+    {'goals_scored': 'Gols marcados'},
+    {'head_to_head': 'Confronto direto'},
+    {'wins': 'Vitórias'},
+    {'fair_play': 'Fair play (cartões)'},
+    {'random_draw': 'Sorteio'},
+  ];
 
   void nextStep() {
     final requiresValidation = _currentStep == 0 || (_currentStep == 2);
@@ -147,8 +184,9 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
             FormBuilderDropdown<String>(
               name: 'type',
               initialValue: type.text,
-              items: types
-                  .map((t) => DropdownMenuItem(value: t, child: Text(t)))
+              items: types.entries
+                  .map((t) =>
+                      DropdownMenuItem(value: t.key, child: Text(t.value)))
                   .toList(),
               onChanged: (v) => setState(() => type.text = v!),
               decoration:
@@ -202,42 +240,15 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                 FormBuilderValidators.required(errorText: "Campo obrigatório"),
           ),
           const SizedBox(height: 15),
-          FormBuilderDropdown<int>(
-            name: 'match_type',
-            decoration:
-                const InputDecoration(labelText: 'Selecione o tipo de jogo'),
-            onTap: () async {
-              // final selectedValue = await showModalBottomSheet<int>(
-              //   context: context,
-              //   builder: (BuildContext context) {
-              //     return ListView.builder(
-              //       itemCount: 10,
-              //       itemBuilder: (context, index) {
-              //         final value = index + 2;
-              //         return ListTile(
-              //           title: Text('$value x $value'),
-              //           onTap: () {
-              //             Navigator.pop(context, value);
-              //           },
-              //         );
-              //       },
-              //     );
-              //   },
-              // );
-              // if (selectedValue != null) {
-              //   setState(() {
-              //     _formKey.currentState?.fields['match_type']
-              //         ?.didChange(selectedValue);
-              //   });
-              // }
-            },
-            items: List.generate(
-              10,
-              (index) => DropdownMenuItem(
-                value: index + 2,
-                child: Text('${index + 2} x ${index + 2}'),
-              ),
-            ),
+          FormBuilderDropdown<String>(
+            name: 'game_type',
+            initialValue: gameType.text,
+            items: gameTypes.entries
+                .map(
+                    (t) => DropdownMenuItem(value: t.key, child: Text(t.value)))
+                .toList(),
+            onChanged: (v) => setState(() => type.text = v!),
+            decoration: const InputDecoration(labelText: 'Tipo de Jogo'),
             validator:
                 FormBuilderValidators.required(errorText: "Campo obrigatório"),
           ),
@@ -249,16 +260,18 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                   color: Colors.black)),
           const SizedBox(height: 10),
           FormBuilderRadioGroup<String>(
-            name: 'gender',
+            name: 'player_type',
+            initialValue: playerType.text,
             options: const [
-              FormBuilderFieldOption(value: 'Homens', child: Text('Homens')),
-              FormBuilderFieldOption(
-                  value: 'Mulheres', child: Text('Mulheres')),
+              FormBuilderFieldOption(value: 'male', child: Text('Homens')),
+              FormBuilderFieldOption(value: 'female', child: Text('Mulheres')),
             ],
             validator:
                 FormBuilderValidators.required(errorText: "Campo obrigatório"),
             onChanged: (value) {
-              // Handle gender selection if needed
+              setState(() {
+                playerType.text = value!;
+              });
             },
           ),
         ],
@@ -280,47 +293,39 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                     fontWeight: FontWeight.bold,
                     color: Colors.black)),
             const SizedBox(height: 10),
-            FormBuilderCheckboxGroup(name: 'tiebreakers', options: const [
-              FormBuilderFieldOption(value: 'Diferença de gols'),
-              FormBuilderFieldOption(value: 'Gols marcados'),
-              FormBuilderFieldOption(value: 'Confronto direto'),
-              FormBuilderFieldOption(value: 'Cartões (fair play)'),
-              FormBuilderFieldOption(value: 'Sorteio'),
-            ]),
-            const SizedBox(height: 15),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FormBuilderDropdown(
-                  name: 'points_victory',
-                  decoration: const InputDecoration(labelText: 'Vitória'),
-                  items: List.generate(
-                    5,
-                    (index) => DropdownMenuItem(
-                      value: index,
-                      child: Text(index == 0
-                          ? '0'
-                          : index == 1
-                              ? '$index pt'
-                              : '$index pts'),
-                    ),
-                  ),
-                  validator: FormBuilderValidators.required(
-                      errorText: "Campo obrigatório"),
-                ),
-              ],
+            FormBuilderCheckboxGroup<String>(
+              name: 'tiebreakers',
+              options: tiebreakers
+                  .map((item) => FormBuilderFieldOption(
+                        value: item.keys.first,
+                        child: Text(item.values.first),
+                      ))
+                  .toList(),
+              initialValue: tiebreakersSelected,
+              onChanged: (selected) {
+                if (selected != null) {
+                  setState(() {
+                    tiebreakersSelected = selected;
+                  });
+                }
+              },
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.minLength(1,
+                    errorText: 'Selecione pelo menos um critério'),
+              ]),
             ),
             const SizedBox(height: 15),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FormBuilderDropdown(
-                  name: 'points_draw',
+                FormBuilderDropdown<String>(
+                  name: 'points_victory',
+                  initialValue: pointsVictory.text,
                   decoration: const InputDecoration(labelText: 'Empate'),
                   items: List.generate(
                     5,
                     (index) => DropdownMenuItem(
-                      value: index,
+                      value: index.toString(),
                       child: Text(index == 0
                           ? '0'
                           : index == 1
@@ -328,6 +333,11 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                               : '$index pts'),
                     ),
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      pointsDraw.text = value!;
+                    });
+                  },
                   validator: FormBuilderValidators.required(
                       errorText: "Campo obrigatório"),
                 ),
@@ -337,13 +347,14 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FormBuilderDropdown(
-                  name: 'points_lose',
-                  decoration: const InputDecoration(labelText: 'Derrota'),
+                FormBuilderDropdown<String>(
+                  name: 'points_draw',
+                  initialValue: pointsDraw.text,
+                  decoration: const InputDecoration(labelText: 'Empate'),
                   items: List.generate(
                     5,
                     (index) => DropdownMenuItem(
-                      value: index,
+                      value: index.toString(),
                       child: Text(index == 0
                           ? '0'
                           : index == 1
@@ -351,38 +362,80 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                               : '$index pts'),
                     ),
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      pointsDraw.text = value!;
+                    });
+                  },
                   validator: FormBuilderValidators.required(
                       errorText: "Campo obrigatório"),
                 ),
               ],
             ),
             const SizedBox(height: 15),
-            FormBuilderDropdown(
-                name: 'match_leg',
-                decoration:
-                    const InputDecoration(hintText: 'Tipo de confronto'),
-                items: const [
-                  DropdownMenuItem(
-                      value: 'Ida e volta', child: Text('Ida e volta')),
-                  DropdownMenuItem(
-                      value: 'Jogo único', child: Text('Jogo único')),
-                ]),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FormBuilderDropdown<String>(
+                  name: 'points_lose',
+                  initialValue: pointsLose.text,
+                  decoration: const InputDecoration(labelText: 'Empate'),
+                  items: List.generate(
+                    5,
+                    (index) => DropdownMenuItem(
+                      value: index.toString(),
+                      child: Text(index == 0
+                          ? '0'
+                          : index == 1
+                              ? '$index pt'
+                              : '$index pts'),
+                    ),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      pointsDraw.text = value!;
+                    });
+                  },
+                  validator: FormBuilderValidators.required(
+                      errorText: "Campo obrigatório"),
+                ),
+              ],
+            ),
             const SizedBox(height: 15),
             FormBuilderTextField(
-                name: 'max_subs',
+                name: 'substitutions_allowed',
+                controller: substitutionsAllowed,
                 decoration: const InputDecoration(hintText: 'Substituição'),
                 keyboardType: TextInputType.number,
-                validator: FormBuilderValidators.numeric()),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(
+                      errorText: "Campo obrigatório"),
+                  FormBuilderValidators.numeric(
+                      errorText: "Penas valor numérico"),
+                ])),
             const SizedBox(height: 15),
             FormBuilderSwitch(
-                name: 'extra_subs_et',
-                title: const Text(
-                  'Permite substituições extras na prorrogação?',
-                )),
+              name: 'draws_allowed',
+              initialValue: drawsAllowed,
+              onChanged: (value) {
+                setState(() {
+                  drawsAllowed = value!;
+                });
+              },
+              title: const Text(
+                'Permiter Empate',
+              ),
+            ),
             const SizedBox(height: 15),
             FormBuilderSwitch(
                 name: 'extra_time',
-                title: const Text('Adiciona prorrogação? (2x15)')),
+                initialValue: extraTimeAllowed,
+                onChanged: (value) {
+                  setState(() {
+                    extraTimeAllowed = value!;
+                  });
+                },
+                title: const Text('Adiciona prolongamento?')),
             const SizedBox(height: 15),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -393,16 +446,25 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                 ),
                 Row(
                   children: [
-                    _counterButton("-", () {}),
+                    _counterButton("-", () {
+                      setState(() {
+                        matchDuration = matchDuration - 1;
+                      });
+                    }),
                     const SizedBox(width: 16),
-                    const Column(
+                    Column(
                       children: [
-                        Text('30', style: TextStyle(fontSize: 18)),
-                        Text("min"),
+                        Text('$matchDuration',
+                            style: const TextStyle(fontSize: 18)),
+                        const Text("min"),
                       ],
                     ),
                     const SizedBox(width: 16),
-                    _counterButton("+", () {}),
+                    _counterButton("+", () {
+                      setState(() {
+                        matchDuration = matchDuration + 1;
+                      });
+                    }),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -418,16 +480,25 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                 ),
                 Row(
                   children: [
-                    _counterButton("-", () {}),
+                    _counterButton("-", () {
+                      setState(() {
+                        extraTimeDuration = extraTimeDuration - 1;
+                      });
+                    }),
                     const SizedBox(width: 16),
-                    const Column(
+                    Column(
                       children: [
-                        Text('30', style: TextStyle(fontSize: 18)),
-                        Text("min"),
+                        Text('$extraTimeDuration',
+                            style: const TextStyle(fontSize: 18)),
+                        const Text("min"),
                       ],
                     ),
                     const SizedBox(width: 16),
-                    _counterButton("+", () {}),
+                    _counterButton("+", () {
+                      setState(() {
+                        extraTimeDuration = extraTimeDuration + 1;
+                      });
+                    }),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -439,20 +510,28 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
               children: [
                 const Expanded(
                   child: Text("Munutos de Descanso",
-                      style: const TextStyle(fontSize: 16, color: Colors.grey)),
+                      style: TextStyle(fontSize: 16, color: Colors.grey)),
                 ),
                 Row(
                   children: [
-                    _counterButton("-", () {}),
+                    _counterButton("-", () {
+                      setState(() {
+                        restTime = restTime - 1;
+                      });
+                    }),
                     const SizedBox(width: 16),
-                    const Column(
+                    Column(
                       children: [
-                        Text('30', style: TextStyle(fontSize: 18)),
-                        Text("min"),
+                        Text('$restTime', style: const TextStyle(fontSize: 18)),
+                        const Text("min"),
                       ],
                     ),
                     const SizedBox(width: 16),
-                    _counterButton("+", () {}),
+                    _counterButton("+", () {
+                      setState(() {
+                        restTime = restTime + 1;
+                      });
+                    }),
                   ],
                 ),
                 const SizedBox(height: 24),
