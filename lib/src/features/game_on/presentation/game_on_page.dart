@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -31,7 +32,9 @@ class _GameOnPageState extends State<GameOnPage> {
   var _currentIndex = 0;
 
   List<Widget> widgets = [
-    TeamDetailsPage(),
+    // OrganizerPage(),
+    MyCompetitionsListPage(),
+    // TeamDetailsPage(),
     // CompetitionDetailsPage(),
     // Text("data"),
     OrganizerPage(),
@@ -253,6 +256,19 @@ class _GameOnPageState extends State<GameOnPage> {
       appBar: AppBar(
         backgroundColor: AppColors.primary,
         centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text(
+          "Torneio X",
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: [
+          IconButton(
+              onPressed: () {},
+              icon: SvgPicture.asset(
+                AppIcons.bellNotificationSocialMedia,
+                color: AppColors.white,
+              ))
+        ],
       ),
       drawer: Drawer(
         child: SafeArea(
@@ -277,7 +293,7 @@ class _GameOnPageState extends State<GameOnPage> {
                           ),
                         ),
                         subtitle: Text(
-                          'Jogador',
+                          'Organizador',
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.white.withOpacity(.3),

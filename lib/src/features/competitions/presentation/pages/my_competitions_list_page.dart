@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:game_on/src/config/routes/app_routes.dart';
@@ -6,7 +5,6 @@ import 'package:get/get.dart';
 
 import '../../../../config/themes/app_colors.dart';
 import '../../../../core/resources/app_icons.dart';
-import '../../../../core/strings/app_strings.dart';
 
 class MyCompetitionsListPage extends StatelessWidget {
   const MyCompetitionsListPage({super.key});
@@ -16,66 +14,6 @@ class MyCompetitionsListPage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-            color: AppColors.primary,
-            child: SafeArea(
-              child: Row(
-                children: [
-                  Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: AppColors.white.withOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      padding: const EdgeInsets.all(8.0),
-                      icon: const Icon(
-                        Icons.arrow_back,
-                        color: AppColors.white,
-                      ),
-                      onPressed: () {
-                        // Navigator.of(context).pop();
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    child: Center(
-                      child: Text(
-                        "Meus Torneios",
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      padding: const EdgeInsets.all(8.0),
-                      icon: const Icon(
-                        Icons.add,
-                        color: AppColors.primary,
-                      ),
-                      onPressed: () {
-                        // Navigator.of(context).pop();
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
           Expanded(
             child: DefaultTabController(
               length: 4,
@@ -201,26 +139,6 @@ class MyCompetitionsListPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  // trailing: RichText(
-                  //   text: TextSpan(
-                  //     children: [
-                  //       TextSpan(
-                  //         text: "20 ",
-                  //         style: TextStyle(
-                  //             fontWeight: FontWeight.bold,
-                  //             color: Colors.black,
-                  //             fontSize: 18,
-                  //             fontFamily: AppStrings.fontFamily),
-                  //       ),
-                  //       TextSpan(
-                  //         text: "",
-                  //         style: TextStyle(
-                  //             color: Colors.grey,
-                  //             fontFamily: AppStrings.fontFamily),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
