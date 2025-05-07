@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:game_on/src/app/app_entity.dart';
 import 'package:game_on/src/features/auth/domain/entities/login_entity.dart';
 
+import '../../../../config/routes/app_routes.dart';
 import '../../../../config/themes/app_colors.dart';
 import '../cubit/auth_cubit.dart';
 
@@ -22,12 +24,11 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
-          print(state);
           EasyLoading.dismiss();
           if (state is AuthLoading) {
             EasyLoading.show(status: "Loading");
           } else if (state is AuthAuthenticated) {
-            print("TRUE");
+            Navigator.pushReplacementNamed(context, AppRoutes.gameOn);
           }
         },
         child: Container(

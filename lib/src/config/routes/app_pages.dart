@@ -8,11 +8,26 @@ import 'package:game_on/src/features/competitions/presentation/pages/my_competit
 import 'package:game_on/src/features/game_on/presentation/game_on_page.dart';
 import 'package:game_on/src/features/live_games/presentation/pages/live_game_page.dart';
 import 'package:game_on/src/features/organizers/presentation/pages/organizer_details_page.dart';
+import 'package:game_on/src/features/splash&onboarding/presentation/pages/splash_page.dart';
 import 'app_routes.dart';
 
 class AppPages {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case AppRoutes.initial:
+        return PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) {
+            return const SplashPage();
+          },
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return SharedAxisTransition(
+              animation: animation,
+              secondaryAnimation: secondaryAnimation,
+              transitionType: SharedAxisTransitionType.horizontal,
+              child: child,
+            );
+          },
+        );
       case AppRoutes.gameOn:
         return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) {
@@ -116,10 +131,10 @@ class AppPages {
           },
         );
 
-      case AppRoutes.home:
+      case AppRoutes.login:
         return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) {
-            return LoginPage();
+            return const LoginPage();
           },
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SharedAxisTransition(

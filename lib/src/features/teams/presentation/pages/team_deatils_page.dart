@@ -94,40 +94,45 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Dourada FC',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: AppColors.primary,
-        centerTitle: true,
-        bottom: TabBar(
-          controller: _tabController,
-          isScrollable: true,
-          tabAlignment: TabAlignment.start,
-          unselectedLabelColor: AppColors.white.withOpacity(.6),
-          labelColor: AppColors.white,
-          tabs: const [
-            Tab(icon: Icon(Icons.sports_soccer), text: 'Detalhes'),
-            Tab(icon: Icon(Icons.emoji_events), text: 'Jogos'),
-            Tab(icon: Icon(Icons.leaderboard), text: 'Histórico de partidas'),
-            Tab(icon: Icon(Icons.group), text: 'Configuração'),
-            Tab(icon: Icon(Icons.star), text: 'Jogadores'),
-            Tab(icon: Icon(Icons.article), text: 'News'),
-          ],
-        ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
+      body: Column(
         children: [
-          _contantTeam(),
-          _buildTabContentMatch(),
-          _buildTable(),
-          _buildSettings(),
-          // _buildTeamsList(),
-          // _buildStats(),
-          _buildPlyer(),
-          _buildTabContentNews()
+          Container(
+            color: AppColors.primary,
+            child: TabBar(
+              controller: _tabController,
+              isScrollable: true,
+              tabAlignment: TabAlignment.start,
+              unselectedLabelColor: AppColors.white.withOpacity(.6),
+              labelColor: AppColors.white,
+              indicatorColor: Colors.red,
+              indicatorSize: TabBarIndicatorSize.tab,
+              tabs: const [
+                Tab(icon: Icon(Icons.sports_soccer), text: 'Detalhes'),
+                Tab(icon: Icon(Icons.emoji_events), text: 'Jogos'),
+                Tab(
+                    icon: Icon(Icons.leaderboard),
+                    text: 'Histórico de partidas'),
+                Tab(icon: Icon(Icons.group), text: 'Configuração'),
+                Tab(icon: Icon(Icons.star), text: 'Jogadores'),
+                Tab(icon: Icon(Icons.article), text: 'News'),
+              ],
+            ),
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                _contantTeam(),
+                _buildTabContentMatch(),
+                _buildTable(),
+                _buildSettings(),
+                // _buildTeamsList(),
+                // _buildStats(),
+                _buildPlyer(),
+                _buildTabContentNews()
+              ],
+            ),
+          ),
         ],
       ),
     );

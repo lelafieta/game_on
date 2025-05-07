@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:dropdown_textfield/dropdown_textfield.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -108,141 +110,141 @@ class _GameOnPageState extends State<GameOnPage> {
     //         ],
     //       ),
     //     ),
-    //     drawer: Drawer(
-    //       child: SafeArea(
-    //         child: ListView(
-    //           padding: EdgeInsets.zero,
-    //           children: [
-    //             // DrawerHeader(
-    //             //   decoration: const BoxDecoration(
-    //             //     color: AppColors.primary,
-    //             //   ),
-    //             //   child: ListTile(
-    //             //     contentPadding: const EdgeInsets.all(0),
-    //             //     title: Row(
-    //             //       children: [
-    //             //         const Text(
-    //             //           'Olá! Bem-vindo',
-    //             //           style: TextStyle(fontSize: 12),
-    //             //         ),
-    //             //         const SizedBox(
-    //             //           width: 5,
-    //             //         ),
-    //             //         Image.asset(
-    //             //           AppImages.wave,
-    //             //           width: 16,
-    //             //         ),
-    //             //       ],
-    //             //     ),
-    //             //     subtitle: const Text(
-    //             //       'Jesse Lingard',
-    //             //       style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-    //             //     ),
-    //             //     leading: const CircleAvatar(
-    //             //       backgroundImage: AssetImage(AppImages.avatar),
-    //             //     ),
-    //             //     // trailing: Container(
-    //             //     //   width: 100,
-    //             //     //   child: Row(
-    //             //     //     children: [
-    //             //     //       IconButton(
-    //             //     //         onPressed: () {},
-    //             //     //         icon: SvgPicture.asset(
-    //             //     //           AppIcons.bellNotificationSocialMedia,
-    //             //     //           color: AppColors.color,
-    //             //     //           width: 24,
-    //             //     //         ),
-    //             //     //       ),
-    //             //     //       IconButton(
-    //             //     //         onPressed: () {},
-    //             //     //         icon: SvgPicture.asset(AppIcons.barsStaggered,
-    //             //     //             width: 24, color: AppColors.color),
-    //             //     //       )
-    //             //     //     ],
-    //             //     //   ),
-    //             //     // ),
-    //             //   ),
-    //             // ),
-    //             Container(
-    //               padding: const EdgeInsets.all(16.0),
-    //               child: Text(
-    //                 "Painel",
-    //                 style: TextStyle(
-    //                   fontSize: 16,
-    //                   color: AppColors.primary,
-    //                   fontWeight: FontWeight.w600,
-    //                 ),
-    //               ),
+    // drawer: Drawer(
+    //   child: SafeArea(
+    //     child: ListView(
+    //       padding: EdgeInsets.zero,
+    //       children: [
+    //         // DrawerHeader(
+    //         //   decoration: const BoxDecoration(
+    //         //     color: AppColors.primary,
+    //         //   ),
+    //         //   child: ListTile(
+    //         //     contentPadding: const EdgeInsets.all(0),
+    //         //     title: Row(
+    //         //       children: [
+    //         //         const Text(
+    //         //           'Olá! Bem-vindo',
+    //         //           style: TextStyle(fontSize: 12),
+    //         //         ),
+    //         //         const SizedBox(
+    //         //           width: 5,
+    //         //         ),
+    //         //         Image.asset(
+    //         //           AppImages.wave,
+    //         //           width: 16,
+    //         //         ),
+    //         //       ],
+    //         //     ),
+    //         //     subtitle: const Text(
+    //         //       'Jesse Lingard',
+    //         //       style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+    //         //     ),
+    //         //     leading: const CircleAvatar(
+    //         //       backgroundImage: AssetImage(AppImages.avatar),
+    //         //     ),
+    //         //     // trailing: Container(
+    //         //     //   width: 100,
+    //         //     //   child: Row(
+    //         //     //     children: [
+    //         //     //       IconButton(
+    //         //     //         onPressed: () {},
+    //         //     //         icon: SvgPicture.asset(
+    //         //     //           AppIcons.bellNotificationSocialMedia,
+    //         //     //           color: AppColors.color,
+    //         //     //           width: 24,
+    //         //     //         ),
+    //         //     //       ),
+    //         //     //       IconButton(
+    //         //     //         onPressed: () {},
+    //         //     //         icon: SvgPicture.asset(AppIcons.barsStaggered,
+    //         //     //             width: 24, color: AppColors.color),
+    //         //     //       )
+    //         //     //     ],
+    //         //     //   ),
+    //         //     // ),
+    //         //   ),
+    //         // ),
+    //         Container(
+    //           padding: const EdgeInsets.all(16.0),
+    //           child: Text(
+    //             "Painel",
+    //             style: TextStyle(
+    //               fontSize: 16,
+    //               color: AppColors.primary,
+    //               fontWeight: FontWeight.w600,
     //             ),
-    //             Padding(
-    //               padding: const EdgeInsets.symmetric(horizontal: 16),
-    //               child: ListTile(
-    //                 contentPadding: const EdgeInsets.all(0),
-    //                 title: Row(
-    //                   children: [
-    //                     const Text(
-    //                       'Perfil de Organizador',
-    //                       style: TextStyle(fontSize: 12),
-    //                     ),
-    //                     const SizedBox(
-    //                       width: 5,
-    //                     ),
-    //                     Image.asset(
-    //                       AppImages.wave,
-    //                       width: 16,
-    //                     ),
-    //                   ],
-    //                 ),
-    //                 subtitle: const Text(
-    //                   'Lela Fieta',
-    //                   style:
-    //                       TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-    //                 ),
-    //                 leading: const CircleAvatar(
-    //                   backgroundImage: AssetImage(AppImages.avatar),
-    //                 ),
-    //               ),
-    //             ),
-    //             Padding(
-    //               padding: const EdgeInsets.symmetric(horizontal: 16),
-    //               child: ListTile(
-    //                 contentPadding: const EdgeInsets.all(0),
-    //                 title: Row(
-    //                   children: [
-    //                     const Text(
-    //                       'Perfil de jogador',
-    //                       style: TextStyle(fontSize: 12),
-    //                     ),
-    //                   ],
-    //                 ),
-    //                 subtitle: const Text(
-    //                   'Jesse Lingard',
-    //                   style:
-    //                       TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-    //                 ),
-    //                 leading: const CircleAvatar(
-    //                   backgroundImage: AssetImage(AppImages.avatar),
-    //                 ),
-    //               ),
-    //             ),
-    //             ListTile(
-    //               leading: Icon(Icons.settings),
-    //               title: Text('Settings'),
-    //               onTap: () {
-    //                 Navigator.pop(context);
-    //               },
-    //             ),
-    //             ListTile(
-    //               leading: Icon(Icons.logout),
-    //               title: Text('Logout'),
-    //               onTap: () {
-    //                 Navigator.pop(context);
-    //               },
-    //             ),
-    //           ],
+    //           ),
     //         ),
-    //       ),
+    //         Padding(
+    //           padding: const EdgeInsets.symmetric(horizontal: 16),
+    //           child: ListTile(
+    //             contentPadding: const EdgeInsets.all(0),
+    //             title: Row(
+    //               children: [
+    //                 const Text(
+    //                   'Perfil de Organizador',
+    //                   style: TextStyle(fontSize: 12),
+    //                 ),
+    //                 const SizedBox(
+    //                   width: 5,
+    //                 ),
+    //                 Image.asset(
+    //                   AppImages.wave,
+    //                   width: 16,
+    //                 ),
+    //               ],
+    //             ),
+    //             subtitle: const Text(
+    //               'Lela Fieta',
+    //               style:
+    //                   TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+    //             ),
+    //             leading: const CircleAvatar(
+    //               backgroundImage: AssetImage(AppImages.avatar),
+    //             ),
+    //           ),
+    //         ),
+    //         Padding(
+    //           padding: const EdgeInsets.symmetric(horizontal: 16),
+    //           child: ListTile(
+    //             contentPadding: const EdgeInsets.all(0),
+    //             title: Row(
+    //               children: [
+    //                 const Text(
+    //                   'Perfil de jogador',
+    //                   style: TextStyle(fontSize: 12),
+    //                 ),
+    //               ],
+    //             ),
+    //             subtitle: const Text(
+    //               'Jesse Lingard',
+    //               style:
+    //                   TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+    //             ),
+    //             leading: const CircleAvatar(
+    //               backgroundImage: AssetImage(AppImages.avatar),
+    //             ),
+    //           ),
+    //         ),
+    //         ListTile(
+    //           leading: Icon(Icons.settings),
+    //           title: Text('Settings'),
+    //           onTap: () {
+    //             Navigator.pop(context);
+    //           },
+    //         ),
+    //         ListTile(
+    //           leading: Icon(Icons.logout),
+    //           title: Text('Logout'),
+    //           onTap: () {
+    //             Navigator.pop(context);
+    //           },
+    //         ),
+    //       ],
     //     ),
+    //   ),
+    // ),
     //     body: TabBarView(
     //       children: widgets,
     //     ),
@@ -250,6 +252,134 @@ class _GameOnPageState extends State<GameOnPage> {
     // );
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.primary,
+        centerTitle: true,
+      ),
+      drawer: Drawer(
+        child: SafeArea(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              DrawerHeader(
+                decoration: const BoxDecoration(
+                  color: AppColors.primary,
+                ),
+                child: ListTile(
+                  contentPadding: const EdgeInsets.all(0),
+                  minVerticalPadding: 10,
+                  titleAlignment: ListTileTitleAlignment.top,
+                  title: const Text(
+                    'Jesse Lingard',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                  subtitle: DropDownTextField(
+                    clearOption: false,
+                    textStyle: TextStyle(
+                      color: Colors.white.withOpacity(.5),
+                    ),
+                    dropDownItemCount: 8,
+                    searchShowCursor: false,
+                    enableSearch: false,
+                    searchKeyboardType: TextInputType.number,
+                    dropDownList: const [
+                      DropDownValueModel(name: 'Jogador', value: "player"),
+                      DropDownValueModel(
+                          name: 'Organizador', value: "organizer"),
+                      DropDownValueModel(name: 'Treinador', value: "value7"),
+                      DropDownValueModel(name: 'Árbitro', value: "value8"),
+                    ],
+                    onChanged: (val) {},
+                  ),
+                  leading: const CircleAvatar(
+                    backgroundImage: AssetImage(
+                      AppImages.avatar,
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  "Painel",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: ListTile(
+                  contentPadding: const EdgeInsets.all(0),
+                  title: Row(
+                    children: [
+                      const Text(
+                        'Perfil de Organizador',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Image.asset(
+                        AppImages.wave,
+                        width: 16,
+                      ),
+                    ],
+                  ),
+                  subtitle: const Text(
+                    'Lela Fieta',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                  ),
+                  leading: const CircleAvatar(
+                    backgroundImage: AssetImage(AppImages.avatar),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: ListTile(
+                  contentPadding: const EdgeInsets.all(0),
+                  title: Row(
+                    children: [
+                      const Text(
+                        'Perfil de jogador',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ],
+                  ),
+                  subtitle: const Text(
+                    'Jesse Lingard',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                  ),
+                  leading: const CircleAvatar(
+                    backgroundImage: AssetImage(AppImages.avatar),
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.settings),
+                title: Text('Settings'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.logout),
+                title: Text('Logout'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
       body: widgets[_currentIndex],
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: AnimatedBottomNavigationBar.builder(

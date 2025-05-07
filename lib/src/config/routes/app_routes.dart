@@ -1,8 +1,9 @@
 class AppRoutes {
   AppRoutes._();
 
-  static const String gameOn = '/home';
-  static const String home = '/';
+  static const String initial = '/';
+  static const String gameOn = '/gameOn';
+  static const String home = '/home';
   static const String login = '/login';
   static const String organizerDetails = '/organizerDetails';
   static const String competionDetails = '/competionDetails';

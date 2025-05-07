@@ -1,7 +1,43 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-class SplashPage extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:game_on/src/config/routes/app_routes.dart';
+
+import '../../../../app/app_entity.dart';
+
+class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
+
+  @override
+  State<SplashPage> createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> {
+  late Timer _timer;
+
+  void _startDelay() {
+    _timer = Timer(const Duration(milliseconds: 1500), () => _goToNext());
+  }
+
+  @override
+  void initState() {
+    _startDelay();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _goToNext() {
+    if (AppEntity.uId != null) {
+      Navigator.of(context).pushReplacementNamed(AppRoutes.gameOn);
+    } else {
+      Navigator.of(context).pushReplacementNamed(AppRoutes.login);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
