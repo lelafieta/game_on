@@ -547,7 +547,9 @@ class _GameOnPageState extends State<GameOnPage> {
                         () {
                       Get.toNamed(AppRoutes.createCompetition);
                     }),
-                    _buildItem(AppIcons.footballJersey, "Nova Equipe", () {}),
+                    _buildItem(AppIcons.footballJersey, "Nova Equipe", () {
+                      Get.toNamed(AppRoutes.createTeam);
+                    }),
                     _buildItem(AppIcons.userColor, "Novo Jogador", () {}),
                     _buildItem(
                         AppIcons.copyLink, "Participar em torneio", () {}),
