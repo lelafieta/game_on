@@ -10,6 +10,7 @@ import 'package:game_on/src/features/live_games/presentation/pages/live_game_pag
 import 'package:game_on/src/features/organizers/presentation/pages/organizer_details_page.dart';
 import 'package:game_on/src/features/organizers/presentation/pages/organizer_page.dart';
 import 'package:game_on/src/features/splash&onboarding/presentation/pages/splash_page.dart';
+import 'package:game_on/src/features/teams/presentation/pages/list_my_teams.dart';
 import '../../features/organizers/presentation/pages/organizer_home_page.dart';
 import 'app_routes.dart';
 
@@ -170,6 +171,21 @@ class AppPages {
         return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) {
             return const OrganizerHomePage();
+          },
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return SharedAxisTransition(
+              animation: animation,
+              secondaryAnimation: secondaryAnimation,
+              transitionType: SharedAxisTransitionType.vertical,
+              child: child,
+            );
+          },
+        );
+
+      case AppRoutes.listMyTeams:
+        return PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) {
+            return const ListMyTeamsPage();
           },
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SharedAxisTransition(

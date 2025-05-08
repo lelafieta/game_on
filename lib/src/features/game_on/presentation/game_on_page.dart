@@ -60,7 +60,7 @@ class _GameOnPageState extends State<GameOnPage> {
     AppIcons.whistle,
     AppIcons.bellNotificationSocialMedia,
     AppIcons.videoCameraAlt,
-    AppIcons.barsStaggered
+    AppIcons.settings2
   ];
 
   List<String> iconListBold = [
@@ -68,7 +68,7 @@ class _GameOnPageState extends State<GameOnPage> {
     AppIcons.whistleBold,
     AppIcons.bellNotificationSocialMedia,
     AppIcons.videoCameraAltBold,
-    AppIcons.barsStaggered
+    AppIcons.settings2
   ];
 
   @override
@@ -350,7 +350,7 @@ class _GameOnPageState extends State<GameOnPage> {
                       ),
                       title: Text('Equipas'),
                       onTap: () {
-                        Navigator.pop(context);
+                        Navigator.pushNamed(context, AppRoutes.listMyTeams);
                       },
                     ),
                     ListTile(

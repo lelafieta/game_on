@@ -13,4 +13,5 @@ class AppRoutes {
   static const String listMyCompetitions = '/listMyCompetitions';
   static const String myCompetitionDetails = '/myCompetitionDetails';
   static const String createCompetition = '/createCompetition';
+  static const String listMyTeams = '/listMyTeams';
 }

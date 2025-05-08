@@ -54,7 +54,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
   final ValueNotifier<int> partidaAtual = ValueNotifier<int>(3);
 
   final String backgroundUrl =
-      'https://scontent.flad5-1.fna.fbcdn.net/v/t39.30808-6/481972096_1207928134015658_4427683262273356979_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=zV_8X74IuyoQ7kNvwFNQ4ob&_nc_oc=AdkuSLXzaRPCkaG4Rk49w94sTBmd8Fhxnz2QazxYg2iIpuENHNFuCjDX0VJn-DIsKu_tpPTIOY-QLCN9VE_o77Vv&_nc_zt=23&_nc_ht=scontent.flad5-1.fna&_nc_gid=6g5SEc_mHR1ryf38jcOikw&oh=00_AfHwiN08xuDHuwgUxbjxBUvvfo7y6kwFlL6d0wj-XXV6kA&oe=68047308';
+      'https://cdn.pixabay.com/photo/2014/10/14/20/24/football-488714_1280.jpg';
   final String profileUrl =
       'https://scontent.flad5-1.fna.fbcdn.net/v/t39.30808-6/468946321_1143394810468991_6731165110528390324_n.jpg?_nc_cat=1&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=wSrOeJxvDDEQ7kNvwEbvT6L&_nc_oc=AdlTqHYlCPFGfrAGQlDwBDoWGWHzOtYBQvPLz5DFEahZRV2c0WoBBuSIrcQrBKYO_91fpJuk6Y9c1v6oU_Uldije&_nc_zt=23&_nc_ht=scontent.flad5-1.fna&_nc_gid=bu1cwd0CKmhmqZJFsKvxIg&oh=00_AfHS3wRkCA00310Cb6BF1t2f-b46KjsWZzhIrcgxTejGig&oe=68048141';
   final String team1Logo =
@@ -251,7 +251,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                           backgroundColor: Colors.white,
                           child: CircleAvatar(
                             radius: 66, // aumentado o tamanho da imagem
-                            backgroundImage: NetworkImage(profileUrl),
+                            backgroundImage: AssetImage(AppImages.dourada),
                           ),
                         ),
                         Positioned(
@@ -286,7 +286,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                 child: Column(
                   children: [
                     Text(
-                      'Brinca na Areia',
+                      'Dourada FC',
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,

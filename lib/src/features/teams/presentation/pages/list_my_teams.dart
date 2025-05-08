@@ -14,7 +14,7 @@ class ListMyTeamsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primary,
-        title: const Text("Minhas Competições"),
+        title: const Text("Minhas Equipas"),
       ),
       body: Column(
         children: [
@@ -44,7 +44,7 @@ class ListMyTeamsPage extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(50),
                                   color: Colors.red,
                                 ),
-                                child: Center(
+                                child: const Center(
                                   child: Text(
                                     "2",
                                     style: TextStyle(
@@ -69,7 +69,7 @@ class ListMyTeamsPage extends StatelessWidget {
                   Expanded(
                     child: TabBarView(
                       children: [
-                        _buildAllCompetitions(),
+                        _listAllTeams(),
                         Center(child: Text("Torneios ativos")),
                         Center(child: Text("Torneios encerrados")),
                         Center(child: Text("Torneios favoritos")),
@@ -85,7 +85,7 @@ class ListMyTeamsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildAllCompetitions() {
+  Widget _listAllTeams() {
     return ListView.separated(
       padding: const EdgeInsets.all(16.0),
       itemCount: 10, // Replace with the actual number of competitions
@@ -93,7 +93,7 @@ class ListMyTeamsPage extends StatelessWidget {
       itemBuilder: (context, index) {
         return InkWell(
           onTap: () {
-            Get.toNamed(AppRoutes.gameOn, arguments: 0);
+            Get.toNamed(AppRoutes.gameOn, arguments: 1);
           },
           child: Container(
             padding: const EdgeInsets.all(16.0),
@@ -114,7 +114,7 @@ class ListMyTeamsPage extends StatelessWidget {
                 ListTile(
                   contentPadding: EdgeInsets.zero,
                   leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(10),
                     child: Image.network(
                       "https://fpfimagehandler.fpf.pt/FPFImageHandler.ashx?type=Person&id=3883014&op=t&w=325&h=378",
                       width: 40,
@@ -123,7 +123,7 @@ class ListMyTeamsPage extends StatelessWidget {
                     ),
                   ),
                   title: Text(
-                    'Brinca na Areia',
+                    'Dourada FC',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                     ),
@@ -139,7 +139,7 @@ class ListMyTeamsPage extends StatelessWidget {
                         SizedBox(
                           width: 5,
                         ),
-                        Text("Angola, Luanda, Luanda"),
+                        Text("Angola, Luanda, Bairro Uige"),
                       ],
                     ),
                   ),
@@ -199,11 +199,11 @@ class ListMyTeamsPage extends StatelessWidget {
                           color: AppColors.primary.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Column(
+                        child: const Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              '12',
+                              '03',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
@@ -212,10 +212,11 @@ class ListMyTeamsPage extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'Equipes',
+                              'Competições',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black54,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ],
@@ -230,7 +231,7 @@ class ListMyTeamsPage extends StatelessWidget {
                           color: AppColors.primary.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Column(
+                        child: const Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
@@ -241,12 +242,13 @@ class ListMyTeamsPage extends StatelessWidget {
                                 color: AppColors.primary,
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: 4),
                             Text(
-                              'Jogos',
+                              'Jogadores',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black54,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ],
@@ -261,23 +263,24 @@ class ListMyTeamsPage extends StatelessWidget {
                           color: AppColors.primary.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Column(
+                        child: const Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              '24',
+                              '0',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                                 color: AppColors.primary,
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: 4),
                             Text(
-                              'Golos',
+                              'Troféos',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black54,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ],
@@ -286,46 +289,7 @@ class ListMyTeamsPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          AppIcons.calendar,
-                          width: 16,
-                          height: 16,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          "Início: 01/01/2023",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black54,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          AppIcons.calendarBold,
-                          width: 16,
-                          height: 16,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          "Término: 31/12/2023",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black54,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                // const SizedBox(height: 16),
               ],
             ),
           ),
