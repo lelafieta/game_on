@@ -15,23 +15,24 @@ class TeamEntity {
   final String? createdBy;
   final DateTime? createdAt;
   final String? equipmentType;
+  final String? abbreviation;
 
-  const TeamEntity({
-    this.id,
-    this.name,
-    this.logoUrl,
-    this.description,
-    this.category,
-    this.location,
-    this.captainName,
-    this.captainContact,
-    this.memberLimit,
-    this.foundedAt,
-    this.inviteCode,
-    this.socialLinks,
-    this.status,
-    this.createdBy,
-    this.createdAt,
-    this.equipmentType,
-  });
+  const TeamEntity(
+      {this.id,
+      this.name,
+      this.logoUrl,
+      this.description,
+      this.category,
+      this.location,
+      this.captainName,
+      this.captainContact,
+      this.memberLimit,
+      this.foundedAt,
+      this.inviteCode,
+      this.socialLinks,
+      this.status,
+      this.createdBy,
+      this.createdAt,
+      this.equipmentType,
+      this.abbreviation});
 }

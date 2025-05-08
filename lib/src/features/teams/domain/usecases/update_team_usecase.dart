@@ -5,13 +5,13 @@ import '../../../../core/usecases/base_usecases.dart';
 import '../entities/team_entity.dart';
 import '../repositories/i_team_repository.dart';
 
-class GetTeamsUseCase extends BaseUseCases<List<TeamEntity>, TeamEntity> {
+class UpdateTeamUseCase extends BaseUseCases<Unit, TeamEntity> {
   final ITeamRepository teamRepository;
 
-  GetTeamsUseCase({required this.teamRepository});
+  UpdateTeamUseCase({required this.teamRepository});
   @override
-  Future<Either<Failure, List<TeamEntity>>> call(TeamEntity params) async {
-    return await teamRepository.getMyTeams();
+  Future<Either<Failure, Unit>> call(TeamEntity params) async {
+    return await teamRepository.updateTeam(params);
   }
 }
 

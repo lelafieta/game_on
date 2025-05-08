@@ -18,6 +18,7 @@ class TeamRepository extends ITeamRepository {
       await teamDatasource.createTeam(TeamModel.fromEntity(team));
       return const Right(unit);
     } catch (e) {
+      print(e);
       return Left(Failure(message: e.toString()));
     }
   }

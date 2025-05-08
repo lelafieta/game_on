@@ -1,17 +1,27 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:game_on/src/core/cache/secure_storage_helper.dart';
-import 'package:game_on/src/features/auth/domain/usecases/is_logged_in_usecase.dart';
-import 'package:game_on/src/features/auth/domain/usecases/login_usecase.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import '../core/cache/i_secure_storage_helper.dart';
+import '../core/cache/secure_storage_helper.dart';
 import '../features/auth/data/datasources/auth_remote_datasource.dart';
 import '../features/auth/data/datasources/i_auth_remote_datasource.dart';
 import '../features/auth/data/repositories/auth_repository.dart';
 import '../features/auth/domain/repositories/i_auth_repository.dart';
+import '../features/auth/domain/usecases/is_logged_in_usecase.dart';
+import '../features/auth/domain/usecases/login_usecase.dart';
 import '../features/auth/presentation/cubit/auth_cubit.dart';
+import '../features/teams/data/datasources/i_team_datasource.dart';
+import '../features/teams/data/datasources/team_datasource.dart';
+import '../features/teams/data/repositories/team_repository.dart';
+import '../features/teams/domain/repositories/i_team_repository.dart';
+import '../features/teams/domain/usecases/create_team_usecase.dart';
+import '../features/teams/domain/usecases/delete_team_usecase.dart';
+import '../features/teams/domain/usecases/get_my_teams_usecase.dart';
+import '../features/teams/domain/usecases/get_team_by_id_usecase.dart';
+import '../features/teams/domain/usecases/get_teams_usecase.dart';
+import '../features/teams/domain/usecases/update_team_usecase.dart';
+import '../features/teams/presentation/cubit/team_action_cubit.dart';
 // import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 
 GetIt sl = GetIt.instance;
@@ -41,6 +51,9 @@ void _registerCubits() {
   // Exemplo: sl.registerFactory(() => YourCubit(sl()));
   sl.registerFactory(() => AuthCubit(
       loginUseCase: sl(), isLoggedInUseCase: sl(), secureStorageHelper: sl()));
+  // TEAM
+  sl.registerFactory(
+      () => TeamActionCubit(createTeamUseCase: sl(), updateTeamUseCase: sl()));
 }
 
 void _registerRepositories() {
@@ -48,6 +61,9 @@ void _registerRepositories() {
   // Exemplo: sl.registerLazySingleton(() => YourRepository(sl()));
   sl.registerLazySingleton<IAuthRepository>(
       () => AuthRepository(authRemoteDataSource: sl()));
+  // TEAM
+  sl.registerLazySingleton<ITeamRepository>(
+      () => TeamRepository(teamDatasource: sl()));
 }
 
 void _registerDatasources() {
@@ -56,6 +72,9 @@ void _registerDatasources() {
 
   sl.registerLazySingleton<IAuthRemoteDataSource>(
       () => AuthRemoteDataSource(client: sl()));
+  // TEAM
+  sl.registerLazySingleton<ITeamRemoteDataSource>(
+      () => TeamRemoteDataSource(client: sl()));
 }
 
 void _registerUseCases() {
@@ -63,6 +82,13 @@ void _registerUseCases() {
   // Exemplo: sl.registerLazySingleton(() => YourUseCase(sl()));
   sl.registerLazySingleton(() => LoginUseCase(authRepository: sl()));
   sl.registerLazySingleton(() => IsLoggedInUseCase(authRepository: sl()));
+  // TEAM
+  sl.registerLazySingleton(() => CreateTeamUseCase(teamRepository: sl()));
+  sl.registerLazySingleton(() => UpdateTeamUseCase(teamRepository: sl()));
+  sl.registerLazySingleton(() => GetTeamsUseCase(teamRepository: sl()));
+  sl.registerLazySingleton(() => GetTeamByIdUseCase(teamRepository: sl()));
+  sl.registerLazySingleton(() => GetMyTeamsUseCase(teamRepository: sl()));
+  sl.registerLazySingleton(() => DeleteTeamUseCase(teamRepository: sl()));
 }
 
 void _registerExternal() {

@@ -3,14 +3,16 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/team_model.dart';
 import 'i_team_datasource.dart';
 
-class TeamRemoteDataSourceImpl implements ITeamRemoteDataSource {
+class TeamRemoteDataSource implements ITeamRemoteDataSource {
   final SupabaseClient client;
 
-  TeamRemoteDataSourceImpl({required this.client});
+  TeamRemoteDataSource({required this.client});
 
   @override
   Future<Unit> createTeam(TeamModel team) async {
-    final response = await client.from('teams').insert(team.toMap());
+    final response = await client
+        .from('teams')
+        .insert(team.copyWith(createdBy: client.auth.currentUser!.id).toMap());
     if (response.error != null) {
       throw Exception('Erro ao criar equipe: ${response.error!.message}');
     }
