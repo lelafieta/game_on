@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../config/themes/app_colors.dart';
+import '../../../../core/resources/app_icons.dart';
+import '../../../../core/resources/app_images.dart';
 import '../../domain/entities/team_entity.dart';
 import '../cubit/team_action_cubit.dart';
+import 'build_equipament_page.dart';
 
 class CreateTeamPage extends StatefulWidget {
   const CreateTeamPage({super.key});
@@ -39,6 +44,40 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
     'type16': 'Type 16',
     'type17': 'Type 17',
   };
+
+  Map<String, String> teamData = {};
+
+  Future<void> _openSelectionPage(Map<String, String> teamData) async {
+    Map<String, String> result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => BuildEquipamentPage(teamData: teamData),
+      ),
+    );
+
+    setState(() {
+      teamData = result;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    teamData = {
+      'equipament_number_color': 'Color(0xff000000)',
+      'equipament_main_color': 'Color(0xff000000)',
+      'equipament_type_color': 'Color(0xff000000)',
+      'equipament_type': 'main'
+    };
+  }
+
+  Color parseColorFromString(String colorString) {
+    // Remove a parte "Color(" e ")"
+    final hexString = colorString.replaceAll(RegExp(r'[^0-9a-fA-F]'), '');
+
+    // Converte a string hexadecimal para inteiro
+    return Color(int.parse('0x$hexString'));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,10 +117,141 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
                     ]),
                   ),
                   const SizedBox(height: 15),
-                  FormBuilderTextField(
-                    name: 'description',
-                    decoration: const InputDecoration(labelText: 'Descrição'),
-                    maxLines: 3,
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20,
+                      horizontal: 16,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "EQUIPAMENTO / LOGOTIPO",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: InkWell(
+                                onTap: () {
+                                  // Get.to(BuildEquipamentPage());
+                                  _openSelectionPage(teamData);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.white,
+                                    border: Border.all(
+                                      width: 1,
+                                      color: Colors.grey.shade400,
+                                    ),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Container(
+                                              child: Image.asset(
+                                                  AppImages.mainTShirt,
+                                                  width: 20,
+                                                  color: parseColorFromString(
+                                                      teamData[
+                                                          'equipament_main_color']!)
+                                                  //     as Color,
+                                                  ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Container(
+                                              child: Stack(
+                                                children: [
+                                                  Image.asset(
+                                                      AppImages.backPartTShirt,
+                                                      color: parseColorFromString(
+                                                          teamData[
+                                                              'equipament_main_color']!)),
+                                                  Positioned(
+                                                    left: 50,
+                                                    right: 50,
+                                                    top: 10,
+                                                    child: Center(
+                                                      child: Text(
+                                                        "7",
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w900,
+                                                          color: Colors.red,
+                                                          fontSize: 25,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+
+                                          // const Text("Equipamento")
+                                        ],
+                                      ),
+                                      const Text("Equipamentos")
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 20),
+                            Expanded(
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    width: 1,
+                                    color: Colors.grey.shade400,
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Container(
+                                            child: SvgPicture.asset(
+                                              width: 55,
+                                              AppIcons.security,
+                                            ),
+                                          ),
+                                        ),
+
+                                        // const Text("Equipamento")
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text("Logotipo")
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 15),
                   FormBuilderTextField(
@@ -157,6 +327,12 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
                       FormBuilderValidators.min(1,
                           errorText: 'Mínimo 1 integrante'),
                     ]),
+                  ),
+                  const SizedBox(height: 15),
+                  FormBuilderTextField(
+                    name: 'description',
+                    decoration: const InputDecoration(helperText: 'Descrição'),
+                    maxLines: 3,
                   ),
                   const SizedBox(height: 15),
                   FormBuilderDropdown(

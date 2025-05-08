@@ -20,6 +20,7 @@ class TeamModel extends TeamEntity {
       super.equipmentType,
       super.equipmentMainColor,
       super.equipmentTypeColor,
+      super.equipmentNumberColor,
       super.abbreviation});
 
   factory TeamModel.fromJson(Map<String, dynamic> json) {
@@ -46,6 +47,7 @@ class TeamModel extends TeamEntity {
       equipmentType: json['equipment_type'] as String?,
       equipmentMainColor: json['equipment_main_color'] as String?,
       equipmentTypeColor: json['equipment_type_color'] as String?,
+      equipmentNumberColor: json['equipment_number_color'] as String?,
       abbreviation: json['abbreviation'] as String?,
     );
   }
@@ -70,6 +72,7 @@ class TeamModel extends TeamEntity {
         equipmentType: entity.equipmentType,
         equipmentMainColor: entity.equipmentMainColor,
         equipmentTypeColor: entity.equipmentTypeColor,
+        equipmentNumberColor: entity.equipmentNumberColor,
         abbreviation: entity.abbreviation);
   }
 
@@ -94,6 +97,7 @@ class TeamModel extends TeamEntity {
       'abbreviation': abbreviation,
       'equipament_main_color': equipmentMainColor,
       'equipament_type_color': equipmentTypeColor,
+      'equipament_number_color': equipmentNumberColor,
     };
   }
 
@@ -118,6 +122,7 @@ class TeamModel extends TeamEntity {
       'abbreviation': abbreviation,
       'equipament_main_color': equipmentMainColor,
       'equipament_type_color': equipmentTypeColor,
+      'equipament_number_color': equipmentNumberColor,
     };
   }
 
@@ -141,6 +146,7 @@ class TeamModel extends TeamEntity {
     String? abbreviation,
     String? equipamentMainColor,
     String? equipamentTypeColor,
+    String? equipamentNumberColor,
   }) {
     return TeamModel(
       id: id ?? this.id,
@@ -161,6 +167,7 @@ class TeamModel extends TeamEntity {
       equipmentType: equipmentType ?? this.equipmentType,
       equipmentMainColor: equipmentType ?? equipmentMainColor,
       equipmentTypeColor: equipmentType ?? equipmentTypeColor,
+      equipmentNumberColor: abbreviation ?? equipmentNumberColor,
       abbreviation: abbreviation ?? this.abbreviation,
     );
   }

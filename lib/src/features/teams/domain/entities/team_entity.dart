@@ -17,6 +17,7 @@ class TeamEntity {
   final String? equipmentType;
   final String? equipmentMainColor;
   final String? equipmentTypeColor;
+  final String? equipmentNumberColor;
   final String? abbreviation;
 
   const TeamEntity(
@@ -38,5 +39,6 @@ class TeamEntity {
       this.equipmentType,
       this.equipmentTypeColor,
       this.equipmentMainColor,
+      this.equipmentNumberColor,
       this.abbreviation});
 }

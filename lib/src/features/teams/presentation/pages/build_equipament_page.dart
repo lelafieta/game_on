@@ -1,20 +1,15 @@
 import 'dart:io';
 
 import 'package:flex_color_picker/flex_color_picker.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../config/themes/app_colors.dart';
-import '../../../../core/resources/app_icons.dart';
 import '../../../../core/resources/app_images.dart';
 
 class BuildEquipamentPage extends StatefulWidget {
-  const BuildEquipamentPage({super.key});
+  final Map<String, String> teamData;
+  const BuildEquipamentPage({super.key, required this.teamData});
 
   @override
   State<BuildEquipamentPage> createState() => _BuildEquipamentPageState();
@@ -68,20 +63,19 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
     Colors.blueGrey, // um tom mais prateado/cinza
   ];
 
-  late TabController _tabController;
+  Color parseColorFromString(String colorString) {
+    // Remove a parte "Color(" e ")"
+    final hexString = colorString.replaceAll(RegExp(r'[^0-9a-fA-F]'), '');
+
+    // Converte a string hexadecimal para inteiro
+    return Color(int.parse('0x$hexString'));
+  }
+
   final int totalPartidas = 6;
   final ValueNotifier<int> partidaAtual = ValueNotifier<int>(3);
+  Map<String, String> teamData = {};
 
-  final String backgroundUrl =
-      'https://scontent.flad5-1.fna.fbcdn.net/v/t39.30808-6/481972096_1207928134015658_4427683262273356979_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=zV_8X74IuyoQ7kNvwFNQ4ob&_nc_oc=AdkuSLXzaRPCkaG4Rk49w94sTBmd8Fhxnz2QazxYg2iIpuENHNFuCjDX0VJn-DIsKu_tpPTIOY-QLCN9VE_o77Vv&_nc_zt=23&_nc_ht=scontent.flad5-1.fna&_nc_gid=6g5SEc_mHR1ryf38jcOikw&oh=00_AfHwiN08xuDHuwgUxbjxBUvvfo7y6kwFlL6d0wj-XXV6kA&oe=68047308';
-  final String profileUrl =
-      'https://scontent.flad5-1.fna.fbcdn.net/v/t39.30808-6/468946321_1143394810468991_6731165110528390324_n.jpg?_nc_cat=1&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=wSrOeJxvDDEQ7kNvwEbvT6L&_nc_oc=AdlTqHYlCPFGfrAGQlDwBDoWGWHzOtYBQvPLz5DFEahZRV2c0WoBBuSIrcQrBKYO_91fpJuk6Y9c1v6oU_Uldije&_nc_zt=23&_nc_ht=scontent.flad5-1.fna&_nc_gid=bu1cwd0CKmhmqZJFsKvxIg&oh=00_AfHS3wRkCA00310Cb6BF1t2f-b46KjsWZzhIrcgxTejGig&oe=68048141';
-  final String team1Logo =
-      'https://scontent.flad5-1.fna.fbcdn.net/v/t39.30808-1/449761244_1062646795218211_4139834764378388664_n.jpg?stp=c196.196.1199.1199a_dst-jpg_s200x200_tt6&_nc_cat=1&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=2PIv9d0zbT4Q7kNvwFrDdyl&_nc_oc=Adnbea-uBG6-Yjz-swaIok52lxeGLlxbFYlST90cK4dm1KdQveMu-MleJfCBBy4zbgL6PbCyY77uA-Jx-87CXmsf&_nc_zt=24&_nc_ht=scontent.flad5-1.fna&_nc_gid=b_6-6aTZFayQsgqhCcyxhQ&oh=00_AfE78XoqOuYLsaL3vLfGnPlltyuw8ZA_dK-vkLTcnXYkEA&oe=68047744';
-  final String team2Logo =
-      'https://scontent.flad5-1.fna.fbcdn.net/v/t39.30808-1/273144602_10152602977424953_1955203260619408476_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=1&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=q-W_7Ofx0GIQ7kNvwGEJVrU&_nc_oc=Adnh-RBMtZE6Kr9ubdATmRiKH6NAEiVO92HwxQXcJXb10vyt6hqv1nhkO14Pimi4X05KqocWeD2Q83HP7vsW3Xw6&_nc_zt=24&_nc_ht=scontent.flad5-1.fna&_nc_gid=tINtmFSQ5O2qx6UrzJ1Xjg&oh=00_AfFWaHkb26Gz6qnHdeiku917wrHIZY8eRqAgYFACd31o-Q&oe=68047B4B';
   Future<void> pickImage() async {
-    print("object");
     final XFile? pickedFile =
         await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
@@ -93,6 +87,12 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
   void dispose() {
     imageFile.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    teamData = widget.teamData;
   }
 
   @override
@@ -114,34 +114,35 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
           //   icon: SvgPicture.asset(AppIcons.security),
           // ),
           IconButton(
-            icon: Icon(Icons.more_vert),
+            icon: const Icon(Icons.check),
             onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ListTile(
-                        leading: Icon(Icons.add),
-                        title: Text('Adicionar Logotipo'),
-                        onTap: () {
-                          pickImage();
-                          Navigator.pop(context);
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.add_business),
-                        title: Text('Adicionar Patrocinador'),
-                        onTap: () {
-                          Navigator.pop(context);
-                          // Adicionar lógica para adicionar patrocinador
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
+              Navigator.of(context).pop(teamData);
+              // showModalBottomSheet(
+              //   context: context,
+              //   builder: (BuildContext context) {
+              //     return Column(
+              //       mainAxisSize: MainAxisSize.min,
+              //       children: [
+              //         ListTile(
+              //           leading: Icon(Icons.add),
+              //           title: Text('Adicionar Logotipo'),
+              //           onTap: () {
+              //             pickImage();
+              //             Navigator.pop(context);
+              //           },
+              //         ),
+              //         ListTile(
+              //           leading: Icon(Icons.add_business),
+              //           title: Text('Adicionar Patrocinador'),
+              //           onTap: () {
+              //             Navigator.pop(context);
+              //             // Adicionar lógica para adicionar patrocinador
+              //           },
+              //         ),
+              //       ],
+              //     );
+              //   },
+              // );
             },
           ),
         ],
@@ -162,7 +163,8 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
                           builder: (_, color, __) {
                             return Image.asset(
                               AppImages.mainTShirt,
-                              color: color,
+                              color: parseColorFromString(
+                                  teamData["equipament_main_color"].toString()),
                             );
                           },
                         ),
@@ -256,7 +258,8 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
                           builder: (_, color, __) {
                             return Image.asset(
                               AppImages.backPartTShirt,
-                              color: color,
+                              color: parseColorFromString(
+                                  teamData["equipament_main_color"].toString()),
                             );
                           },
                         ),
@@ -346,6 +349,9 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
                           return InkWell(
                             onTap: () {
                               selectedType.value = entry.key;
+                              setState(() {
+                                teamData['equipment_type'] = entry.key;
+                              });
                             },
                             child: Stack(
                               children: [
@@ -407,6 +413,11 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
                                         onColorChanged: (newColor) {
                                           selectedMainShirtColor.value =
                                               newColor;
+                                          print(newColor.toString());
+                                          setState(() {
+                                            teamData['equipament_main_color'] =
+                                                newColor.toString();
+                                          });
                                         },
                                         width: 44,
                                         height: 44,
@@ -441,6 +452,10 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
                                         onColorChanged: (newColor) {
                                           selectedStyleShirtColor.value =
                                               newColor;
+                                          setState(() {
+                                            teamData['equipment_type_color'] =
+                                                newColor.toString();
+                                          });
                                         },
                                         width: 44,
                                         height: 44,
@@ -474,6 +489,10 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
                                         color: color,
                                         onColorChanged: (newColor) {
                                           selectedNumberColor.value = newColor;
+                                          setState(() {
+                                            teamData['equipment_number_color'] =
+                                                newColor.toString();
+                                          });
                                         },
                                         width: 44,
                                         height: 44,
