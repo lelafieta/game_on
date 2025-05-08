@@ -1,21 +1,24 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_date_timeline/easy_date_timeline.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:game_on/src/core/strings/app_strings.dart';
 
 import '../../../../config/themes/app_colors.dart';
 import '../../../../core/resources/app_icons.dart';
+import '../../../home/presentantion/home_page.dart';
 import '../../../home/presentantion/old_home';
 
-class MyCompetitionDetailsPage extends StatefulWidget {
-  const MyCompetitionDetailsPage({super.key});
+class CompetitionDetailsPage extends StatefulWidget {
+  const CompetitionDetailsPage({super.key});
 
   @override
-  State<MyCompetitionDetailsPage> createState() =>
-      _MyCompetitionDetailsPageState();
+  State<CompetitionDetailsPage> createState() => _CompetitionDetailsPageState();
 }
 
-class _MyCompetitionDetailsPageState extends State<MyCompetitionDetailsPage>
+class _CompetitionDetailsPageState extends State<CompetitionDetailsPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final int totalPartidas = 6;
@@ -79,40 +82,38 @@ class _MyCompetitionDetailsPageState extends State<MyCompetitionDetailsPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      appBar: AppBar(
+        title: const Text(
+          'Brinca na areia',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: AppColors.primary,
+        centerTitle: true,
+        bottom: TabBar(
+          controller: _tabController,
+          isScrollable: true,
+          tabAlignment: TabAlignment.start,
+          unselectedLabelColor: AppColors.white.withOpacity(.6),
+          labelColor: AppColors.white,
+          tabs: const [
+            Tab(icon: Icon(Icons.sports_soccer), text: 'Detalhes'),
+            Tab(icon: Icon(Icons.emoji_events), text: 'Jogos'),
+            Tab(icon: Icon(Icons.leaderboard), text: 'Classificação'),
+            Tab(icon: Icon(Icons.group), text: 'Equipes'),
+            Tab(icon: Icon(Icons.star), text: 'Estatísticas'),
+            Tab(icon: Icon(Icons.article), text: 'News'),
+          ],
+        ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
         children: [
-          Container(
-            color: AppColors.primary,
-            child: TabBar(
-              controller: _tabController,
-              isScrollable: true,
-              tabAlignment: TabAlignment.start,
-              unselectedLabelColor: AppColors.white.withOpacity(.6),
-              labelColor: AppColors.white,
-              indicatorColor: Colors.orange,
-              tabs: const [
-                Tab(icon: Icon(Icons.sports_soccer), text: 'Detalhes'),
-                Tab(icon: Icon(Icons.emoji_events), text: 'Jogos'),
-                Tab(icon: Icon(Icons.leaderboard), text: 'Classificação'),
-                Tab(icon: Icon(Icons.group), text: 'Equipes'),
-                Tab(icon: Icon(Icons.star), text: 'Estatísticas'),
-                Tab(icon: Icon(Icons.article), text: 'News'),
-              ],
-            ),
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                _contantGame(),
-                _buildTabContentMatch(),
-                _buildTable(),
-                _buildTeamsList(),
-                _buildStats(),
-                _buildTabContentNews()
-              ],
-            ),
-          ),
+          _contantGame(),
+          _buildTabContentMatch(),
+          _buildTable(),
+          _buildTeamsList(),
+          _buildStats(),
+          _buildTabContentNews()
         ],
       ),
     );

@@ -1,10 +1,10 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:game_on/src/features/auth/presentation/pages/login_page.dart';
-import 'package:game_on/src/features/competitions/presentation/pages/competion_details_page.dart';
+import 'package:game_on/src/features/competitions/presentation/pages/my_competion_details_page.dart';
 import 'package:game_on/src/features/competitions/presentation/pages/create_competition_page.dart';
 import 'package:game_on/src/features/competitions/presentation/pages/my_competition_details_page.dart';
-import 'package:game_on/src/features/competitions/presentation/pages/my_competitions_list_page.dart';
+import 'package:game_on/src/features/competitions/presentation/pages/list_my_competitions_page.dart';
 import 'package:game_on/src/features/game_on/presentation/game_on_page.dart';
 import 'package:game_on/src/features/live_games/presentation/pages/live_game_page.dart';
 import 'package:game_on/src/features/organizers/presentation/pages/organizer_details_page.dart';
@@ -31,9 +31,12 @@ class AppPages {
           },
         );
       case AppRoutes.gameOn:
+        final params = settings.arguments as int;
         return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) {
-            return const GameOnPage();
+            return GameOnPage(
+              index: params,
+            );
           },
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SharedAxisTransition(
@@ -89,10 +92,10 @@ class AppPages {
           },
         );
 
-      case AppRoutes.myCompetitionsList:
+      case AppRoutes.listMyCompetitions:
         return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) {
-            return const MyCompetitionsListPage();
+            return const ListMyCompetitionsPage();
           },
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SharedAxisTransition(
@@ -103,10 +106,10 @@ class AppPages {
             );
           },
         );
-      case AppRoutes.myCompetitionsDetails:
+      case AppRoutes.myCompetitionDetails:
         return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) {
-            return const MyCompetitionsDetailsPage();
+            return const MyCompetitionDetailsPage();
           },
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SharedAxisTransition(

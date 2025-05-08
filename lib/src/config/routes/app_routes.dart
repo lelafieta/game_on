@@ -10,7 +10,7 @@ class AppRoutes {
   static const String organizer = '/organizer';
   static const String competionDetails = '/competionDetails';
   static const String liveGames = '/liveGames';
-  static const String myCompetitionsList = '/myCompetitionsList';
-  static const String myCompetitionsDetails = '/myCompetitionsDetails';
+  static const String listMyCompetitions = '/listMyCompetitions';
+  static const String myCompetitionDetails = '/myCompetitionDetails';
   static const String createCompetition = '/createCompetition';
 }

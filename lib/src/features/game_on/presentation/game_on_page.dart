@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:game_on/src/config/routes/app_routes.dart';
-import 'package:game_on/src/features/competitions/presentation/pages/competion_details_page.dart';
-import 'package:game_on/src/features/competitions/presentation/pages/my_competitions_list_page.dart';
+import 'package:game_on/src/features/competitions/presentation/pages/my_competion_details_page.dart';
+import 'package:game_on/src/features/competitions/presentation/pages/list_my_competitions_page.dart';
+import 'package:game_on/src/features/home/presentantion/home_page.dart';
 import 'package:game_on/src/features/live_games/presentation/pages/live_game_page.dart';
 import 'package:game_on/src/features/organizers/presentation/pages/organizer_page.dart';
 import 'package:game_on/src/features/teams/presentation/pages/team_deatils_page.dart';
@@ -18,11 +19,11 @@ import 'package:simple_speed_dial/simple_speed_dial.dart';
 import '../../../config/themes/app_colors.dart';
 import '../../../core/resources/app_icons.dart';
 import '../../../core/resources/app_images.dart';
-import '../../home/presentantion/home_page.dart';
 import 'menu_page.dart';
 
 class GameOnPage extends StatefulWidget {
-  const GameOnPage({super.key});
+  final int? index;
+  const GameOnPage({super.key, this.index});
 
   @override
   State<GameOnPage> createState() => _GameOnPageState();
@@ -31,20 +32,28 @@ class GameOnPage extends StatefulWidget {
 class _GameOnPageState extends State<GameOnPage> {
   var _currentIndex = 0;
 
-  List<Widget> widgets = [
-    // OrganizerPage(),
-    MyCompetitionsListPage(),
-    // TeamDetailsPage(),
-    // CompetitionDetailsPage(),
-    // Text("data"),
-    OrganizerPage(),
-    // Text("data"),
-    // MyCompetitionsListPage(),
-    Text("data"),
-    // LiveGamePage(),
-    Text("data"),
-    MenuPage(),
-  ];
+  late List<Widget> widgets;
+
+  @override
+  void initState() {
+    super.initState();
+    widgets = [
+      // OrganizerPage(),
+      HomePage(
+        index: widget.index,
+      ),
+      // TeamDetailsPage(),
+      // CompetitionDetailsPage(),
+      // Text("data"),
+      const OrganizerPage(),
+      // Text("data"),
+      // MyCompetitionsListPage(),
+      const Text("data"),
+      // LiveGamePage(),
+      const Text("data"),
+      const MenuPage(),
+    ];
+  }
 
   List<String> iconList = [
     AppIcons.houseChimney,
@@ -325,12 +334,13 @@ class _GameOnPageState extends State<GameOnPage> {
                     ),
                     ListTile(
                       leading: SvgPicture.asset(
-                        AppIcons.settings2,
+                        AppIcons.achievementChallengeMedal,
                         width: 26,
                       ),
-                      title: Text('Configurações'),
+                      title: Text('Campeonatos'),
                       onTap: () {
-                        Navigator.pop(context);
+                        Navigator.pushNamed(
+                            context, AppRoutes.listMyCompetitions);
                       },
                     ),
                     ListTile(
@@ -345,22 +355,22 @@ class _GameOnPageState extends State<GameOnPage> {
                     ),
                     ListTile(
                       leading: SvgPicture.asset(
-                        AppIcons.achievementChallengeMedal,
-                        width: 26,
-                      ),
-                      title: Text('Campeonatos'),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    ListTile(
-                      leading: SvgPicture.asset(
                         AppIcons.contractPaper,
                         width: 26,
                       ),
                       title: Text('Inscrições'),
                       onTap: () {
                         // Navigator.pop(context)
+                      },
+                    ),
+                    ListTile(
+                      leading: SvgPicture.asset(
+                        AppIcons.settings2,
+                        width: 26,
+                      ),
+                      title: Text('Configurações'),
+                      onTap: () {
+                        Navigator.pop(context);
                       },
                     ),
                     ListTile(

@@ -5,13 +5,13 @@ import '../../../../core/usecases/base_usecases.dart';
 import '../entities/rule_entity.dart';
 import '../repositories/i_rules_repository.dart';
 
-class GetRulesByCompetitionUseCase extends BaseUseCases<RulesEntity, int> {
+class GetRulesByCompetitionUseCase extends BaseUseCases<RuleEntity, int> {
   final IRulesRepository rulesRepository;
 
   GetRulesByCompetitionUseCase({required this.rulesRepository});
 
   @override
-  Future<Either<Failure, RulesEntity>> call(int params) async {
+  Future<Either<Failure, RuleEntity>> call(int params) async {
     return await rulesRepository.getRulesByCompetition(competitionId: params);
   }
 }

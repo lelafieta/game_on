@@ -6,12 +6,16 @@ import 'package:get/get.dart';
 import '../../../../config/themes/app_colors.dart';
 import '../../../../core/resources/app_icons.dart';
 
-class MyCompetitionsListPage extends StatelessWidget {
-  const MyCompetitionsListPage({super.key});
+class ListMyCompetitionsPage extends StatelessWidget {
+  const ListMyCompetitionsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.primary,
+        title: const Text("Minhas Competições"),
+      ),
       body: Column(
         children: [
           Expanded(
@@ -89,7 +93,7 @@ class MyCompetitionsListPage extends StatelessWidget {
       itemBuilder: (context, index) {
         return InkWell(
           onTap: () {
-            Get.toNamed(AppRoutes.myCompetitionsDetails);
+            Get.toNamed(AppRoutes.gameOn, arguments: 0);
           },
           child: Container(
             padding: const EdgeInsets.all(16.0),

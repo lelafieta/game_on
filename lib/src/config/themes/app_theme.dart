@@ -33,13 +33,13 @@ class AppTheme {
           centerTitle: true,
           systemOverlayStyle: SystemUiOverlayStyle(),
           iconTheme: IconThemeData(
-            color: AppColors.color,
+            color: AppColors.white,
           ),
           titleTextStyle: TextStyle(
             fontFamily: AppStrings.fontFamily,
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: AppColors.black,
+            color: AppColors.white,
           ),
         ),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
