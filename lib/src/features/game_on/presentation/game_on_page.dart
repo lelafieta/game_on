@@ -19,6 +19,7 @@ import 'package:simple_speed_dial/simple_speed_dial.dart';
 import '../../../config/themes/app_colors.dart';
 import '../../../core/resources/app_icons.dart';
 import '../../../core/resources/app_images.dart';
+import '../../settings/presentation/pages/settings_page.dart';
 import 'menu_page.dart';
 
 class GameOnPage extends StatefulWidget {
@@ -51,7 +52,7 @@ class _GameOnPageState extends State<GameOnPage> {
       const Text("data"),
       // LiveGamePage(),
       const Text("data"),
-      const MenuPage(),
+      const SettingsPage(),
     ];
   }
 

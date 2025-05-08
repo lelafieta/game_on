@@ -12,7 +12,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     Widget content = Container();
-    int selectedOption = 1;
+    int selectedOption = 0;
 
     switch (selectedOption) {
       case 0:

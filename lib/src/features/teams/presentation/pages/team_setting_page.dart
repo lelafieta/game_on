@@ -2,10 +2,14 @@ import 'dart:io';
 
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../config/themes/app_colors.dart';
+import '../../../../core/resources/app_icons.dart';
 import '../../../../core/resources/app_images.dart';
+import 'build_equipament_page.dart';
 
 class TeamSettingPage extends StatefulWidget {
   const TeamSettingPage({super.key});
@@ -92,414 +96,176 @@ class _TeamSettingPageState extends State<TeamSettingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.primary,
-        title: const Text(
-          "Dourada FC",
-          style: TextStyle(color: Colors.white),
-        ),
-        centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
-        actions: [
-          // IconButton(
-          //   onPressed: () {
-          //     pickImage();
-          //   },
-          //   icon: SvgPicture.asset(AppIcons.security),
-          // ),
-          IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ListTile(
-                        leading: Icon(Icons.add),
-                        title: Text('Adicionar Logotipo'),
-                        onTap: () {
-                          pickImage();
-                          Navigator.pop(context);
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.add_business),
-                        title: Text('Adicionar Patrocinador'),
-                        onTap: () {
-                          Navigator.pop(context);
-                          // Adicionar lógica para adicionar patrocinador
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    width: 250,
-                    height: 300,
-                    child: Stack(
-                      children: [
-                        ValueListenableBuilder<Color>(
-                          valueListenable: selectedMainShirtColor,
-                          builder: (_, color, __) {
-                            return Image.asset(
-                              AppImages.mainTShirt,
-                              color: color,
-                            );
-                          },
-                        ),
-                        ValueListenableBuilder(
-                            valueListenable: selectedStyleShirtColor,
-                            builder: (___, color, ____) {
-                              return ValueListenableBuilder<String?>(
-                                valueListenable: selectedType,
-                                builder: (_, type, __) {
-                                  if (type == null) return SizedBox.shrink();
-                                  return Positioned(
-                                    left: 0,
-                                    right: 0,
-                                    top: 0,
-                                    child: Image.asset(
-                                      typeToImage[type]!,
-                                      color: color,
-                                    ),
-                                  );
-                                },
-                              );
-                            }),
-                        ValueListenableBuilder(
-                          valueListenable: selectedMainShirtColor,
-                          builder: (_, colorsMain, __) {
-                            return ValueListenableBuilder(
-                              valueListenable: selectedStyleShirtColor,
-                              builder: (___, colorStyle, ____) {
-                                return Positioned(
-                                  left: 0,
-                                  right: 0,
-                                  top: 0,
-                                  child: Image.asset(
-                                    AppImages.body,
-                                    color: (colorsMain == Colors.black ||
-                                            colorStyle == Colors.black)
-                                        ? Colors.white12
-                                        : Colors.black12,
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        ),
-                        Positioned(
-                          top: 45,
-                          right: 65,
-                          child: ValueListenableBuilder<File?>(
-                            valueListenable: imageFile,
-                            builder: (context, file, _) {
-                              if (file == null) {
-                                return SizedBox.shrink();
-                              } else {
-                                return Image.file(
-                                  file,
-                                  width: 30,
-                                  height: 30,
-                                  fit: BoxFit.contain,
-                                );
-                              }
-                            },
-                          ),
-                        ),
-                        Positioned(
-                          top: 80,
-                          right: 50,
-                          left: 50,
-                          child: Container(
-                            width: 30,
-                            height: 25,
-                            // child: Center(
-                            //   child: Text(
-                            //     "Sonangols",
-                            //     style: TextStyle(fontWeight: FontWeight.bold0),
-                            //   ),
-                            // ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    width: 250,
-                    height: 300,
-                    child: Stack(
-                      children: [
-                        ValueListenableBuilder<Color>(
-                          valueListenable: selectedMainShirtColor,
-                          builder: (_, color, __) {
-                            return Image.asset(
-                              AppImages.backPartTShirt,
-                              color: color,
-                            );
-                          },
-                        ),
-                        ValueListenableBuilder(
-                            valueListenable: selectedMainShirtColor,
-                            builder: (___, color, ____) {
-                              return ValueListenableBuilder<String?>(
-                                valueListenable: selectedType,
-                                builder: (_, type, __) {
-                                  if (type == null) return SizedBox.shrink();
-                                  return Positioned(
-                                    left: 0,
-                                    right: 0,
-                                    top: 0,
-                                    child: Image.asset(
-                                      AppImages.backPartTShirt,
-                                      color: color,
-                                    ),
-                                  );
-                                },
-                              );
-                            }),
-                        ValueListenableBuilder(
-                          valueListenable: selectedMainShirtColor,
-                          builder: (_, colorsMain, __) {
-                            return ValueListenableBuilder(
-                              valueListenable: selectedStyleShirtColor,
-                              builder: (___, colorStyle, ____) {
-                                return Positioned(
-                                  left: 0,
-                                  right: 0,
-                                  top: 0,
-                                  child: Image.asset(
-                                    AppImages.bodyBack,
-                                    color: (colorsMain == Colors.black ||
-                                            colorStyle == Colors.black)
-                                        ? Colors.white12
-                                        : Colors.black12,
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        ),
-                        Positioned(
-                          left: 0,
-                          right: 0,
-                          top: 0,
-                          bottom: 100,
-                          child: ValueListenableBuilder(
-                              valueListenable: selectedNumberColor,
-                              builder: (_, color, __) {
-                                return Container(
-                                  child: Center(
-                                    child: Text(
-                                      "7",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 75,
-                                        color: color,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Container(
-              height: double.infinity,
-              child: SingleChildScrollView(
-                child: Column(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              OutlinedButton(
+                onPressed: () {},
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Wrap(
-                        spacing: 8,
-                        children: typeToImage.entries.map((entry) {
-                          final imagePath = entry.value;
-                          return InkWell(
-                            onTap: () {
-                              selectedType.value = entry.key;
-                            },
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  left: 0,
-                                  right: 0,
-                                  bottom: 0,
-                                  top: 0,
-                                  child: Image.asset(
-                                    AppImages.mainTShirt,
-                                    color: Colors.black12,
-                                  ),
-                                ),
-                                ValueListenableBuilder(
-                                    valueListenable: selectedType,
-                                    builder: (_, selected, __) {
-                                      return (selected == entry.key)
-                                          ? Positioned(
-                                              right: 0,
-                                              bottom: 0,
-                                              child: Container(
-                                                child: Icon(
-                                                  Icons.check_circle,
-                                                  color: Colors.blue.shade900,
-                                                  size: 15,
-                                                ),
-                                              ),
-                                            )
-                                          : const SizedBox.shrink();
-                                    }),
-                                Image.asset(
-                                  imagePath,
-                                  width: 50,
-                                  height: 50,
-                                  color: Colors.black,
-                                ),
-                              ],
-                            ),
-                          );
-                        }).toList(),
-                      ),
+                    Icon(Icons.link),
+                    SizedBox(
+                      width: 10,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 16),
-                      child: Container(
-                        child: ListView(
-                          shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
-                          children: [
-                            ValueListenableBuilder(
-                              valueListenable: selectedMainShirtColor,
-                              builder: (_, color, __) {
-                                return Row(
-                                  children: [
-                                    Expanded(
-                                      child: ColorPicker(
-                                        color: color,
-                                        onColorChanged: (newColor) {
-                                          selectedMainShirtColor.value =
-                                              newColor;
-                                        },
-                                        width: 44,
-                                        height: 44,
-                                        borderRadius: 22,
-                                        heading: Text(
-                                          'Cor Principal',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline6,
-                                        ),
-                                        subheading: Text(
-                                          'Escolha o tom',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle1,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                            const SizedBox(height: 16),
-                            ValueListenableBuilder(
-                              valueListenable: selectedStyleShirtColor,
-                              builder: (_, color, __) {
-                                return Row(
-                                  children: [
-                                    Expanded(
-                                      child: ColorPicker(
-                                        color: color,
-                                        onColorChanged: (newColor) {
-                                          selectedStyleShirtColor.value =
-                                              newColor;
-                                        },
-                                        width: 44,
-                                        height: 44,
-                                        borderRadius: 22,
-                                        heading: Text(
-                                          'Cor do Estilo',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline6,
-                                        ),
-                                        subheading: Text(
-                                          'Escolha o tom',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle1,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                            const SizedBox(height: 16),
-                            ValueListenableBuilder(
-                              valueListenable: selectedStyleShirtColor,
-                              builder: (_, color, __) {
-                                return Row(
-                                  children: [
-                                    Expanded(
-                                      child: ColorPicker(
-                                        color: color,
-                                        onColorChanged: (newColor) {
-                                          selectedNumberColor.value = newColor;
-                                        },
-                                        width: 44,
-                                        height: 44,
-                                        borderRadius: 22,
-                                        heading: Text(
-                                          'Cor do Número',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline6,
-                                        ),
-                                        subheading: Text(
-                                          'Escolha o tom',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle1,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    Text("Se conectar à um torneio"),
                   ],
                 ),
               ),
-            ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Configurações da Equipe",
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Colors.black,
+                    ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                initialValue: "Dourada FC",
+                decoration: const InputDecoration(
+                  label: Text("Nome da Equipe"),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                initialValue: "Gerente",
+                decoration: const InputDecoration(
+                  label: Text("Helder Supremo"),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                  horizontal: 16,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "EQUIPAMENTO / LOGOTIPO",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              print("object");
+                              Get.to(BuildEquipamentPage());
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                                border: Border.all(
+                                  width: 1,
+                                  color: Colors.grey.shade400,
+                                ),
+                              ),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          child: Image.asset(
+                                            AppImages.mainTShirt,
+                                            width: 20,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          child: Image.asset(
+                                              AppImages.backPartTShirt),
+                                        ),
+                                      ),
+
+                                      // const Text("Equipamento")
+                                    ],
+                                  ),
+                                  const Text("Equipamentos")
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                              border: Border.all(
+                                width: 1,
+                                color: Colors.grey.shade400,
+                              ),
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        child: SvgPicture.asset(
+                                          width: 55,
+                                          AppIcons.security,
+                                        ),
+                                      ),
+                                    ),
+
+                                    // const Text("Equipamento")
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text("Logotipo")
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                initialValue: "11 de abr. de 2013",
+                decoration: const InputDecoration(
+                  label: Text("Data de Criação"),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
