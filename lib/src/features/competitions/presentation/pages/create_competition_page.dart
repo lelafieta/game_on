@@ -75,10 +75,12 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
   TextEditingController pointsLose = TextEditingController(text: "0");
   TextEditingController substitutionsAllowed = TextEditingController(text: "5");
   TextEditingController maxPlayers = TextEditingController(text: "15");
+  TextEditingController maxTeams = TextEditingController(text: "16");
 
   TextEditingController isForChampionValue = TextEditingController(text: "0");
   TextEditingController isForTopScorerValue = TextEditingController(text: "0");
   TextEditingController isForFairPlayValue = TextEditingController(text: "0");
+  TextEditingController groupQtd = TextEditingController();
 
   bool drawsAllowed = true;
   bool extraTimeAllowed = true;
@@ -235,34 +237,55 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                   errorText: "Campo obrigatório"),
             ),
             const SizedBox(height: 15),
+            (type.text == 'group_tournament')
+                ? Column(
+                    children: [
+                      FormBuilderTextField(
+                        name: 'group_qtd',
+                        controller: groupQtd,
+                        decoration: const InputDecoration(
+                            labelText: 'Número de grupos'),
+                        keyboardType: TextInputType.number,
+                        validator: (type.text == 'group_tournament')
+                            ? FormBuilderValidators.compose([
+                                FormBuilderValidators.required(
+                                    errorText: "Campo obrigatório"),
+                                FormBuilderValidators.numeric(
+                                    errorText: "Apenas valores numéricos"),
+                              ])
+                            : null,
+                      ),
+                      const SizedBox(height: 15),
+                    ],
+                  )
+                : const SizedBox.shrink(),
             FormBuilderTextField(
               name: 'location',
               controller: location,
-              decoration: const InputDecoration(hintText: 'Localização'),
+              decoration: const InputDecoration(labelText: 'Localização'),
               keyboardType: TextInputType.number,
               validator: FormBuilderValidators.compose([
                 FormBuilderValidators.required(errorText: "Campo obrigatório"),
-                FormBuilderValidators.numeric(
-                    errorText: "Apenas valor numérico")
               ]),
             ),
             const SizedBox(height: 15),
-            const Text("Inscrição de Jogadores",
+            const Text("Inscrição na competição",
                 style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Colors.black)),
-            const SizedBox(height: 10),
+            const SizedBox(height: 15),
             FormBuilderTextField(
-              name: 'max_players',
-              controller: maxPlayers,
-              decoration: const InputDecoration(
-                  hintText: 'Número máximo de jogadores por equipe'),
+              name: 'max_teams',
+              controller: maxTeams,
+              decoration: const InputDecoration(labelText: 'Total de equipe'),
               keyboardType: TextInputType.number,
               validator: FormBuilderValidators.compose([
                 FormBuilderValidators.required(errorText: "Campo obrigatório"),
                 FormBuilderValidators.numeric(
-                    errorText: "Apenas valor numérico")
+                    errorText: "Apenas valor numérico"),
+                FormBuilderValidators.max(100,
+                    errorText: "O valor máximo permitido é 100"),
               ]),
             ),
             const SizedBox(height: 15),
@@ -270,12 +293,14 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
               name: 'max_players',
               controller: maxPlayers,
               decoration: const InputDecoration(
-                  hintText: 'Número máximo de jogadores por equipe'),
+                  labelText: 'Número máximo de jogadores por equipe'),
               keyboardType: TextInputType.number,
               validator: FormBuilderValidators.compose([
                 FormBuilderValidators.required(errorText: "Campo obrigatório"),
                 FormBuilderValidators.numeric(
-                    errorText: "Apenas valor numérico")
+                    errorText: "Apenas valor numérico"),
+                FormBuilderValidators.max(25,
+                    errorText: "O valor máximo permitido é 100"),
               ]),
             ),
             const SizedBox(height: 15),
@@ -499,7 +524,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
             FormBuilderTextField(
                 name: 'substitutions_allowed',
                 controller: substitutionsAllowed,
-                decoration: const InputDecoration(hintText: 'Substituição'),
+                decoration: const InputDecoration(labelText: 'Substituição'),
                 keyboardType: TextInputType.number,
                 validator: FormBuilderValidators.compose([
                   FormBuilderValidators.required(
@@ -761,7 +786,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
         width: 32,
       ),
       title: Text(
-        valor,
+        valor == "" ? "--- ----" : valor,
         style: const TextStyle(
           fontSize: 16,
           color: Colors.black,
@@ -815,6 +840,25 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
     }
   }
 
+  String _translateTiebreaker(String value) {
+    switch (value) {
+      case 'goal_difference':
+        return 'Diferença de gols';
+      case 'goals_scored':
+        return 'Gols marcados';
+      case 'head_to_head':
+        return 'Confronto direto';
+      case 'wins':
+        return 'Vitórias';
+      case 'fair_play':
+        return 'Fair play (cartões)';
+      case 'random_draw':
+        return 'Sorteio';
+      default:
+        return value;
+    }
+  }
+
   String _translatePlayerType(String value) {
     switch (value) {
       case 'male':
@@ -835,6 +879,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
         _sectionTitle('Detalhes da Competição'),
         _infoTile(AppIcons.flag2, 'Nome', name.text),
         _infoTile(AppIcons.calendarColor, 'Temporada', season.text),
+        _infoTile(AppIcons.footballJersey, 'Total de Equipes', maxTeams.text),
         _infoTile(AppIcons.locationIndicatorRed, 'Localização', location.text),
         _infoTile(AppIcons.competitionchampion, 'Formato',
             type.text == "league" ? "Liga" : type.text),
@@ -851,6 +896,26 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
         _infoTile(AppIcons.victory, 'Pontos por Vitória', pointsVictory.text),
         _infoTile(AppIcons.minus, 'Pontos por Empate', pointsDraw.text),
         _infoTile(AppIcons.close, 'Pontos por Derrota', pointsLose.text),
+        const SizedBox(height: 15),
+        const Text("Critérios de desempate"),
+        const SizedBox(height: 10),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Wrap(
+              spacing: 8.0,
+              runSpacing: 4.0,
+              children: tiebreakersSelected
+                  .map((tiebreaker) =>
+                      Chip(label: Text(_translateTiebreaker(tiebreaker))))
+                  .toList(),
+            ),
+          ),
+        ),
         _infoTile(AppIcons.changeSoccer, 'Substituições Permitidas',
             substitutionsAllowed.text),
         _infoTile(AppIcons.soccerField, 'Máximo de Jogadores', maxPlayers.text),
@@ -859,6 +924,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
             extraTimeAllowed),
         _boolTile(AppIcons.soccer, 'Permitir Pênaltis', penaltyAllowed),
         _boolTile(AppIcons.changePosition, 'Ida e Volta', isHomeAndAway),
+        _infoTile(AppIcons.stopwatch, 'Nº de Grupo', '$groupQtd min'),
         _infoTile(
             AppIcons.stopwatch, 'Duração da Partida', '$matchDuration min'),
         _infoTile(AppIcons.stopwatch, 'Tempo de Descanso', '$restTime min'),
