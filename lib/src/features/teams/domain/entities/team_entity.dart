@@ -15,6 +15,8 @@ class TeamEntity {
   final String? createdBy;
   final DateTime? createdAt;
   final String? equipmentType;
+  final String? equipmentMainColor;
+  final String? equipmentTypeColor;
   final String? abbreviation;
 
   const TeamEntity(
@@ -34,5 +36,7 @@ class TeamEntity {
       this.createdBy,
       this.createdAt,
       this.equipmentType,
+      this.equipmentTypeColor,
+      this.equipmentMainColor,
       this.abbreviation});
 }

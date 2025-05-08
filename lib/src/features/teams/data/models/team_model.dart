@@ -18,6 +18,8 @@ class TeamModel extends TeamEntity {
       super.createdBy,
       super.createdAt,
       super.equipmentType,
+      super.equipmentMainColor,
+      super.equipmentTypeColor,
       super.abbreviation});
 
   factory TeamModel.fromJson(Map<String, dynamic> json) {
@@ -42,6 +44,8 @@ class TeamModel extends TeamEntity {
           ? DateTime.tryParse(json['created_at'])
           : null,
       equipmentType: json['equipment_type'] as String?,
+      equipmentMainColor: json['equipment_main_color'] as String?,
+      equipmentTypeColor: json['equipment_type_color'] as String?,
       abbreviation: json['abbreviation'] as String?,
     );
   }
@@ -64,6 +68,8 @@ class TeamModel extends TeamEntity {
         createdBy: entity.createdBy,
         createdAt: entity.createdAt,
         equipmentType: entity.equipmentType,
+        equipmentMainColor: entity.equipmentMainColor,
+        equipmentTypeColor: entity.equipmentTypeColor,
         abbreviation: entity.abbreviation);
   }
 
@@ -85,7 +91,9 @@ class TeamModel extends TeamEntity {
       'created_by': createdBy,
       'created_at': createdAt?.toIso8601String(),
       'equipment_type': equipmentType,
-      'abbreviation': abbreviation
+      'abbreviation': abbreviation,
+      'equipament_main_color': equipmentMainColor,
+      'equipament_type_color': equipmentTypeColor,
     };
   }
 
@@ -107,7 +115,9 @@ class TeamModel extends TeamEntity {
       'created_by': createdBy,
       'created_at': createdAt?.toIso8601String(),
       'equipment_type': equipmentType,
-      'abbreviation': abbreviation
+      'abbreviation': abbreviation,
+      'equipament_main_color': equipmentMainColor,
+      'equipament_type_color': equipmentTypeColor,
     };
   }
 
@@ -129,6 +139,8 @@ class TeamModel extends TeamEntity {
     DateTime? createdAt,
     String? equipmentType,
     String? abbreviation,
+    String? equipamentMainColor,
+    String? equipamentTypeColor,
   }) {
     return TeamModel(
       id: id ?? this.id,
@@ -147,6 +159,8 @@ class TeamModel extends TeamEntity {
       createdBy: createdBy ?? this.createdBy,
       createdAt: createdAt ?? this.createdAt,
       equipmentType: equipmentType ?? this.equipmentType,
+      equipmentMainColor: equipmentType ?? equipmentMainColor,
+      equipmentTypeColor: equipmentType ?? equipmentTypeColor,
       abbreviation: abbreviation ?? this.abbreviation,
     );
   }
