@@ -45,7 +45,49 @@ class TeamModel extends TeamEntity {
     );
   }
 
+  factory TeamModel.fromEntity(TeamEntity entity) {
+    return TeamModel(
+      id: entity.id,
+      name: entity.name,
+      logoUrl: entity.logoUrl,
+      description: entity.description,
+      category: entity.category,
+      location: entity.location,
+      captainName: entity.captainName,
+      captainContact: entity.captainContact,
+      memberLimit: entity.memberLimit,
+      foundedAt: entity.foundedAt,
+      inviteCode: entity.inviteCode,
+      socialLinks: entity.socialLinks,
+      status: entity.status,
+      createdBy: entity.createdBy,
+      createdAt: entity.createdAt,
+      equipmentType: entity.equipmentType,
+    );
+  }
+
   Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'logo_url': logoUrl,
+      'description': description,
+      'category': category,
+      'location': location,
+      'captain_name': captainName,
+      'captain_contact': captainContact,
+      'member_limit': memberLimit,
+      'founded_at': foundedAt?.toIso8601String(),
+      'invite_code': inviteCode,
+      'social_links': socialLinks,
+      'status': status,
+      'created_by': createdBy,
+      'created_at': createdAt?.toIso8601String(),
+      'equipment_type': equipmentType,
+    };
+  }
+
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
       'name': name,
