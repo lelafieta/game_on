@@ -25,25 +25,46 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
   final _formKey = GlobalKey<FormBuilderState>();
 
   final Map<String, String> typeToImage = {
-    'main': 'Main',
-    'type1': 'Type 1',
-    'type2': 'Type 2',
-    'type3': 'Type 3',
-    'type4': 'Type 4',
-    'type5': 'Type 5',
-    'type6': 'Type 6',
-    'type7': 'Type 7',
-    'type8': 'Type 8',
-    'type9': 'Type 9',
-    'type10': 'Type 10',
-    'type11': 'Type 11',
-    'type12': 'Type 12',
-    'type13': 'Type 13',
-    'type14': 'Type 14',
-    'type15': 'Type 15',
-    'type16': 'Type 16',
-    'type17': 'Type 17',
+    'main': AppImages.typeEmpty,
+    'type1': AppImages.type1,
+    'type2': AppImages.type2,
+    'type3': AppImages.type3,
+    'type4': AppImages.type4,
+    'type5': AppImages.type5,
+    'type6': AppImages.type6,
+    'type7': AppImages.type7,
+    'type8': AppImages.type8,
+    'type9': AppImages.type9,
+    'type10': AppImages.type10,
+    'type11': AppImages.type11,
+    'type12': AppImages.type12,
+    'type13': AppImages.type13,
+    'type14': AppImages.type14,
+    'type15': AppImages.type15,
+    'type16': AppImages.type16,
+    'type17': AppImages.type17,
   };
+
+  // final Map<String, String> typeToImage = {
+  //   'main': 'Main',
+  //   'type1': 'Type 1',
+  //   'type2': 'Type 2',
+  //   'type3': 'Type 3',
+  //   'type4': 'Type 4',
+  //   'type5': 'Type 5',
+  //   'type6': 'Type 6',
+  //   'type7': 'Type 7',
+  //   'type8': 'Type 8',
+  //   'type9': 'Type 9',
+  //   'type10': 'Type 10',
+  //   'type11': 'Type 11',
+  //   'type12': 'Type 12',
+  //   'type13': 'Type 13',
+  //   'type14': 'Type 14',
+  //   'type15': 'Type 15',
+  //   'type16': 'Type 16',
+  //   'type17': 'Type 17',
+  // };
 
   Map<String, String> teamData = {};
 
@@ -162,19 +183,55 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
                                       Row(
                                         children: [
                                           Expanded(
-                                            child: Container(
-                                              child: Image.asset(
-                                                  AppImages.mainTShirt,
-                                                  width: 20,
-                                                  color: parseColorFromString(
-                                                      teamData[
-                                                          'equipament_main_color']!)
-                                                  //     as Color,
+                                            child: Stack(
+                                              children: [
+                                                Container(
+                                                  width:
+                                                      MediaQuery.sizeOf(context)
+                                                          .width,
+                                                  child: Image.asset(
+                                                      AppImages.mainTShirt,
+                                                      width: 20,
+                                                      color: parseColorFromString(
+                                                          teamData[
+                                                              'equipament_main_color']!)
+                                                      //     as Color,
+                                                      ),
+                                                ),
+                                                Positioned.fill(
+                                                  child: Image.asset(
+                                                    AppImages.body,
+                                                    width: 20,
+                                                    color: (parseColorFromString(
+                                                                    teamData[
+                                                                        'equipament_main_color']!) ==
+                                                                Colors.black ||
+                                                            parseColorFromString(
+                                                                    teamData[
+                                                                        'equipament_main_color']!) ==
+                                                                Colors.black)
+                                                        ? Colors.white12
+                                                        : Colors.black12,
+                                                    //     as Color,
                                                   ),
+                                                ),
+                                                Positioned.fill(
+                                                    left: 0,
+                                                    right: 0,
+                                                    top: 0,
+                                                    child: Image.asset(
+                                                      typeToImage[teamData[
+                                                          'equipament_type']]!,
+                                                      color: parseColorFromString(
+                                                          teamData[
+                                                              'equipament_type_color']!),
+                                                    )),
+                                              ],
                                             ),
                                           ),
                                           Expanded(
                                             child: Container(
+                                              // color: Colors.black,
                                               child: Stack(
                                                 children: [
                                                   Image.asset(
@@ -182,22 +239,39 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
                                                       color: parseColorFromString(
                                                           teamData[
                                                               'equipament_main_color']!)),
-                                                  Positioned(
-                                                    left: 50,
-                                                    right: 50,
-                                                    top: 10,
+                                                  Positioned.fill(
                                                     child: Center(
                                                       child: Text(
                                                         "7",
                                                         style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.w900,
-                                                          color: Colors.red,
+                                                          color: parseColorFromString(
+                                                              teamData[
+                                                                  'equipament_number_color']!),
                                                           fontSize: 25,
                                                         ),
                                                       ),
                                                     ),
-                                                  )
+                                                  ),
+                                                  Positioned.fill(
+                                                    child: Image.asset(
+                                                      AppImages.bodyBack,
+                                                      width: 20,
+                                                      color: (parseColorFromString(
+                                                                      teamData[
+                                                                          'equipament_main_color']!) ==
+                                                                  Colors
+                                                                      .black ||
+                                                              parseColorFromString(
+                                                                      teamData[
+                                                                          'equipament_main_color']!) ==
+                                                                  Colors.black)
+                                                          ? Colors.white12
+                                                          : Colors.black12,
+                                                      //     as Color,
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
                                             ),

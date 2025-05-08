@@ -276,7 +276,9 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
                                     top: 0,
                                     child: Image.asset(
                                       AppImages.backPartTShirt,
-                                      color: color,
+                                      color: parseColorFromString(
+                                          teamData["equipament_main_color"]
+                                              .toString()),
                                     ),
                                   );
                                 },
@@ -319,7 +321,9 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 75,
-                                        color: color,
+                                        color: parseColorFromString(
+                                            teamData["equipament_number_color"]
+                                                .toString()),
                                       ),
                                     ),
                                   ),
@@ -349,8 +353,9 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
                           return InkWell(
                             onTap: () {
                               selectedType.value = entry.key;
+
                               setState(() {
-                                teamData['equipment_type'] = entry.key;
+                                teamData['equipament_type'] = entry.key;
                               });
                             },
                             child: Stack(
@@ -453,7 +458,7 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
                                           selectedStyleShirtColor.value =
                                               newColor;
                                           setState(() {
-                                            teamData['equipment_type_color'] =
+                                            teamData['equipament_type_color'] =
                                                 newColor.toString();
                                           });
                                         },
@@ -490,7 +495,8 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
                                         onColorChanged: (newColor) {
                                           selectedNumberColor.value = newColor;
                                           setState(() {
-                                            teamData['equipment_number_color'] =
+                                            teamData[
+                                                    'equipament_number_color'] =
                                                 newColor.toString();
                                           });
                                         },
