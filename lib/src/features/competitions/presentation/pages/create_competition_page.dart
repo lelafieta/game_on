@@ -33,9 +33,9 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
   // Dados da competição
 
   final types = {
-    'league': 'Liga',
-    'cup': 'Copa',
-    'group_tournament': 'Torneio em Grupo'
+    'league': 'Liga (Pontos Corridos)',
+    'cup': 'Copa (Eliminatória Directa)',
+    'group_tournament': 'Torneio em Grupo + Eliminatórias'
   };
 
   final categories = {
@@ -434,13 +434,31 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
               ]),
             ),
             const SizedBox(height: 15),
+            (type.text == 'cup')
+                ? Column(
+                    children: [
+                      FormBuilderSwitch(
+                        name: 'penalties',
+                        initialValue: isHomeAndAway,
+                        title: const Text('Jogo de ida & volta'),
+                        onChanged: (value) {
+                          setState(() {
+                            isHomeAndAway = value!;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 15),
+                    ],
+                  )
+                : const SizedBox.shrink(),
+
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 FormBuilderDropdown<String>(
                   name: 'points_victory',
                   initialValue: pointsVictory.text,
-                  decoration: const InputDecoration(labelText: 'Empate'),
+                  decoration: const InputDecoration(labelText: 'Victória'),
                   items: List.generate(
                     5,
                     (index) => DropdownMenuItem(
@@ -498,7 +516,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                 FormBuilderDropdown<String>(
                   name: 'points_lose',
                   initialValue: pointsLose.text,
-                  decoration: const InputDecoration(labelText: 'Empate'),
+                  decoration: const InputDecoration(labelText: 'Derrota'),
                   items: List.generate(
                     5,
                     (index) => DropdownMenuItem(
@@ -533,29 +551,56 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                       errorText: "Penas valor numérico"),
                 ])),
             const SizedBox(height: 15),
-            FormBuilderSwitch(
-              name: 'draws_allowed',
-              initialValue: drawsAllowed,
-              onChanged: (value) {
-                setState(() {
-                  drawsAllowed = value!;
-                });
-              },
-              title: const Text(
-                'Permiter Empate',
-              ),
-            ),
+            // (type.text != 'league' && type.text != 'group_tournament')
+            //     ? Column(
+            //         children: [
+            //           FormBuilderSwitch(
+            //             name: 'draws_allowed',
+            //             initialValue: drawsAllowed,
+            //             onChanged: (value) {
+            //               setState(() {
+            //                 drawsAllowed = value!;
+            //               });
+            //             },
+            //             title: const Text(
+            //               'Permitir Empate',
+            //             ),
+            //           ),
+            //           const SizedBox(height: 15),
+            //         ],
+            //       )
+            //     : const SizedBox.shrink(),
+            // (type.text != 'league')
+            //     ? Column(
+            //         children: [
+            //           FormBuilderSwitch(
+            //             name: 'extra_time',
+            //             initialValue: extraTimeAllowed,
+            //             onChanged: (value) {
+            //               setState(() {
+            //                 extraTimeAllowed = value!;
+            //               });
+            //             },
+            //             title: const Text('Adiciona prolongamento?'),
+            //           ),
+            //           const SizedBox(height: 15),
+            //         ],
+            //       )
+            //     : const SizedBox.shrink(),
+
+            // FormBuilderSwitch(
+            //   name: 'penalty_allowed',
+            //   initialValue: penaltyAllowed,
+            //   title: const Text('Pênaltis em caso de empate?'),
+            //   onChanged: (value) {
+            //     setState(() {
+            //       penaltyAllowed = value!;
+            //     });
+            //   },
+            // ),
+
             const SizedBox(height: 15),
-            FormBuilderSwitch(
-                name: 'extra_time',
-                initialValue: extraTimeAllowed,
-                onChanged: (value) {
-                  setState(() {
-                    extraTimeAllowed = value!;
-                  });
-                },
-                title: const Text('Adiciona prolongamento?')),
-            const SizedBox(height: 15),
+
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -656,28 +701,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
                 const SizedBox(height: 24),
               ],
             ),
-            const SizedBox(height: 15),
-            FormBuilderSwitch(
-              name: 'penalty_allowed',
-              initialValue: penaltyAllowed,
-              title: const Text('Pênaltis em caso de empate?'),
-              onChanged: (value) {
-                setState(() {
-                  penaltyAllowed = value!;
-                });
-              },
-            ),
-            const SizedBox(height: 15),
-            FormBuilderSwitch(
-              name: 'penalties',
-              initialValue: isHomeAndAway,
-              title: const Text('Jogo de ida & volta'),
-              onChanged: (value) {
-                setState(() {
-                  isHomeAndAway = value!;
-                });
-              },
-            ),
+
             const SizedBox(height: 15),
             // const Text("Punições",
             //     style: TextStyle(
@@ -713,6 +737,7 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
             FormBuilderSwitch(
               name: 'is_for_champion',
               title: const Text('Premiação para o campeão'),
+              initialValue: isForChampion,
               onChanged: (value) {
                 setState(() {
                   isForChampion = value!;
@@ -720,19 +745,28 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
               },
             ),
             const SizedBox(height: 15),
-            FormBuilderTextField(
-              name: 'is_for_champion_value',
-              controller: isForChampionValue,
-              decoration: const InputDecoration(hintText: 'Valor'),
-              keyboardType: TextInputType.number,
-              validator: FormBuilderValidators.compose([
-                FormBuilderValidators.numeric(
-                    errorText: "Apenas valor numérico")
-              ]),
-            ),
-            const SizedBox(height: 15),
+            (isForChampion)
+                ? Column(
+                    children: [
+                      FormBuilderTextField(
+                        name: 'is_for_champion_value',
+                        controller: isForChampionValue,
+                        decoration: const InputDecoration(hintText: 'Valor'),
+                        keyboardType: TextInputType.number,
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(
+                              errorText: "Campo obrigatório"),
+                          FormBuilderValidators.numeric(
+                              errorText: "Apenas valor numérico")
+                        ]),
+                      ),
+                      const SizedBox(height: 15),
+                    ],
+                  )
+                : const SizedBox.shrink(),
             FormBuilderSwitch(
               name: 'is_for_top_scorer',
+              initialValue: isForTopScorer,
               title: const Text('Premiação para artilheiro'),
               onChanged: (value) {
                 setState(() {
@@ -741,20 +775,29 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
               },
             ),
             const SizedBox(height: 15),
-            FormBuilderTextField(
-              name: 'is_for_top_scorer_value',
-              controller: isForTopScorerValue,
-              decoration: const InputDecoration(hintText: 'Valor'),
-              keyboardType: TextInputType.number,
-              validator: FormBuilderValidators.compose([
-                FormBuilderValidators.numeric(
-                    errorText: "Apenas valor numérico")
-              ]),
-            ),
-            const SizedBox(height: 15),
+            (isForTopScorer)
+                ? Column(
+                    children: [
+                      FormBuilderTextField(
+                        name: 'is_for_top_scorer_value',
+                        controller: isForTopScorerValue,
+                        decoration: const InputDecoration(hintText: 'Valor'),
+                        keyboardType: TextInputType.number,
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(
+                              errorText: "Campo obrigatório"),
+                          FormBuilderValidators.numeric(
+                              errorText: "Apenas valor numérico")
+                        ]),
+                      ),
+                      const SizedBox(height: 15),
+                    ],
+                  )
+                : const SizedBox.shrink(),
             FormBuilderSwitch(
               name: 'is_for_fair_play',
               title: const Text('Equipe mais disciplinada'),
+              initialValue: isForFairPlay,
               onChanged: (value) {
                 setState(() {
                   isForFairPlay = value!;
@@ -762,16 +805,24 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
               },
             ),
             const SizedBox(height: 15),
-            FormBuilderTextField(
-              name: 'is_for_fair_play_value',
-              decoration: const InputDecoration(hintText: 'Valor'),
-              keyboardType: TextInputType.number,
-              controller: isForFairPlayValue,
-              validator: FormBuilderValidators.compose([
-                FormBuilderValidators.numeric(
-                    errorText: "Apenas valor numérico")
-              ]),
-            ),
+            (isForFairPlay == true)
+                ? Column(
+                    children: [
+                      FormBuilderTextField(
+                        name: 'is_for_fair_play_value',
+                        decoration: const InputDecoration(hintText: 'Valor'),
+                        keyboardType: TextInputType.number,
+                        controller: isForFairPlayValue,
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(
+                              errorText: "Campo obrigatório"),
+                          FormBuilderValidators.numeric(
+                              errorText: "Apenas valor numérico")
+                        ]),
+                      ),
+                    ],
+                  )
+                : const SizedBox.shrink(),
             const SizedBox(height: 15),
           ],
         ),
@@ -924,7 +975,9 @@ class _CreateCompetitionPageState extends State<CreateCompetitionPage> {
             extraTimeAllowed),
         _boolTile(AppIcons.soccer, 'Permitir Pênaltis', penaltyAllowed),
         _boolTile(AppIcons.changePosition, 'Ida e Volta', isHomeAndAway),
-        _infoTile(AppIcons.stopwatch, 'Nº de Grupo', '$groupQtd min'),
+        (type.text == 'group_tournament')
+            ? _infoTile(AppIcons.stopwatch, 'Nº de Grupo', groupQtd.text)
+            : const SizedBox.shrink(),
         _infoTile(
             AppIcons.stopwatch, 'Duração da Partida', '$matchDuration min'),
         _infoTile(AppIcons.stopwatch, 'Tempo de Descanso', '$restTime min'),
