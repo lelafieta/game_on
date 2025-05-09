@@ -14,7 +14,7 @@ import '../../../../config/themes/app_colors.dart';
 import '../../../../core/resources/app_icons.dart';
 import '../../../../core/resources/app_images.dart';
 import '../../domain/entities/team_entity.dart';
-import '../cubit/team_action_cubit.dart';
+import '../cubit/team_action_cubit/team_action_cubit.dart';
 import 'build_equipament_page.dart';
 
 class CreateTeamPage extends StatefulWidget {

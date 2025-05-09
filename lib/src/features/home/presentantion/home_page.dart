@@ -5,8 +5,8 @@ import 'package:game_on/src/features/teams/presentation/pages/list_my_teams.dart
 import 'package:game_on/src/features/teams/presentation/pages/team_deatils_page.dart';
 
 class HomePage extends StatefulWidget {
-  final int? index;
-  const HomePage({super.key, this.index});
+  final Map<dynamic, dynamic>? arguments;
+  const HomePage({super.key, this.arguments});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     Widget content;
 
-    switch (widget.index) {
+    switch (widget.arguments!["index"]) {
       case 0:
         content = const MyCompetitionDetailsPage();
         break;

@@ -33,11 +33,11 @@ class AppPages {
           },
         );
       case AppRoutes.gameOn:
-        final params = settings.arguments as int;
+        final params = settings.arguments as Map<dynamic, dynamic>;
         return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) {
             return GameOnPage(
-              index: params,
+              arguments: params,
             );
           },
           transitionsBuilder: (context, animation, secondaryAnimation, child) {

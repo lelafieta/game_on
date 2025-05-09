@@ -6,7 +6,8 @@ import 'package:get/get.dart';
 import '../config/routes/app_pages.dart';
 import '../config/themes/app_theme.dart';
 import '../features/auth/presentation/cubit/auth_cubit.dart';
-import '../features/teams/presentation/cubit/team_action_cubit.dart';
+import '../features/teams/presentation/cubit/team_action_cubit/team_action_cubit.dart';
+import '../features/teams/presentation/cubit/team_fetch_cubit/team_fetch_cubit.dart';
 import 'di.dart' as di;
 
 class GameOnApp extends StatelessWidget {
@@ -18,6 +19,8 @@ class GameOnApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => di.sl<AuthCubit>()),
         BlocProvider(create: (context) => di.sl<TeamActionCubit>()),
+        BlocProvider(
+            create: (context) => di.sl<TeamFetchCubit>()..getMyTeams()),
       ],
       child: GetMaterialApp(
         title: 'GameOn',

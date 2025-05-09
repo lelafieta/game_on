@@ -21,7 +21,8 @@ import '../features/teams/domain/usecases/get_my_teams_usecase.dart';
 import '../features/teams/domain/usecases/get_team_by_id_usecase.dart';
 import '../features/teams/domain/usecases/get_teams_usecase.dart';
 import '../features/teams/domain/usecases/update_team_usecase.dart';
-import '../features/teams/presentation/cubit/team_action_cubit.dart';
+import '../features/teams/presentation/cubit/team_action_cubit/team_action_cubit.dart';
+import '../features/teams/presentation/cubit/team_fetch_cubit/team_fetch_cubit.dart';
 // import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 
 GetIt sl = GetIt.instance;
@@ -54,6 +55,7 @@ void _registerCubits() {
   // TEAM
   sl.registerFactory(
       () => TeamActionCubit(createTeamUseCase: sl(), updateTeamUseCase: sl()));
+  sl.registerFactory(() => TeamFetchCubit(getMyTeamsUseCase: sl()));
 }
 
 void _registerRepositories() {
