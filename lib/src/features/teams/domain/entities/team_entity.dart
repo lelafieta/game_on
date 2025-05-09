@@ -21,6 +21,8 @@ class TeamEntity {
   final String? equipmentTypeColor;
   final String? equipmentNumberColor;
   final String? abbreviation;
+  final String? formation;
+  final String? gameType;
   final ProfileEntity? createdByProfile;
 
   const TeamEntity(
@@ -44,5 +46,7 @@ class TeamEntity {
       this.equipmentMainColor,
       this.equipmentNumberColor,
       this.abbreviation,
-      this.createdByProfile});
+      this.createdByProfile,
+      this.formation,
+      this.gameType});
 }

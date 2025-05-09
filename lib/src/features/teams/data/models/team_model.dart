@@ -23,7 +23,9 @@ class TeamModel extends TeamEntity {
       super.equipmentTypeColor,
       super.equipmentNumberColor,
       super.abbreviation,
-      super.createdByProfile});
+      super.createdByProfile,
+      super.formation,
+      super.gameType});
 
   factory TeamModel.fromJson(Map<String, dynamic> json) {
     return TeamModel(
@@ -51,6 +53,8 @@ class TeamModel extends TeamEntity {
       equipmentTypeColor: json['equipment_type_color'] as String?,
       equipmentNumberColor: json['equipment_number_color'] as String?,
       abbreviation: json['abbreviation'] as String?,
+      formation: json['formation'] as String?,
+      gameType: json['game_type'] as String?,
       createdByProfile: json['created_by_profile'] != null
           ? ProfileModel.fromJson(
               json['created_by_profile'] as Map<String, dynamic>)
@@ -80,7 +84,9 @@ class TeamModel extends TeamEntity {
         equipmentTypeColor: entity.equipmentTypeColor,
         equipmentNumberColor: entity.equipmentNumberColor,
         abbreviation: entity.abbreviation,
-        createdByProfile: entity.createdByProfile);
+        createdByProfile: entity.createdByProfile,
+        formation: entity.formation,
+        gameType: entity.gameType);
   }
 
   Map<String, dynamic> toJson() {
@@ -106,6 +112,8 @@ class TeamModel extends TeamEntity {
       'equipament_type_color': equipmentTypeColor,
       'equipament_number_color': equipmentNumberColor,
       'created_by_profile': createdByProfile,
+      'formation': formation,
+      'game_type': gameType,
     };
   }
 
@@ -132,6 +140,8 @@ class TeamModel extends TeamEntity {
       'equipament_type_color': equipmentTypeColor,
       'equipament_number_color': equipmentNumberColor,
       'created_by_profile': createdByProfile,
+      'formation': formation,
+      'game_type': gameType,
     };
   }
 
@@ -157,6 +167,8 @@ class TeamModel extends TeamEntity {
     String? equipamentTypeColor,
     String? equipamentNumberColor,
     ProfileModel? createdByProfile,
+    String? formation,
+    String? gameType,
   }) {
     return TeamModel(
         id: id ?? this.id,
@@ -179,6 +191,8 @@ class TeamModel extends TeamEntity {
         equipmentTypeColor: equipmentType ?? equipmentTypeColor,
         equipmentNumberColor: abbreviation ?? equipmentNumberColor,
         abbreviation: abbreviation ?? this.abbreviation,
-        createdByProfile: createdByProfile ?? createdByProfile);
+        createdByProfile: createdByProfile ?? createdByProfile,
+        formation: this.formation,
+        gameType: this.gameType);
   }
 }
