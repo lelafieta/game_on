@@ -92,4 +92,11 @@ class AppIcons {
   static const String soccer = "assets/icons/soccer-svgrepo-com.svg";
   static const String changePosition =
       "assets/icons/change-position-svgrepo-com.svg";
+
+  static const String newspaper = "assets/icons/newspaper.svg";
+  static const String shield = "assets/icons/shield.svg";
+  static const String soccerBoots = "assets/icons/soccer-boots.svg";
+  static const String trophyStar = "assets/icons/trophy-star.svg";
+  static const String courtSport = "assets/icons/court-sport.svg";
+  static const String footballPlayer = "assets/icons/football-player.svg";
 }

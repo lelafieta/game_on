@@ -152,6 +152,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
 
   int formationSize = 5;
   String formationSelected = "4-4-2";
+  int selectedTabIndex = 0;
 
   @override
   void initState() {
@@ -190,15 +191,68 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                     tabAlignment: TabAlignment.start,
                     unselectedLabelColor: AppColors.white.withOpacity(.6),
                     labelColor: AppColors.white,
-                    indicatorColor: Colors.red,
+                    indicatorColor: Colors.white,
                     indicatorSize: TabBarIndicatorSize.tab,
-                    tabs: const [
-                      Tab(icon: Icon(Icons.sports_soccer), text: 'Detalhes'),
-                      Tab(icon: Icon(Icons.emoji_events), text: 'Jogos'),
-                      Tab(icon: Icon(Icons.leaderboard), text: 'Plantel'),
-                      Tab(icon: Icon(Icons.group), text: 'Configuração'),
-                      Tab(icon: Icon(Icons.star), text: 'Jogadores'),
-                      Tab(icon: Icon(Icons.article), text: 'News'),
+                    onTap: (value) {
+                      setState(() {
+                        selectedTabIndex = value;
+                      });
+                    },
+                    tabs: [
+                      Tab(
+                        icon: SvgPicture.asset(
+                          AppIcons.shield,
+                          color: selectedTabIndex == 0
+                              ? Colors.white
+                              : AppColors.white.withOpacity(.6),
+                        ),
+                        text: 'Detalhes',
+                      ),
+                      Tab(
+                        icon: SvgPicture.asset(
+                          AppIcons.soccerBoots,
+                          color: selectedTabIndex == 1
+                              ? Colors.white
+                              : AppColors.white.withOpacity(.6),
+                        ),
+                        text: 'Jogos',
+                      ),
+                      Tab(
+                        icon: SvgPicture.asset(
+                          AppIcons.courtSport,
+                          color: selectedTabIndex == 2
+                              ? Colors.white
+                              : AppColors.white.withOpacity(.6),
+                        ),
+                        text: 'Plantel',
+                      ),
+                      Tab(
+                        icon: SvgPicture.asset(
+                          AppIcons.trophyStar,
+                          color: selectedTabIndex == 3
+                              ? Colors.white
+                              : AppColors.white.withOpacity(.6),
+                        ),
+                        text: 'Títulos',
+                      ),
+                      Tab(
+                        icon: SvgPicture.asset(
+                          AppIcons.footballPlayer,
+                          color: selectedTabIndex == 4
+                              ? Colors.white
+                              : AppColors.white.withOpacity(.6),
+                        ),
+                        text: 'Jogadores',
+                      ),
+                      Tab(
+                        icon: SvgPicture.asset(
+                          AppIcons.newspaper,
+                          color: selectedTabIndex == 5
+                              ? Colors.white
+                              : AppColors.white.withOpacity(.6),
+                        ),
+                        text: 'News',
+                      ),
                     ],
                   ),
                 ),
@@ -206,14 +260,15 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                   child: TabBarView(
                     controller: _tabController,
                     children: [
-                      _contantTeam(team!),
-                      _buildTabContentMatch(team),
-                      plantel(),
-                      _buildSettings(team),
+                      _buildContantTeam(team!),
+                      _buildMatchesTeam(team),
+                      _buildPlantelTeam(),
+                      // _buildSettings(team),
+                      _buildTrophiesTeam(),
                       // _buildTeamsList(),
                       // _buildStats(),
-                      _buildPlyer(team),
-                      _buildTabContentNews()
+                      _buildPlyersTeam(team),
+                      _buildNewsTeam()
                     ],
                   ),
                 ),
@@ -226,7 +281,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     );
   }
 
-  Widget _buildPlyer(TeamEntity team) {
+  Widget _buildPlyersTeam(TeamEntity team) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: DefaultTabController(
@@ -303,7 +358,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     );
   }
 
-  Widget _contantTeam(TeamEntity team) {
+  Widget _buildContantTeam(TeamEntity team) {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -597,7 +652,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     );
   }
 
-  Widget _buildTabContentMatch(TeamEntity team) {
+  Widget _buildMatchesTeam(TeamEntity team) {
     return Column(
       children: [
         Container(
@@ -803,6 +858,12 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildTrophiesTeam() {
+    return Center(
+      child: Text("Troféos"),
     );
   }
 
@@ -1272,7 +1333,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     );
   }
 
-  Widget _buildTabContentNews() {
+  Widget _buildNewsTeam() {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -1384,194 +1445,180 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     );
   }
 
-  Widget plantel() {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AppColors.primary,
-            AppColors.primary,
-            AppColors.primary,
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-      ),
-      child: Scaffold(
-        // backgroundColor: Colors.transparent,
-        body: Column(
-          children: [
-            // Dropdowns
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Dropdown: Número de jogadores
-                  DropdownButton<String>(
-                    value: selectedCount,
-                    onChanged: (value) {
-                      if (value != null) {
-                        setState(() => selectedCount = value);
-                      }
-                    },
-                    items: playerCounts.map((e) {
-                      return DropdownMenuItem<String>(
-                        value: e,
-                        child: Text(e),
-                      );
-                    }).toList(),
-                  ),
+  Widget _buildPlantelTeam() {
+    return Scaffold(
+      body: Column(
+        children: [
+          // Dropdowns
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Dropdown: Número de jogadores
+                DropdownButton<String>(
+                  value: selectedCount,
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() => selectedCount = value);
+                    }
+                  },
+                  items: playerCounts.map((e) {
+                    return DropdownMenuItem<String>(
+                      value: e,
+                      child: Text(e),
+                    );
+                  }).toList(),
+                ),
 
-                  // Dropdown: Formação tática
-                  DropdownButton<String>(
-                    value: selectedFormation,
-                    onChanged: (value) {
-                      if (value != null) {
-                        setState(() => selectedFormation = value);
-                      }
-                    },
-                    items: formations.map((e) {
-                      return DropdownMenuItem<String>(
-                        value: e,
-                        child: Text(e),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
+                // Dropdown: Formação tática
+                DropdownButton<String>(
+                  value: selectedFormation,
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() => selectedFormation = value);
+                    }
+                  },
+                  items: formations.map((e) {
+                    return DropdownMenuItem<String>(
+                      value: e,
+                      child: Text(e),
+                    );
+                  }).toList(),
+                ),
+              ],
             ),
+          ),
 
-            const SizedBox(height: 16),
+          const SizedBox(height: 16),
 
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            "Titulares",
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Container(
-                        height: 300,
-                        decoration: BoxDecoration(
-                          // color: Colors.green[100],
-                          borderRadius: BorderRadius.circular(16),
-                          // border: Border.all(color: Colors.green),
-                          image: DecorationImage(
-                            fit: BoxFit.fitWidth,
-                            image: AssetImage(
-                              AppImages.campoReto,
-                            ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          "Titulares",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Container(
+                      height: 300,
+                      decoration: BoxDecoration(
+                        // color: Colors.green[100],
+                        borderRadius: BorderRadius.circular(16),
+                        // border: Border.all(color: Colors.green),
+                        image: DecorationImage(
+                          fit: BoxFit.fitWidth,
+                          image: AssetImage(
+                            AppImages.campoReto,
                           ),
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: _buildFormationWithLimit(
-                              fieldFormation.reversed.toList()),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: _buildFormationWithLimit(
+                            fieldFormation.reversed.toList()),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Suplentes",
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            "Suplentes",
-                            style: Theme.of(context).textTheme.titleLarge,
+                        const SizedBox(width: 5),
+                        Text(
+                          "[10]",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: List.generate(7, (index) {
+                        return Container(
+                          width: MediaQuery.of(context).size.width / 2 - 30,
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          const SizedBox(width: 5),
-                          Text(
-                            "[10]",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge!
-                                .copyWith(fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Wrap(
-                        spacing: 10,
-                        runSpacing: 10,
-                        children: List.generate(7, (index) {
-                          return Container(
-                            width: MediaQuery.of(context).size.width / 2 - 30,
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                CircleAvatar(
-                                  radius: 20,
-                                  backgroundImage: AssetImage(AppImages.avatar),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                radius: 20,
+                                backgroundImage: AssetImage(AppImages.avatar),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                "10",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Colors.white,
                                 ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  "10",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                  ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                "Atacante",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white70,
                                 ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  "Atacante",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.white70,
-                                  ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                "Jogador",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
                                 ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  "Jogador",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }),
-                      ),
-                    ],
-                  ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                    ),
+                  ],
                 ),
               ),
             ),
+          ),
 
-            // Expanded(
-            //   child: Container(
-            //     decoration: BoxDecoration(
-            //       color: Colors.green[100],
-            //       borderRadius: BorderRadius.circular(16),
-            //       border: Border.all(color: Colors.green),
-            //       image: DecorationImage(
-            //         fit: BoxFit.fitWidth,
-            //         image: AssetImage(
-            //           AppImages.campoReto,
-            //         ),
-            //       ),
-            //     ),
-            //     child: Column(
-            //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //       children: _buildFormationWithLimit(
-            //           fieldFormation.reversed.toList()),
-            //     ),
-            //   ),
-            // ),
-          ],
-        ),
+          // Expanded(
+          //   child: Container(
+          //     decoration: BoxDecoration(
+          //       color: Colors.green[100],
+          //       borderRadius: BorderRadius.circular(16),
+          //       border: Border.all(color: Colors.green),
+          //       image: DecorationImage(
+          //         fit: BoxFit.fitWidth,
+          //         image: AssetImage(
+          //           AppImages.campoReto,
+          //         ),
+          //       ),
+          //     ),
+          //     child: Column(
+          //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //       children: _buildFormationWithLimit(
+          //           fieldFormation.reversed.toList()),
+          //     ),
+          //   ),
+          // ),
+        ],
       ),
     );
   }
