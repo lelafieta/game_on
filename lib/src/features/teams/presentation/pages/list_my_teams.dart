@@ -131,7 +131,10 @@ class TeamProfileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Map<dynamic, dynamic> arguments = {"index": 1, "componentId": team.id};
+        Map<dynamic, String?> arguments = {
+          "index": "1",
+          "componentId": team.id.toString()
+        };
         Get.toNamed(AppRoutes.gameOn, arguments: arguments);
       },
       child: Container(

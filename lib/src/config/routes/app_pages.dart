@@ -13,6 +13,7 @@ import 'package:game_on/src/features/splash&onboarding/presentation/pages/splash
 import 'package:game_on/src/features/teams/presentation/pages/list_my_teams.dart';
 import '../../features/organizers/presentation/pages/organizer_home_page.dart';
 import '../../features/teams/presentation/pages/create_team_page.dart';
+import '../../features/teams/presentation/pages/team_deatils_page.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -33,7 +34,7 @@ class AppPages {
           },
         );
       case AppRoutes.gameOn:
-        final params = settings.arguments as Map<dynamic, dynamic>;
+        final params = settings.arguments as Map<dynamic, String?>;
         return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) {
             return GameOnPage(
@@ -201,6 +202,22 @@ class AppPages {
         return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) {
             return const CreateTeamPage();
+          },
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return SharedAxisTransition(
+              animation: animation,
+              secondaryAnimation: secondaryAnimation,
+              transitionType: SharedAxisTransitionType.vertical,
+              child: child,
+            );
+          },
+        );
+
+      case AppRoutes.teamDetails:
+        final teamId = settings.arguments as String;
+        return PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) {
+            return TeamDetailsPage(teamId: teamId);
           },
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SharedAxisTransition(

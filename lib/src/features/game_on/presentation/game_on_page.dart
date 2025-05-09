@@ -23,7 +23,7 @@ import '../../settings/presentation/pages/settings_page.dart';
 import 'menu_page.dart';
 
 class GameOnPage extends StatefulWidget {
-  final Map<dynamic, dynamic>? arguments;
+  final Map<dynamic, String?>? arguments;
   const GameOnPage({super.key, this.arguments});
 
   @override
@@ -41,7 +41,7 @@ class _GameOnPageState extends State<GameOnPage> {
     widgets = [
       // OrganizerPage(),
       HomePage(
-        arguments: widget.arguments!["index"],
+        arguments: widget.arguments,
       ),
       // TeamDetailsPage(),
       // CompetitionDetailsPage(),

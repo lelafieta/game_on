@@ -1,3 +1,4 @@
+import '../../../profiles/data/models/profile_model.dart';
 import '../../domain/entities/team_entity.dart';
 
 class TeamModel extends TeamEntity {
@@ -21,7 +22,8 @@ class TeamModel extends TeamEntity {
       super.equipmentMainColor,
       super.equipmentTypeColor,
       super.equipmentNumberColor,
-      super.abbreviation});
+      super.abbreviation,
+      super.createdByProfile});
 
   factory TeamModel.fromJson(Map<String, dynamic> json) {
     return TeamModel(
@@ -49,6 +51,10 @@ class TeamModel extends TeamEntity {
       equipmentTypeColor: json['equipment_type_color'] as String?,
       equipmentNumberColor: json['equipment_number_color'] as String?,
       abbreviation: json['abbreviation'] as String?,
+      createdByProfile: json['created_by_profile'] != null
+          ? ProfileModel.fromJson(
+              json['created_by_profile'] as Map<String, dynamic>)
+          : null,
     );
   }
 
@@ -73,7 +79,8 @@ class TeamModel extends TeamEntity {
         equipmentMainColor: entity.equipmentMainColor,
         equipmentTypeColor: entity.equipmentTypeColor,
         equipmentNumberColor: entity.equipmentNumberColor,
-        abbreviation: entity.abbreviation);
+        abbreviation: entity.abbreviation,
+        createdByProfile: entity.createdByProfile);
   }
 
   Map<String, dynamic> toJson() {
@@ -98,6 +105,7 @@ class TeamModel extends TeamEntity {
       'equipament_main_color': equipmentMainColor,
       'equipament_type_color': equipmentTypeColor,
       'equipament_number_color': equipmentNumberColor,
+      'created_by_profile': createdByProfile,
     };
   }
 
@@ -123,6 +131,7 @@ class TeamModel extends TeamEntity {
       'equipament_main_color': equipmentMainColor,
       'equipament_type_color': equipmentTypeColor,
       'equipament_number_color': equipmentNumberColor,
+      'created_by_profile': createdByProfile,
     };
   }
 
@@ -147,28 +156,29 @@ class TeamModel extends TeamEntity {
     String? equipamentMainColor,
     String? equipamentTypeColor,
     String? equipamentNumberColor,
+    ProfileModel? createdByProfile,
   }) {
     return TeamModel(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      logoUrl: logoUrl ?? this.logoUrl,
-      description: description ?? this.description,
-      category: category ?? this.category,
-      location: location ?? this.location,
-      captainName: captainName ?? this.captainName,
-      captainContact: captainContact ?? this.captainContact,
-      memberLimit: memberLimit ?? this.memberLimit,
-      foundedAt: foundedAt ?? this.foundedAt,
-      inviteCode: inviteCode ?? this.inviteCode,
-      socialLinks: socialLinks ?? this.socialLinks,
-      status: status ?? this.status,
-      createdBy: createdBy ?? this.createdBy,
-      createdAt: createdAt ?? this.createdAt,
-      equipmentType: equipmentType ?? this.equipmentType,
-      equipmentMainColor: equipmentType ?? equipmentMainColor,
-      equipmentTypeColor: equipmentType ?? equipmentTypeColor,
-      equipmentNumberColor: abbreviation ?? equipmentNumberColor,
-      abbreviation: abbreviation ?? this.abbreviation,
-    );
+        id: id ?? this.id,
+        name: name ?? this.name,
+        logoUrl: logoUrl ?? this.logoUrl,
+        description: description ?? this.description,
+        category: category ?? this.category,
+        location: location ?? this.location,
+        captainName: captainName ?? this.captainName,
+        captainContact: captainContact ?? this.captainContact,
+        memberLimit: memberLimit ?? this.memberLimit,
+        foundedAt: foundedAt ?? this.foundedAt,
+        inviteCode: inviteCode ?? this.inviteCode,
+        socialLinks: socialLinks ?? this.socialLinks,
+        status: status ?? this.status,
+        createdBy: createdBy ?? this.createdBy,
+        createdAt: createdAt ?? this.createdAt,
+        equipmentType: equipmentType ?? this.equipmentType,
+        equipmentMainColor: equipmentType ?? equipmentMainColor,
+        equipmentTypeColor: equipmentType ?? equipmentTypeColor,
+        equipmentNumberColor: abbreviation ?? equipmentNumberColor,
+        abbreviation: abbreviation ?? this.abbreviation,
+        createdByProfile: createdByProfile ?? createdByProfile);
   }
 }

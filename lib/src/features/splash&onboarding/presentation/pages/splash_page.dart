@@ -33,8 +33,8 @@ class _SplashPageState extends State<SplashPage> {
 
   void _goToNext() {
     if (AppEntity.uId != null) {
-      Navigator.of(context)
-          .pushReplacementNamed(AppRoutes.gameOn, arguments: 0);
+      Navigator.of(context).pushReplacementNamed(AppRoutes.gameOn,
+          arguments: {"index": "1", "componentId": ""});
     } else {
       Navigator.of(context).pushReplacementNamed(AppRoutes.login);
     }

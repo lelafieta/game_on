@@ -21,7 +21,8 @@ class TeamRemoteDataSource implements ITeamRemoteDataSource {
 
   @override
   Future<List<TeamModel>> getTeams() async {
-    final response = await client.from('teams').select();
+    final response =
+        await client.from('teams').select('*, created_by_profile:profiles(*)');
 
     final data = response as List<dynamic>;
     return data.map((item) => TeamModel.fromJson(item)).toList();
@@ -29,7 +30,8 @@ class TeamRemoteDataSource implements ITeamRemoteDataSource {
 
   @override
   Future<List<TeamModel>> getMyTeams() async {
-    final response = await client.from('teams').select();
+    final response =
+        await client.from('teams').select('*, created_by_profile:profiles(*)');
 
     final data = response as List<dynamic>;
     return data.map((item) => TeamModel.fromJson(item)).toList();
@@ -37,7 +39,11 @@ class TeamRemoteDataSource implements ITeamRemoteDataSource {
 
   @override
   Future<TeamModel?> getTeamById(String id) async {
-    final response = await client.from('teams').select().eq('id', id).single();
+    final response = await client
+        .from('teams')
+        .select('*, created_by_profile:profiles(*)')
+        .eq('id', id)
+        .single();
 
     return TeamModel.fromJson(response);
   }

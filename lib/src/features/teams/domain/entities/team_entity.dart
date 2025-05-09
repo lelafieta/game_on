@@ -1,3 +1,5 @@
+import '../../../profiles/domain/entities/profile_entity.dart';
+
 class TeamEntity {
   final String? id;
   final String? name;
@@ -19,6 +21,7 @@ class TeamEntity {
   final String? equipmentTypeColor;
   final String? equipmentNumberColor;
   final String? abbreviation;
+  final ProfileEntity? createdByProfile;
 
   const TeamEntity(
       {this.id,
@@ -40,5 +43,6 @@ class TeamEntity {
       this.equipmentTypeColor,
       this.equipmentMainColor,
       this.equipmentNumberColor,
-      this.abbreviation});
+      this.abbreviation,
+      this.createdByProfile});
 }

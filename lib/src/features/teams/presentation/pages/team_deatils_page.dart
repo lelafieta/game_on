@@ -4,20 +4,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:game_on/src/core/resources/app_images.dart';
 import 'package:game_on/src/core/strings/app_strings.dart';
+import 'package:game_on/src/features/teams/presentation/cubit/get_one_team_cubit/get_one_team_cubit.dart';
 import 'package:game_on/src/features/teams/presentation/pages/build_equipament_page.dart';
 import 'package:get/get.dart';
 
 import '../../../../config/themes/app_colors.dart';
 import '../../../../core/resources/app_icons.dart';
+import '../../../../core/utils/app_date_utils.dart';
 import '../../../home/presentantion/home_page.dart';
 import '../../../home/presentantion/old_home';
+import '../../domain/entities/team_entity.dart';
 
 class TeamDetailsPage extends StatefulWidget {
-  const TeamDetailsPage({super.key});
+  final String teamId;
+  const TeamDetailsPage({super.key, required this.teamId});
 
   @override
   State<TeamDetailsPage> createState() => _TeamDetailsPageState();
@@ -81,6 +86,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
   void initState() {
     super.initState();
     _tabController = TabController(length: 6, vsync: this);
+    context.read<GetOneTeamCubit>().getOneTeam(widget.teamId);
   }
 
   @override
@@ -95,51 +101,61 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            color: AppColors.primary,
-            child: TabBar(
-              controller: _tabController,
-              isScrollable: true,
-              tabAlignment: TabAlignment.start,
-              unselectedLabelColor: AppColors.white.withOpacity(.6),
-              labelColor: AppColors.white,
-              indicatorColor: Colors.red,
-              indicatorSize: TabBarIndicatorSize.tab,
-              tabs: const [
-                Tab(icon: Icon(Icons.sports_soccer), text: 'Detalhes'),
-                Tab(icon: Icon(Icons.emoji_events), text: 'Jogos'),
-                Tab(
-                    icon: Icon(Icons.leaderboard),
-                    text: 'Histórico de partidas'),
-                Tab(icon: Icon(Icons.group), text: 'Configuração'),
-                Tab(icon: Icon(Icons.star), text: 'Jogadores'),
-                Tab(icon: Icon(Icons.article), text: 'News'),
-              ],
-            ),
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
+      body: BlocBuilder<GetOneTeamCubit, GetOneTeamState>(
+        builder: (context, state) {
+          if (state is GetOneTeamLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is GetOneTeamFailure) {
+            return Center(child: Text(state.error));
+          } else if (state is GetOneTeamLoaded) {
+            final team = state.team;
+            return Column(
               children: [
-                _contantTeam(),
-                _buildTabContentMatch(),
-                _buildTable(),
-                _buildSettings(),
-                // _buildTeamsList(),
-                // _buildStats(),
-                _buildPlyer(),
-                _buildTabContentNews()
+                Container(
+                  color: AppColors.primary,
+                  child: TabBar(
+                    controller: _tabController,
+                    isScrollable: true,
+                    tabAlignment: TabAlignment.start,
+                    unselectedLabelColor: AppColors.white.withOpacity(.6),
+                    labelColor: AppColors.white,
+                    indicatorColor: Colors.red,
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    tabs: const [
+                      Tab(icon: Icon(Icons.sports_soccer), text: 'Detalhes'),
+                      Tab(icon: Icon(Icons.emoji_events), text: 'Jogos'),
+                      Tab(icon: Icon(Icons.leaderboard), text: 'Plantel'),
+                      Tab(icon: Icon(Icons.group), text: 'Configuração'),
+                      Tab(icon: Icon(Icons.star), text: 'Jogadores'),
+                      Tab(icon: Icon(Icons.article), text: 'News'),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      _contantTeam(team!),
+                      _buildTabContentMatch(team),
+                      _buildTable(),
+                      _buildSettings(team),
+                      // _buildTeamsList(),
+                      // _buildStats(),
+                      _buildPlyer(team),
+                      _buildTabContentNews()
+                    ],
+                  ),
+                ),
               ],
-            ),
-          ),
-        ],
+            );
+          }
+          return SizedBox.shrink();
+        },
       ),
     );
   }
 
-  Widget _buildPlyer() {
+  Widget _buildPlyer(TeamEntity team) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: DefaultTabController(
@@ -204,9 +220,9 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
             Expanded(
               child: TabBarView(
                 children: [
-                  _buildPlayerRealWidget(),
-                  _buildPlayerImaginaryWidget(),
-                  _buildNewPlayerWidget(),
+                  _buildPlayerRealWidget(team),
+                  _buildPlayerImaginaryWidget(team),
+                  _buildNewPlayerWidget(team),
                 ],
               ),
             ),
@@ -216,7 +232,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     );
   }
 
-  Widget _contantTeam() {
+  Widget _contantTeam(TeamEntity team) {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -246,14 +262,24 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                     bottom: -60,
                     child: Stack(
                       children: [
-                        CircleAvatar(
-                          radius: 70, // aumentado o tamanho do círculo
-                          backgroundColor: Colors.white,
-                          child: CircleAvatar(
-                            radius: 66, // aumentado o tamanho da imagem
-                            backgroundImage: AssetImage(AppImages.dourada),
-                          ),
-                        ),
+                        (team.logoUrl == null || team.logoUrl!.isEmpty)
+                            ? SvgPicture.asset(AppIcons.security)
+                            : CircleAvatar(
+                                radius: 70, // aumentado o tamanho do círculo
+                                backgroundColor: Colors.white,
+                                child: CachedNetworkImage(
+                                  imageUrl: team.logoUrl!,
+                                  imageBuilder: (context, imageProvider) =>
+                                      CircleAvatar(
+                                    radius: 66, // aumentado o tamanho da imagem
+                                    backgroundImage: imageProvider,
+                                  ),
+                                  placeholder: (context, url) =>
+                                      const CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                ),
+                              ),
                         Positioned(
                           right: 0,
                           bottom: 0,
@@ -281,13 +307,13 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                 ],
               ),
               const SizedBox(height: 70),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   children: [
                     Text(
-                      'Dourada FC',
-                      style: TextStyle(
+                      '${team.name}',
+                      style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -335,12 +361,12 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
             ],
           ),
           const SizedBox(height: 5),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.location_on, color: Colors.grey),
-              SizedBox(width: 5),
-              Text("Angola, Luanda, Benfica"),
+              const Icon(Icons.location_on, color: Colors.grey),
+              const SizedBox(width: 5),
+              Text("${team.location}"),
             ],
           ),
           ListView(
@@ -358,7 +384,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 subtitle: Text(
-                  'Lela Fieta',
+                  '${team.createdByProfile!.fullName}',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
@@ -368,11 +394,11 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                   width: 26,
                 ),
                 title: Text(
-                  'Fondado aos',
+                  'Fundado aos',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 subtitle: Text(
-                  '10 abr 2023',
+                  '${AppDateUtils.formatDate(data: team.foundedAt!)} - (${AppDateUtils.getYearDifference(team.foundedAt!)} anos)',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
@@ -386,7 +412,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 subtitle: Text(
-                  '10',
+                  team.memberLimit.toString(),
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
@@ -500,7 +526,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     );
   }
 
-  Widget _buildTabContentMatch() {
+  Widget _buildTabContentMatch(TeamEntity team) {
     return Column(
       children: [
         Container(
@@ -634,7 +660,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     );
   }
 
-  Widget _buildPlayerImaginaryWidget() {
+  Widget _buildPlayerImaginaryWidget(TeamEntity team) {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -709,7 +735,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     );
   }
 
-  Widget _buildSettings() {
+  Widget _buildSettings(TeamEntity team) {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
@@ -957,7 +983,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     // );
   }
 
-  Widget _buildTeamsList() {
+  Widget _buildTeamsList(TeamEntity team) {
     return ListView.builder(
       itemCount: matches.length,
       itemBuilder: (context, index) {
@@ -1032,7 +1058,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     );
   }
 
-  Widget _buildPlayerRealWidget() {
+  Widget _buildPlayerRealWidget(TeamEntity team) {
     return ListView.builder(
       itemCount: matches.length,
       itemBuilder: (context, index) {
@@ -1099,7 +1125,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     );
   }
 
-  Widget _buildNewPlayerWidget() {
+  Widget _buildNewPlayerWidget(TeamEntity team) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
