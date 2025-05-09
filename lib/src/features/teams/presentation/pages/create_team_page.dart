@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../config/themes/app_colors.dart';
@@ -23,6 +26,8 @@ class CreateTeamPage extends StatefulWidget {
 
 class _CreateTeamPageState extends State<CreateTeamPage> {
   final _formKey = GlobalKey<FormBuilderState>();
+  final ValueNotifier<File?> imageFile = ValueNotifier<File?>(null);
+  final ImagePicker picker = ImagePicker();
 
   final Map<String, String> typeToImage = {
     'main': AppImages.typeEmpty,
@@ -81,13 +86,23 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
     });
   }
 
+  Future<void> pickImage() async {
+    final XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        imageFile.value = File(pickedFile.path);
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     teamData = {
-      'equipament_number_color': 'Color(0xff000000)',
+      'equipament_number_color': 'Color(0xffffffff)',
       'equipament_main_color': 'Color(0xff000000)',
-      'equipament_type_color': 'Color(0xff000000)',
+      'equipament_type_color': 'Color(0xffffffff)',
       'equipament_type': 'main'
     };
   }
@@ -97,7 +112,7 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
     final hexString = colorString.replaceAll(RegExp(r'[^0-9a-fA-F]'), '');
 
     // Converte a string hexadecimal para inteiro
-    return Color(int.parse('0x$hexString'));
+    return Color(int.parse('0xff$hexString'));
   }
 
   @override
@@ -288,37 +303,58 @@ class _CreateTeamPageState extends State<CreateTeamPage> {
                             ),
                             const SizedBox(width: 20),
                             Expanded(
-                              child: Container(
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.white,
-                                  border: Border.all(
-                                    width: 1,
-                                    color: Colors.grey.shade400,
+                              child: InkWell(
+                                onTap: () {
+                                  pickImage();
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.white,
+                                    border: Border.all(
+                                      width: 1,
+                                      color: Colors.grey.shade400,
+                                    ),
                                   ),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Container(
-                                            child: SvgPicture.asset(
-                                              width: 55,
-                                              AppIcons.security,
-                                            ),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: (imageFile.value != null)
+                                                ? ValueListenableBuilder<File?>(
+                                                    valueListenable: imageFile,
+                                                    builder:
+                                                        (context, file, _) {
+                                                      if (file == null) {
+                                                        return const SizedBox
+                                                            .shrink();
+                                                      } else {
+                                                        return Image.file(
+                                                          file,
+                                                          width: 55,
+                                                          height: 55,
+                                                          fit: BoxFit.contain,
+                                                        );
+                                                      }
+                                                    },
+                                                  )
+                                                : SvgPicture.asset(
+                                                    width: 55,
+                                                    AppIcons.security,
+                                                  ),
                                           ),
-                                        ),
 
-                                        // const Text("Equipamento")
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text("Logotipo")
-                                  ],
+                                          // const Text("Equipamento")
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      const Text("Logotipo")
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

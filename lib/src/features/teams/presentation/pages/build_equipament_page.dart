@@ -18,12 +18,12 @@ class BuildEquipamentPage extends StatefulWidget {
 class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
   final ValueNotifier<String?> selectedType = ValueNotifier<String?>("main");
   final ValueNotifier<Color> selectedMainShirtColor =
-      ValueNotifier<Color>(Colors.red);
+      ValueNotifier<Color>(Colors.black);
   final ValueNotifier<Color> selectedStyleShirtColor =
-      ValueNotifier<Color>(Colors.blue);
+      ValueNotifier<Color>(Colors.white);
 
   final ValueNotifier<Color> selectedNumberColor =
-      ValueNotifier<Color>(Colors.blue);
+      ValueNotifier<Color>(Colors.white);
 
   final ValueNotifier<File?> imageFile = ValueNotifier<File?>(null);
   final ImagePicker picker = ImagePicker();
@@ -49,26 +49,27 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
     'type17': AppImages.type17,
   };
 
-  final List<Color> colors = [
-    Colors.white,
-    Colors.black,
-    Colors.red,
-    Colors.blue,
-    Colors.yellow,
-    Colors.green,
-    Colors.orange,
-    Colors.purple,
-    Colors.grey,
-    Colors.amber, // para representar dourado
-    Colors.blueGrey, // um tom mais prateado/cinza
-  ];
+  // final List<Color> colorPalette = [
+  //   Color(0xffFF5733),
+  //   Color(0xff33FF57),
+  //   Color(0xff3357FF),
+  //   Color(0xffFF33A1),
+  //   Color(0xffA133FF),
+  //   Color(0xff33FFF5),
+  //   Color(0xffF5FF33),
+  //   Color(0xffFF8C33),
+  //   Color(0xff8C33FF),
+  //   Color(0xff33FF8C),
+  //   Color(0xff000000),
+  //   Color(0xff000000),
+  // ];
 
   Color parseColorFromString(String colorString) {
     // Remove a parte "Color(" e ")"
     final hexString = colorString.replaceAll(RegExp(r'[^0-9a-fA-F]'), '');
 
     // Converte a string hexadecimal para inteiro
-    return Color(int.parse('0x$hexString'));
+    return Color(int.parse('0xff$hexString'));
   }
 
   final int totalPartidas = 6;
@@ -180,7 +181,7 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
                                     right: 0,
                                     top: 0,
                                     child: Image.asset(
-                                      typeToImage[type]!,
+                                      typeToImage[teamData['equipament_type']]!,
                                       color: color,
                                     ),
                                   );
@@ -199,8 +200,12 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
                                   top: 0,
                                   child: Image.asset(
                                     AppImages.body,
-                                    color: (colorsMain == Colors.black ||
-                                            colorStyle == Colors.black)
+                                    color: (parseColorFromString(teamData[
+                                                    'equipament_main_color']!) ==
+                                                Colors.black ||
+                                            parseColorFromString(teamData[
+                                                    'equipament_main_color']!) ==
+                                                Colors.black)
                                         ? Colors.white12
                                         : Colors.black12,
                                   ),
@@ -291,17 +296,20 @@ class _BuildEquipamentPageState extends State<BuildEquipamentPage> {
                               valueListenable: selectedStyleShirtColor,
                               builder: (___, colorStyle, ____) {
                                 return Positioned(
-                                  left: 0,
-                                  right: 0,
-                                  top: 0,
-                                  child: Image.asset(
-                                    AppImages.bodyBack,
-                                    color: (colorsMain == Colors.black ||
-                                            colorStyle == Colors.black)
-                                        ? Colors.white12
-                                        : Colors.black12,
-                                  ),
-                                );
+                                    left: 0,
+                                    right: 0,
+                                    top: 0,
+                                    child: Image.asset(
+                                      AppImages.bodyBack,
+                                      color: (parseColorFromString(teamData[
+                                                      'equipament_main_color']!) ==
+                                                  Colors.black ||
+                                              parseColorFromString(teamData[
+                                                      'equipament_main_color']!) ==
+                                                  Colors.black)
+                                          ? Colors.white12
+                                          : Colors.black12,
+                                    ));
                               },
                             );
                           },

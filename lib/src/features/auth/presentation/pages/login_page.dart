@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:game_on/src/app/app_entity.dart';
 import 'package:game_on/src/features/auth/domain/entities/login_entity.dart';
 
 import '../../../../config/routes/app_routes.dart';
@@ -28,7 +27,8 @@ class _LoginPageState extends State<LoginPage> {
           if (state is AuthLoading) {
             EasyLoading.show(status: "Loading");
           } else if (state is AuthAuthenticated) {
-            Navigator.pushReplacementNamed(context, AppRoutes.gameOn);
+            Navigator.pushReplacementNamed(context, AppRoutes.gameOn,
+                arguments: 0);
           }
         },
         child: Container(
