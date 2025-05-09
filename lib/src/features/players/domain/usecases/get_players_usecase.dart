@@ -5,11 +5,10 @@ import '../../../../core/usecases/base_usecases.dart';
 import '../entities/player_entity.dart';
 import '../repositories/i_player_repository.dart';
 
-class GetPlayersByTeamUseCase
-    extends BaseUseCases<List<PlayerEntity>, NoParams> {
+class GetPlayersUseCase extends BaseUseCases<List<PlayerEntity>, NoParams> {
   final IPlayerRepository playerRepository;
 
-  GetPlayersByTeamUseCase({required this.playerRepository});
+  GetPlayersUseCase({required this.playerRepository});
 
   @override
   Future<Either<Failure, List<PlayerEntity>>> call(NoParams params) async {

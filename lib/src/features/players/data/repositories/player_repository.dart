@@ -9,7 +9,7 @@ import '../models/player_model.dart';
 class PlayerRepository implements IPlayerRepository {
   final IPlayerRemoteDataSource playerDataSource;
 
-  PlayerRepository(this.playerDataSource);
+  PlayerRepository({required this.playerDataSource});
 
   @override
   Future<Either<Failure, List<PlayerEntity>>> getPlayers() async {
