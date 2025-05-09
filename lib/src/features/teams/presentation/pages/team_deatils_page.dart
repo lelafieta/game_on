@@ -53,6 +53,58 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     Colors.orange,
     Colors.purple,
   ];
+  String selectedCount = '11x11';
+  String selectedFormation = '4-4-2';
+
+  final List<String> playerCounts =
+      List.generate(11, (i) => '${i + 1}x${i + 1}');
+  final List<String> formations = [
+    '4-4-2',
+    '4-3-3',
+    '3-5-2',
+    '4-5-1',
+    '4-3-1-2',
+    '4-1-4-1',
+    '4-3-2-1',
+  ];
+
+  List<int> get fieldFormation {
+    return selectedFormation.split('-').map(int.parse).toList();
+  }
+
+  List<Widget> _buildFormationWithLimit(List<int> formationLines) {
+    int totalPlayers = int.tryParse(selectedCount.split('x').first) ?? 11;
+    int playersUsed = 0;
+    List<Widget> lines = [];
+
+    for (int count in formationLines) {
+      if (playersUsed >= totalPlayers) break;
+
+      int remaining = totalPlayers - playersUsed;
+      int playersInLine = count <= remaining ? count : remaining;
+
+      lines.add(_buildLine(playersInLine));
+      playersUsed += playersInLine;
+    }
+
+    return lines;
+  }
+
+  Widget _buildLine(int playerCount) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: List.generate(playerCount, (index) {
+          return CircleAvatar(
+            radius: 28,
+            backgroundColor: Colors.green[800],
+            child: const Icon(Icons.add, color: Colors.white),
+          );
+        }),
+      ),
+    );
+  }
 
   late TabController _tabController;
   final int totalPartidas = 6;
@@ -82,11 +134,28 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     ),
   );
 
+  int formationSize = 5;
+  String formationSelected = "4-4-2";
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 6, vsync: this);
     context.read<GetOneTeamCubit>().getOneTeam(widget.teamId);
+  }
+
+  // Goleiro
+  Widget _buildGoalkeeper() {
+    return _buildLine(1);
+  }
+
+  // Botão de jogador
+  Widget _buildPlayerButton() {
+    return CircleAvatar(
+      radius: 30,
+      backgroundColor: Colors.white,
+      child: Icon(Icons.add, color: Colors.green[700], size: 30),
+    );
   }
 
   @override
@@ -137,7 +206,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                     children: [
                       _contantTeam(team!),
                       _buildTabContentMatch(team),
-                      _buildTable(),
+                      plantel(),
                       _buildSettings(team),
                       // _buildTeamsList(),
                       // _buildStats(),
@@ -1350,6 +1419,99 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
           );
         },
         itemCount: news.length,
+      ),
+    );
+  }
+
+  Widget playerSlot(String label) {
+    return GestureDetector(
+      onTap: () {
+        // Aqui você pode abrir uma modal ou buscar jogador
+        debugPrint("Selecionou: $label");
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.green[800],
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.white),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.add, color: Colors.white),
+              Text(label, style: const TextStyle(color: Colors.white)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget plantel() {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Escalação Tática')),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            // Dropdowns
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Dropdown: Número de jogadores
+                DropdownButton<String>(
+                  value: selectedCount,
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() => selectedCount = value);
+                    }
+                  },
+                  items: playerCounts.map((e) {
+                    return DropdownMenuItem<String>(
+                      value: e,
+                      child: Text(e),
+                    );
+                  }).toList(),
+                ),
+
+                // Dropdown: Formação tática
+                DropdownButton<String>(
+                  value: selectedFormation,
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() => selectedFormation = value);
+                    }
+                  },
+                  items: formations.map((e) {
+                    return DropdownMenuItem<String>(
+                      value: e,
+                      child: Text(e),
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 16),
+
+            // Campo de jogo
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.green[100],
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.green),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: _buildFormationWithLimit(
+                      fieldFormation.reversed.toList()),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
