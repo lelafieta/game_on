@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import 'package:game_on/src/core/error/failure.dart';
+import 'package:game_on/src/features/teams/domain/entities/tactical_formation_entity.dart';
 
 import '../../domain/entities/team_entity.dart';
 import '../../domain/repositories/i_team_repository.dart';
@@ -70,5 +71,12 @@ class TeamRepository extends ITeamRepository {
     } catch (e) {
       return Left(Failure(message: e.toString()));
     }
+  }
+
+  @override
+  Future<Either<Failure, TacticalFormationEntity?>> getTeamTacticalFormation(
+      String teamId) async {
+    // TODO: implement getTeamTacticalFormation
+    throw UnimplementedError();
   }
 }

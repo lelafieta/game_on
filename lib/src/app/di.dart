@@ -28,6 +28,7 @@ import '../features/teams/domain/usecases/create_team_usecase.dart';
 import '../features/teams/domain/usecases/delete_team_usecase.dart';
 import '../features/teams/domain/usecases/get_my_teams_usecase.dart';
 import '../features/teams/domain/usecases/get_team_by_id_usecase.dart';
+import '../features/teams/domain/usecases/get_team_tactical_formation_usecase.dart';
 import '../features/teams/domain/usecases/get_teams_usecase.dart';
 import '../features/teams/domain/usecases/update_team_usecase.dart';
 import '../features/teams/presentation/cubit/get_one_team_cubit/get_one_team_cubit.dart';
@@ -121,6 +122,8 @@ void _registerUseCases() {
       () => GetPlayersByTeamUseCase(playerRepository: sl()));
 
   sl.registerLazySingleton(() => UpdatePlayerUseCase(playerRepository: sl()));
+  sl.registerLazySingleton(
+      () => GetTeamTacticalFormationUseCase(teamRepository: sl()));
 }
 
 void _registerExternal() {

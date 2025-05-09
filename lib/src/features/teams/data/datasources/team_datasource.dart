@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:game_on/src/features/teams/data/models/tactical_formation_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/team_model.dart';
 import 'i_team_datasource.dart';
@@ -58,5 +59,11 @@ class TeamRemoteDataSource implements ITeamRemoteDataSource {
   Future<Unit> deleteTeam(String id) async {
     final response = await client.from('teams').delete().eq('id', id);
     return unit;
+  }
+
+  @override
+  Future<TacticalFormationModel?> getTeamTacticalFormation(String teamId) {
+    // TODO: implement getTeamTacticalFormation
+    throw UnimplementedError();
   }
 }
