@@ -67,7 +67,6 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     '4-1-4-1',
     '4-3-2-1',
   ];
-
   List<int> get fieldFormation {
     return selectedFormation.split('-').map(int.parse).toList();
   }
@@ -87,19 +86,51 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
       playersUsed += playersInLine;
     }
 
+    // Add goalkeeper at the end if the formation is greater than 1x1
+    if (totalPlayers > 1) {
+      lines.add(_buildGoalkeeper());
+      playersUsed++;
+    }
+
     return lines;
   }
 
-  Widget _buildLine(int playerCount) {
+  Widget _buildGoalkeeper() {
     return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            radius: 20,
+            backgroundColor: Colors.red[800],
+            child: const Icon(Icons.sports_soccer, color: Colors.white),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLine(int playerCount) {
+    return Container(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: List.generate(playerCount, (index) {
-          return CircleAvatar(
-            radius: 28,
-            backgroundColor: Colors.green[800],
-            child: const Icon(Icons.add, color: Colors.white),
+          return Column(
+            children: [
+              CircleAvatar(
+                radius: 20,
+                backgroundColor: Colors.black,
+                child: const Icon(Icons.add, color: Colors.white),
+              ),
+              const SizedBox(height: 5),
+              Container(
+                width: 50,
+                color: Colors.black,
+                child: Text("Lela"),
+              )
+            ],
           );
         }),
       ),
@@ -142,20 +173,6 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     super.initState();
     _tabController = TabController(length: 6, vsync: this);
     context.read<GetOneTeamCubit>().getOneTeam(widget.teamId);
-  }
-
-  // Goleiro
-  Widget _buildGoalkeeper() {
-    return _buildLine(1);
-  }
-
-  // Botão de jogador
-  Widget _buildPlayerButton() {
-    return CircleAvatar(
-      radius: 30,
-      backgroundColor: Colors.white,
-      child: Icon(Icons.add, color: Colors.green[700], size: 30),
-    );
   }
 
   @override
@@ -1449,59 +1466,77 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
   }
 
   Widget plantel() {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Escalação Tática')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            // Dropdowns
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Dropdown: Número de jogadores
-                DropdownButton<String>(
-                  value: selectedCount,
-                  onChanged: (value) {
-                    if (value != null) {
-                      setState(() => selectedCount = value);
-                    }
-                  },
-                  items: playerCounts.map((e) {
-                    return DropdownMenuItem<String>(
-                      value: e,
-                      child: Text(e),
-                    );
-                  }).toList(),
-                ),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            AppColors.primary,
+            AppColors.primary,
+            AppColors.primary,
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
+      child: Scaffold(
+        // backgroundColor: Colors.transparent,
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              // Dropdowns
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Dropdown: Número de jogadores
+                  DropdownButton<String>(
+                    value: selectedCount,
+                    onChanged: (value) {
+                      if (value != null) {
+                        setState(() => selectedCount = value);
+                      }
+                    },
+                    items: playerCounts.map((e) {
+                      return DropdownMenuItem<String>(
+                        value: e,
+                        child: Text(e),
+                      );
+                    }).toList(),
+                  ),
 
-                // Dropdown: Formação tática
-                DropdownButton<String>(
-                  value: selectedFormation,
-                  onChanged: (value) {
-                    if (value != null) {
-                      setState(() => selectedFormation = value);
-                    }
-                  },
-                  items: formations.map((e) {
-                    return DropdownMenuItem<String>(
-                      value: e,
-                      child: Text(e),
-                    );
-                  }).toList(),
-                ),
-              ],
-            ),
+                  // Dropdown: Formação tática
+                  DropdownButton<String>(
+                    value: selectedFormation,
+                    onChanged: (value) {
+                      if (value != null) {
+                        setState(() => selectedFormation = value);
+                      }
+                    },
+                    items: formations.map((e) {
+                      return DropdownMenuItem<String>(
+                        value: e,
+                        child: Text(e),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
 
-            const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-            // Campo de jogo
-            Expanded(
-              child: Container(
+              // Campo de jogo
+              Container(
+                height: 300,
                 decoration: BoxDecoration(
-                  color: Colors.green[100],
+                  // color: Colors.green[100],
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.green),
+                  // border: Border.all(color: Colors.green),
+                  image: DecorationImage(
+                    fit: BoxFit.fitWidth,
+                    image: AssetImage(
+                      AppImages.campoReto,
+                    ),
+                  ),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -1509,8 +1544,29 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                       fieldFormation.reversed.toList()),
                 ),
               ),
-            ),
-          ],
+
+              // Expanded(
+              //   child: Container(
+              //     decoration: BoxDecoration(
+              //       color: Colors.green[100],
+              //       borderRadius: BorderRadius.circular(16),
+              //       border: Border.all(color: Colors.green),
+              //       image: DecorationImage(
+              //         fit: BoxFit.fitWidth,
+              //         image: AssetImage(
+              //           AppImages.campoReto,
+              //         ),
+              //       ),
+              //     ),
+              //     child: Column(
+              //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //       children: _buildFormationWithLimit(
+              //           fieldFormation.reversed.toList()),
+              //     ),
+              //   ),
+              // ),
+            ],
+          ),
         ),
       ),
     );

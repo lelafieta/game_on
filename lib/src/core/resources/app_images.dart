@@ -30,4 +30,5 @@ class AppImages {
   static const String bodyBack = "assets/images/body-back.png";
   static const String typeEmpty = "assets/images/type-empty.png";
   static const String dourada = "assets/images/dourada.png";
+  static const String campoReto = "assets/images/campo_reto.png";
 }
