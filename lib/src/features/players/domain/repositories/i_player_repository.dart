@@ -4,7 +4,7 @@ import '../../../../core/error/failure.dart';
 import '../entities/player_entity.dart';
 
 abstract class IPlayerRepository {
-  Future<Either<Failure, List<PlayerEntity>>> getAllPlayers();
+  Future<Either<Failure, List<PlayerEntity>>> getPlayers();
   Future<Either<Failure, PlayerEntity?>> getPlayerById(String id);
   Future<Either<Failure, List<PlayerEntity>>> getPlayersByTeam(String teamId);
   Future<Either<Failure, Unit>> createPlayer(PlayerEntity player);

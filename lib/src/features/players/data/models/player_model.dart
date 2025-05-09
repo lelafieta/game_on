@@ -52,6 +52,68 @@ class PlayerModel extends PlayerEntity {
     );
   }
 
+  factory PlayerModel.fromEntity(PlayerEntity entity) {
+    return PlayerModel(
+      id: entity.id,
+      teamId: entity.teamId,
+      createdBy: entity.createdBy,
+      fullName: entity.fullName,
+      nickname: entity.nickname,
+      shirtNumber: entity.shirtNumber,
+      position: entity.position,
+      nationality: entity.nationality,
+      birthDate: entity.birthDate,
+      heightCm: entity.heightCm,
+      weightKg: entity.weightKg,
+      foot: entity.foot,
+      avatarUrl: entity.avatarUrl,
+      status: entity.status,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+      createdByProfile: entity.createdByProfile,
+    );
+  }
+
+  PlayerModel copyWith({
+    String? id,
+    String? teamId,
+    String? createdBy,
+    String? fullName,
+    String? nickname,
+    int? shirtNumber,
+    String? position,
+    String? nationality,
+    DateTime? birthDate,
+    int? heightCm,
+    int? weightKg,
+    String? foot,
+    String? avatarUrl,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    ProfileModel? createdByProfile,
+  }) {
+    return PlayerModel(
+      id: id ?? this.id,
+      teamId: teamId ?? this.teamId,
+      createdBy: createdBy ?? this.createdBy,
+      fullName: fullName ?? this.fullName,
+      nickname: nickname ?? this.nickname,
+      shirtNumber: shirtNumber ?? this.shirtNumber,
+      position: position ?? this.position,
+      nationality: nationality ?? this.nationality,
+      birthDate: birthDate ?? this.birthDate,
+      heightCm: heightCm ?? this.heightCm,
+      weightKg: weightKg ?? this.weightKg,
+      foot: foot ?? this.foot,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdByProfile: createdByProfile ?? this.createdByProfile,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
