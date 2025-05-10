@@ -262,241 +262,251 @@ class _GameOnPageState extends State<GameOnPage> {
     //   ),
     // );
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.primary,
-        centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text(
-          "Torneio X",
-          style: TextStyle(color: Colors.white),
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(AppImages.bg2),
+          opacity: .5,
+          fit: BoxFit.cover,
         ),
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset(
-                AppIcons.bellNotificationSocialMedia,
-                color: AppColors.white,
-              ))
-        ],
       ),
-      drawer: Drawer(
-        child: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  children: [
-                    DrawerHeader(
-                      decoration: const BoxDecoration(
-                        color: AppColors.primary,
-                      ),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.all(0),
-                        title: const Text(
-                          'Jesse Lingard',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Colors.white,
-                          ),
-                        ),
-                        subtitle: Text(
-                          'Organizador',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.white.withOpacity(.3),
-                          ),
-                        ),
-                        leading: const CircleAvatar(
-                          backgroundImage: AssetImage(AppImages.avatar),
-                        ),
-                        trailing: IconButton(
-                          onPressed: () {},
-                          icon: SvgPicture.asset(
-                            width: 18,
-                            AppIcons.convertShapes,
-                            color: AppColors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(16.0),
-                      child: const Text(
-                        "Painel",
-                        style: TextStyle(
-                          fontSize: 16,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.primary,
+          centerTitle: true,
+          iconTheme: const IconThemeData(color: Colors.white),
+          title: const Text(
+            "Torneio X",
+            style: TextStyle(color: Colors.white),
+          ),
+          actions: [
+            IconButton(
+                onPressed: () {},
+                icon: SvgPicture.asset(
+                  AppIcons.bellNotificationSocialMedia,
+                  color: AppColors.white,
+                ))
+          ],
+        ),
+        drawer: Drawer(
+          child: SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: [
+                      DrawerHeader(
+                        decoration: const BoxDecoration(
                           color: AppColors.primary,
-                          fontWeight: FontWeight.w600,
+                        ),
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.all(0),
+                          title: const Text(
+                            'Jesse Lingard',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+                          subtitle: Text(
+                            'Organizador',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.white.withOpacity(.3),
+                            ),
+                          ),
+                          leading: const CircleAvatar(
+                            backgroundImage: AssetImage(AppImages.avatar),
+                          ),
+                          trailing: IconButton(
+                            onPressed: () {},
+                            icon: SvgPicture.asset(
+                              width: 18,
+                              AppIcons.convertShapes,
+                              color: AppColors.white,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    ListTile(
-                      leading: SvgPicture.asset(
-                        AppIcons.achievementChallengeMedal,
-                        width: 26,
+                      Container(
+                        padding: const EdgeInsets.all(16.0),
+                        child: const Text(
+                          "Painel",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
-                      title: Text('Campeonatos'),
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, AppRoutes.listMyCompetitions);
-                      },
-                    ),
-                    ListTile(
-                      leading: SvgPicture.asset(
-                        AppIcons.emblem,
-                        width: 26,
+                      ListTile(
+                        leading: SvgPicture.asset(
+                          AppIcons.achievementChallengeMedal,
+                          width: 26,
+                        ),
+                        title: Text('Campeonatos'),
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, AppRoutes.listMyCompetitions);
+                        },
                       ),
-                      title: Text('Equipas'),
-                      onTap: () {
-                        Navigator.pushNamed(context, AppRoutes.listMyTeams);
-                      },
-                    ),
-                    ListTile(
-                      leading: SvgPicture.asset(
-                        AppIcons.contractPaper,
-                        width: 26,
+                      ListTile(
+                        leading: SvgPicture.asset(
+                          AppIcons.emblem,
+                          width: 26,
+                        ),
+                        title: Text('Equipas'),
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoutes.listMyTeams);
+                        },
                       ),
-                      title: Text('Inscrições'),
-                      onTap: () {
-                        // Navigator.pop(context)
-                      },
-                    ),
-                    ListTile(
-                      leading: SvgPicture.asset(
-                        AppIcons.settings2,
-                        width: 26,
+                      ListTile(
+                        leading: SvgPicture.asset(
+                          AppIcons.contractPaper,
+                          width: 26,
+                        ),
+                        title: Text('Inscrições'),
+                        onTap: () {
+                          // Navigator.pop(context)
+                        },
                       ),
-                      title: Text('Configurações'),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.logout),
-                      title: Text('Logout'),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
+                      ListTile(
+                        leading: SvgPicture.asset(
+                          AppIcons.settings2,
+                          width: 26,
+                        ),
+                        title: Text('Configurações'),
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.logout),
+                        title: Text('Logout'),
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Text("Pacotes")
-            ],
+                Text("Pacotes")
+              ],
+            ),
           ),
         ),
-      ),
-      body: widgets[_currentIndex],
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      bottomNavigationBar: AnimatedBottomNavigationBar.builder(
-        backgroundColor: Colors.white,
-        itemCount: 5,
-        activeIndex: _currentIndex,
-        gapLocation: GapLocation.none,
-        notchSmoothness: NotchSmoothness.softEdge,
-        leftCornerRadius: 0,
-        rightCornerRadius: 0,
-        height: 60,
-        shadow: BoxShadow(
-          color: AppColors.shadow.withOpacity(.1),
-          blurRadius: 100,
+        body: widgets[_currentIndex],
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        bottomNavigationBar: AnimatedBottomNavigationBar.builder(
+          backgroundColor: Colors.white,
+          itemCount: 5,
+          activeIndex: _currentIndex,
+          gapLocation: GapLocation.none,
+          notchSmoothness: NotchSmoothness.softEdge,
+          leftCornerRadius: 0,
+          rightCornerRadius: 0,
+          height: 60,
+          shadow: BoxShadow(
+            color: AppColors.shadow.withOpacity(.1),
+            blurRadius: 100,
+          ),
+          onTap: (index) => setState(() => _currentIndex = index),
+          tabBuilder: (int index, bool isActive) {
+            return IconButton(
+              icon: SvgPicture.asset(
+                (isActive) ? iconListBold[index] : iconList[index],
+                width: 20,
+                color: (isActive)
+                    ? AppColors.primary
+                    : Colors.black.withOpacity(.6),
+              ),
+              onPressed: () => setState(() => _currentIndex = index),
+            );
+          },
         ),
-        onTap: (index) => setState(() => _currentIndex = index),
-        tabBuilder: (int index, bool isActive) {
-          return IconButton(
-            icon: SvgPicture.asset(
-              (isActive) ? iconListBold[index] : iconList[index],
-              width: 20,
-              color:
-                  (isActive) ? AppColors.primary : Colors.black.withOpacity(.6),
-            ),
-            onPressed: () => setState(() => _currentIndex = index),
-          );
-        },
-      ),
-      // floatingActionButton: SpeedDial(
-      //   closedForegroundColor: Colors.white,
-      //   openForegroundColor: Colors.white,
-      //   closedBackgroundColor: AppColors.primary,
-      //   openBackgroundColor: AppColors.black,
-      //   labelsBackgroundColor: Colors.white,
-      //   labelsStyle: const TextStyle(
-      //     fontWeight: FontWeight.bold,
-      //     color: Colors.black,
-      //   ),
-      //   speedDialChildren: <SpeedDialChild>[
-      //     SpeedDialChild(
-      //       child: Padding(
-      //         padding: const EdgeInsets.all(5),
-      //         child: SvgPicture.asset(
-      //           AppIcons.competitionchampion,
-      //         ),
-      //       ),
-      //       foregroundColor: Colors.white,
-      //       backgroundColor: Colors.blue.shade900,
-      //       label: 'Novo Torneio',
-      //       onPressed: () {
-      //         Get.toNamed(AppRoutes.createCompetition);
-      //       },
-      //       closeSpeedDialOnPressed: false,
-      //     ),
-      //     SpeedDialChild(
-      //       child: Padding(
-      //         padding: EdgeInsets.all(5),
-      //         child: SvgPicture.asset(
-      //           AppIcons.footballJersey,
-      //         ),
-      //       ),
-      //       foregroundColor: Colors.black,
-      //       backgroundColor: Colors.indigoAccent.shade700,
-      //       label: 'Nova Equipe',
-      //       onPressed: () {
-      //         setState(() {
-      //           // _text = 'You pressed \"Let\'s go for a walk!\"';
-      //         });
-      //       },
-      //     ),
-      //     SpeedDialChild(
-      //       child: Padding(
-      //         padding: EdgeInsets.all(5),
-      //         child: SvgPicture.asset(
-      //           AppIcons.copyLink,
-      //         ),
-      //       ),
-      //       foregroundColor: Colors.black,
-      //       backgroundColor: Colors.red,
-      //       label: 'Conectar-se a um torneio',
-      //       onPressed: () {
-      //         setState(() {
-      //           // _text = 'You pressed \"Let\'s go for a walk!\"';
-      //         });
-      //       },
-      //     ),
-      //     // SpeedDialChild(
-      //     //   child: Padding(
-      //     //     padding: EdgeInsets.all(5),
-      //     //     child: SvgPicture.asset(
-      //     //       AppIcons.copyLink,
-      //     //     ),
-      //     //   ),
-      //     //   foregroundColor: Colors.black,
-      //     //   backgroundColor: Colors.yellow,
-      //     //   label: 'Convidar equipe',
-      //     //   onPressed: () {
-      //     //     setState(() {
-      //     //       // _text = 'You pressed \"Let\'s go for a walk!\"';
-      //     //     });
-      //     //   },
-      //     // ),
-      //   ],
-      //   child: Icon(Icons.add),
-      // ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showBlurModal(context),
-        child: Icon(Icons.add),
+        // floatingActionButton: SpeedDial(
+        //   closedForegroundColor: Colors.white,
+        //   openForegroundColor: Colors.white,
+        //   closedBackgroundColor: AppColors.primary,
+        //   openBackgroundColor: AppColors.black,
+        //   labelsBackgroundColor: Colors.white,
+        //   labelsStyle: const TextStyle(
+        //     fontWeight: FontWeight.bold,
+        //     color: Colors.black,
+        //   ),
+        //   speedDialChildren: <SpeedDialChild>[
+        //     SpeedDialChild(
+        //       child: Padding(
+        //         padding: const EdgeInsets.all(5),
+        //         child: SvgPicture.asset(
+        //           AppIcons.competitionchampion,
+        //         ),
+        //       ),
+        //       foregroundColor: Colors.white,
+        //       backgroundColor: Colors.blue.shade900,
+        //       label: 'Novo Torneio',
+        //       onPressed: () {
+        //         Get.toNamed(AppRoutes.createCompetition);
+        //       },
+        //       closeSpeedDialOnPressed: false,
+        //     ),
+        //     SpeedDialChild(
+        //       child: Padding(
+        //         padding: EdgeInsets.all(5),
+        //         child: SvgPicture.asset(
+        //           AppIcons.footballJersey,
+        //         ),
+        //       ),
+        //       foregroundColor: Colors.black,
+        //       backgroundColor: Colors.indigoAccent.shade700,
+        //       label: 'Nova Equipe',
+        //       onPressed: () {
+        //         setState(() {
+        //           // _text = 'You pressed \"Let\'s go for a walk!\"';
+        //         });
+        //       },
+        //     ),
+        //     SpeedDialChild(
+        //       child: Padding(
+        //         padding: EdgeInsets.all(5),
+        //         child: SvgPicture.asset(
+        //           AppIcons.copyLink,
+        //         ),
+        //       ),
+        //       foregroundColor: Colors.black,
+        //       backgroundColor: Colors.red,
+        //       label: 'Conectar-se a um torneio',
+        //       onPressed: () {
+        //         setState(() {
+        //           // _text = 'You pressed \"Let\'s go for a walk!\"';
+        //         });
+        //       },
+        //     ),
+        //     // SpeedDialChild(
+        //     //   child: Padding(
+        //     //     padding: EdgeInsets.all(5),
+        //     //     child: SvgPicture.asset(
+        //     //       AppIcons.copyLink,
+        //     //     ),
+        //     //   ),
+        //     //   foregroundColor: Colors.black,
+        //     //   backgroundColor: Colors.yellow,
+        //     //   label: 'Convidar equipe',
+        //     //   onPressed: () {
+        //     //     setState(() {
+        //     //       // _text = 'You pressed \"Let\'s go for a walk!\"';
+        //     //     });
+        //     //   },
+        //     // ),
+        //   ],
+        //   child: Icon(Icons.add),
+        // ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => _showBlurModal(context),
+          child: Icon(Icons.add),
+        ),
       ),
     );
   }

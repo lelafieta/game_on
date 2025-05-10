@@ -64,7 +64,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     '3-5-2',
     '4-5-1',
     '4-3-1-2',
-    '4-1-4-1',
+    '5-4-1',
     '4-3-2-1',
   ];
   List<int> get fieldFormation {
@@ -113,22 +113,64 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
 
   Widget _buildLine(int playerCount) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: List.generate(playerCount, (index) {
           return Column(
             children: [
-              const CircleAvatar(
-                radius: 20,
-                backgroundColor: Colors.black,
-                child: Icon(Icons.add, color: Colors.white),
+              Container(
+                width: 40,
+                height: 40,
+                // color: Colors.red,
+                child: Stack(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: double.infinity,
+                      child: Image.asset(
+                        AppImages.mainTShirt,
+                        color: Colors.blue.shade900,
+                      ),
+                    ),
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      top: 0,
+                      bottom: 0,
+                      child: Image.asset(
+                        AppImages.bodyBack,
+                        color: Colors.black38,
+                      ),
+                    ),
+                    Positioned.fill(
+                      child: Center(
+                        child: Text(
+                          "${index + 1}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
-              const SizedBox(height: 5),
               Container(
                 width: 50,
-                color: Colors.black,
-                child: const Center(child: Text("Lela")),
+                decoration: BoxDecoration(
+                    color: Colors.black54,
+                    borderRadius: BorderRadius.circular(5)),
+                child: Center(
+                  child: Text(
+                    "nome",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               )
             ],
           );
@@ -1447,6 +1489,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
 
   Widget _buildPlantelTeam() {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: Column(
         children: [
           // Dropdowns
@@ -1455,36 +1498,56 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Dropdown: Número de jogadores
-                DropdownButton<String>(
-                  value: selectedCount,
-                  onChanged: (value) {
-                    if (value != null) {
-                      setState(() => selectedCount = value);
-                    }
-                  },
-                  items: playerCounts.map((e) {
-                    return DropdownMenuItem<String>(
-                      value: e,
-                      child: Text(e),
-                    );
-                  }).toList(),
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey.shade300),
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: DropdownButton<String>(
+                      value: selectedCount,
+                      onChanged: (value) {
+                        if (value != null) {
+                          setState(() => selectedCount = value);
+                        }
+                      },
+                      isExpanded: true,
+                      underline: SizedBox(),
+                      items: playerCounts.map((e) {
+                        return DropdownMenuItem<String>(
+                          value: e,
+                          child: Text(e),
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ),
-
-                // Dropdown: Formação tática
-                DropdownButton<String>(
-                  value: selectedFormation,
-                  onChanged: (value) {
-                    if (value != null) {
-                      setState(() => selectedFormation = value);
-                    }
-                  },
-                  items: formations.map((e) {
-                    return DropdownMenuItem<String>(
-                      value: e,
-                      child: Text(e),
-                    );
-                  }).toList(),
+                const SizedBox(width: 15),
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey.shade300),
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: DropdownButton<String>(
+                      value: selectedFormation,
+                      onChanged: (value) {
+                        if (value != null) {
+                          setState(() => selectedFormation = value);
+                        }
+                      },
+                      isExpanded: true,
+                      underline: SizedBox(),
+                      items: formations.map((e) {
+                        return DropdownMenuItem<String>(
+                          value: e,
+                          child: Text(e),
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -1498,100 +1561,176 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        Text(
-                          "Titulares",
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
+                    // Row(
+                    //   children: [
+                    //     Text(
+                    //       "Titulares",
+                    //       style: Theme.of(context).textTheme.titleLarge,
+                    //     ),
+                    //   ],
+                    // ),
+                    // const SizedBox(height: 16),
                     Container(
                       height: 300,
                       decoration: BoxDecoration(
-                        // color: Colors.green[100],
+                        color: Colors.green[100],
                         borderRadius: BorderRadius.circular(16),
-                        // border: Border.all(color: Colors.green),
-                        image: DecorationImage(
-                          fit: BoxFit.fitWidth,
+                        border: Border.all(color: Colors.green),
+                        image: const DecorationImage(
+                          fit: BoxFit.contain,
                           image: AssetImage(
                             AppImages.campoReto,
                           ),
                         ),
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: _buildFormationWithLimit(
-                            fieldFormation.reversed.toList()),
+                      child: Container(
+                        // padding: const EdgeInsets.only(bottom: 55),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: _buildFormationWithLimit(
+                              fieldFormation.reversed.toList()),
+                        ),
                       ),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          "Suplentes",
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                        const SizedBox(width: 5),
-                        Text(
-                          "[10]",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Wrap(
-                      spacing: 10,
-                      runSpacing: 10,
-                      children: List.generate(7, (index) {
-                        return Container(
-                          width: MediaQuery.of(context).size.width / 2 - 30,
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              CircleAvatar(
-                                radius: 20,
-                                backgroundImage: AssetImage(AppImages.avatar),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                "10",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Colors.white,
+                    const SizedBox(height: 25),
+                    Container(
+                      height: 100,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 10, // Adjust the number of items as needed
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: 60,
+                                  height: 60,
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                        child: Image.asset(
+                                          AppImages.mainTShirt,
+                                          color: Colors.blue.shade900,
+                                        ),
+                                      ),
+                                      Positioned(
+                                        left: 0,
+                                        right: 0,
+                                        top: 0,
+                                        bottom: 0,
+                                        child: Image.asset(
+                                          AppImages.bodyBack,
+                                          color: Colors.black38,
+                                        ),
+                                      ),
+                                      Positioned.fill(
+                                        child: Center(
+                                          child: Text(
+                                            "${index + 1}",
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                "Atacante",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white70,
+                                Container(
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    color: Colors.black54,
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "nome",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                "Jogador",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }),
-                    ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    )
+
+                    // Row(
+                    //   children: [
+                    //     Text(
+                    //       "Suplentes",
+                    //       style: Theme.of(context).textTheme.titleLarge,
+                    //     ),
+                    //     const SizedBox(width: 5),
+                    //     Text(
+                    //       "[10]",
+                    //       style: Theme.of(context)
+                    //           .textTheme
+                    //           .bodyLarge!
+                    //           .copyWith(fontWeight: FontWeight.bold),
+                    //     )
+                    //   ],
+                    // ),
+                    // const SizedBox(height: 16),
+                    // Wrap(
+                    //   spacing: 10,
+                    //   runSpacing: 10,
+                    //   children: List.generate(7, (index) {
+                    //     return Container(
+                    //       width: MediaQuery.of(context).size.width / 2 - 30,
+                    //       padding: const EdgeInsets.all(10),
+                    //       decoration: BoxDecoration(
+                    //         color: Colors.blue,
+                    //         borderRadius: BorderRadius.circular(10),
+                    //       ),
+                    //       child: Column(
+                    //         mainAxisAlignment: MainAxisAlignment.center,
+                    //         crossAxisAlignment: CrossAxisAlignment.center,
+                    //         children: [
+                    //           CircleAvatar(
+                    //             radius: 20,
+                    //             backgroundImage: AssetImage(AppImages.avatar),
+                    //           ),
+                    //           const SizedBox(height: 8),
+                    //           Text(
+                    //             "10",
+                    //             style: TextStyle(
+                    //               fontWeight: FontWeight.bold,
+                    //               fontSize: 16,
+                    //               color: Colors.white,
+                    //             ),
+                    //           ),
+                    //           const SizedBox(height: 4),
+                    //           Text(
+                    //             "Atacante",
+                    //             style: TextStyle(
+                    //               fontSize: 14,
+                    //               color: Colors.white70,
+                    //             ),
+                    //           ),
+                    //           const SizedBox(height: 4),
+                    //           Text(
+                    //             "Jogador",
+                    //             style: TextStyle(
+                    //               fontSize: 14,
+                    //               color: Colors.white,
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     );
+                    //   }),
+                    // ),
                   ],
                 ),
               ),

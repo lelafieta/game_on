@@ -9,7 +9,7 @@ class AppTheme {
 
   static ThemeData get lightTheme => ThemeData(
         useMaterial3: true,
-        scaffoldBackgroundColor: Colors.white,
+        scaffoldBackgroundColor: Colors.transparent,
         primaryColor: AppColors.primary,
         fontFamily: AppStrings.fontFamily,
         cardColor: AppColors.white,

@@ -31,4 +31,7 @@ class AppImages {
   static const String typeEmpty = "assets/images/type-empty.png";
   static const String dourada = "assets/images/dourada.png";
   static const String campoReto = "assets/images/campo_reto.png";
+  static const String bg1 = "assets/images/bg1.jpg";
+  static const String bg2 = "assets/images/bg2.jpg";
+  static const String bg3 = "assets/images/bg3.jpg";
 }
