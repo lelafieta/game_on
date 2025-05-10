@@ -25,6 +25,7 @@ class _HomePageState extends State<HomePage> {
           break;
         case 1:
           final teamId = widget.arguments!["componentId"] as String;
+
           content = TeamDetailsPage(teamId: teamId);
           break;
         case 2:

@@ -34,4 +34,5 @@ class AppImages {
   static const String bg1 = "assets/images/bg1.jpg";
   static const String bg2 = "assets/images/bg2.jpg";
   static const String bg3 = "assets/images/bg3.jpg";
+  static const String soccerPlayer = "assets/images/soccer-player.png";
 }

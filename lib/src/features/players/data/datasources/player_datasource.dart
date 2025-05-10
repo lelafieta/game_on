@@ -51,6 +51,11 @@ class PlayerRemoteDataSource implements IPlayerRemoteDataSource {
     final response =
         await client.from('players').select().eq('team_id', teamId);
 
+    print((response as List)
+        .map((e) => PlayerModel.fromMap(e as Map<String, dynamic>))
+        .toList()
+        .length);
+
     return (response as List)
         .map((e) => PlayerModel.fromMap(e as Map<String, dynamic>))
         .toList();

@@ -398,7 +398,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                     return TabBarView(
                       children: [
                         _buildPlayerRealWidget(players),
-                        _buildPlayerImaginaryWidget(team),
+                        _buildPlayerImaginaryWidget(players),
                         _buildNewPlayerWidget(team),
                       ],
                     );
@@ -841,78 +841,86 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     );
   }
 
-  Widget _buildPlayerImaginaryWidget(TeamEntity team) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          ListView.builder(
-            itemCount: [].length,
-            shrinkWrap: true,
-            physics: const ClampingScrollPhysics(),
-            itemBuilder: (context, index) {
-              return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.09),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: ListTile(
-                  leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: Image.network(
-                      "https://fpfimagehandler.fpf.pt/FPFImageHandler.ashx?type=Person&id=3883014&op=t&w=325&h=378",
+  Widget _buildPlayerImaginaryWidget(List<PlayerEntity> players) {
+    return ListView.builder(
+      itemCount: players.length,
+      shrinkWrap: true,
+      physics: const ClampingScrollPhysics(),
+      itemBuilder: (context, index) {
+        final player = players[index];
+        if (player.type != 'real') {
+          return const SizedBox.shrink();
+        }
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.09),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: ListTile(
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: (player.avatarUrl == null)
+                  ? Image.asset(
+                      width: 40,
+                      height: 40,
+                      AppImages.soccerPlayer,
+                    )
+                  : CachedNetworkImage(
+                      imageUrl: player.avatarUrl!,
                       width: 40,
                       height: 40,
                       fit: BoxFit.cover,
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
+            ),
+            title: Text(
+              player.fullName!,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 0),
+              child: Row(
+                children: [
+                  Text(player.position ?? "Unknown"),
+                ],
+              ),
+            ),
+            trailing: RichText(
+              text: TextSpan(
+                children: [
+                  WidgetSpan(
+                    child: SvgPicture.asset(
+                      width: 20,
+                      AppIcons.footballJersey,
                     ),
                   ),
-                  title: const Text(
-                    'Cristiano Ronaldo',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                    ),
+                  TextSpan(
+                    text: " ${player.shirtNumber}",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontFamily: AppStrings.fontFamily),
                   ),
-                  subtitle: const Padding(
-                    padding: EdgeInsets.only(top: 0),
-                    child: Row(
-                      children: [
-                        Text("Atacante"),
-                      ],
-                    ),
-                  ),
-                  trailing: RichText(
-                    text: TextSpan(
-                      children: [
-                        WidgetSpan(
-                          child: SvgPicture.asset(
-                            width: 20,
-                            AppIcons.footballJersey,
-                          ),
-                        ),
-                        const TextSpan(
-                          text: " 20",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontFamily: AppStrings.fontFamily),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
+                ],
+              ),
+            ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -1782,6 +1790,9 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
       physics: const ClampingScrollPhysics(),
       itemBuilder: (context, index) {
         final player = players[index];
+        if (player.type != 'real') {
+          return const SizedBox.shrink();
+        }
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
@@ -1802,7 +1813,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                   ? Image.asset(
                       width: 40,
                       height: 40,
-                      AppImages.avatar,
+                      AppImages.soccerPlayer,
                     )
                   : CachedNetworkImage(
                       imageUrl: player.avatarUrl!,
