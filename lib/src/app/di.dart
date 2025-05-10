@@ -70,7 +70,7 @@ void _registerCubits() {
   sl.registerFactory(() => GetOneTeamCubit(getTeamByIdUseCase: sl()));
 
   //PLAYER
-  // sl.registerFactory(() => GetOneTeamCubit(getTeamByIdUseCase: sl()));
+  sl.registerFactory(() => GetOneTeamCubit(getTeamByIdUseCase: sl()));
 }
 
 void _registerRepositories() {

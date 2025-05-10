@@ -15,6 +15,7 @@ class PlayerEntity {
   final String? foot;
   final String? avatarUrl;
   final String? status;
+  final String? type;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final ProfileEntity? createdByProfile;
@@ -27,6 +28,7 @@ class PlayerEntity {
     this.nickname,
     this.shirtNumber,
     this.position,
+    this.type,
     this.nationality,
     this.birthDate,
     this.heightCm,

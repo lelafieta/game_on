@@ -10,6 +10,7 @@ class PlayerModel extends PlayerEntity {
     super.nickname,
     super.shirtNumber,
     super.position,
+    super.type, // Adicionado aqui
     super.nationality,
     super.birthDate,
     super.heightCm,
@@ -31,6 +32,7 @@ class PlayerModel extends PlayerEntity {
       nickname: map['nickname'] as String?,
       shirtNumber: map['shirt_number'] as int?,
       position: map['position'] as String?,
+      type: map['type'] as String?, // Adicionado aqui
       nationality: map['nationality'] as String?,
       birthDate: map['birth_date'] != null
           ? DateTime.tryParse(map['birth_date'])
@@ -61,6 +63,7 @@ class PlayerModel extends PlayerEntity {
       nickname: entity.nickname,
       shirtNumber: entity.shirtNumber,
       position: entity.position,
+      type: entity.type, // Adicionado aqui
       nationality: entity.nationality,
       birthDate: entity.birthDate,
       heightCm: entity.heightCm,
@@ -82,6 +85,7 @@ class PlayerModel extends PlayerEntity {
     String? nickname,
     int? shirtNumber,
     String? position,
+    String? type, // Adicionado aqui
     String? nationality,
     DateTime? birthDate,
     int? heightCm,
@@ -101,6 +105,7 @@ class PlayerModel extends PlayerEntity {
       nickname: nickname ?? this.nickname,
       shirtNumber: shirtNumber ?? this.shirtNumber,
       position: position ?? this.position,
+      type: type ?? this.type, // Adicionado aqui
       nationality: nationality ?? this.nationality,
       birthDate: birthDate ?? this.birthDate,
       heightCm: heightCm ?? this.heightCm,
@@ -123,6 +128,7 @@ class PlayerModel extends PlayerEntity {
       'nickname': nickname,
       'shirt_number': shirtNumber,
       'position': position,
+      'type': type, // Adicionado aqui
       'nationality': nationality,
       'birth_date': birthDate?.toIso8601String(),
       'height_cm': heightCm,
