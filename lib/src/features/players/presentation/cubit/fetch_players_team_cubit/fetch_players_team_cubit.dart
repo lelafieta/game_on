@@ -10,7 +10,7 @@ class FetchPlayersTeamCubit extends Cubit<FetchPlayersTeamState> {
   FetchPlayersTeamCubit({required this.getPlayersByTeamUseCase})
       : super(FetchPlayersTeamInitial());
 
-  Future<void> getPlayersByTeam(String teamId) async {
+  Future<void> fetchPlayersByTeam(String teamId) async {
     emit(FetchPlayersTeamLoading());
 
     final result = await getPlayersByTeamUseCase.call(teamId);

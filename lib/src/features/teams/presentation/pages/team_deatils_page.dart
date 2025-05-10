@@ -20,6 +20,7 @@ import '../../../../core/resources/app_icons.dart';
 import '../../../../core/utils/app_date_utils.dart';
 import '../../../home/presentantion/home_page.dart';
 import '../../../home/presentantion/old_home';
+import '../../../trophies/presentation/cubit/fetch_trophies_team_cubit/fetch_trophies_team_cubit.dart';
 import '../../domain/entities/team_entity.dart';
 
 class TeamDetailsPage extends StatefulWidget {
@@ -203,7 +204,8 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     super.initState();
     _tabController = TabController(length: 6, vsync: this);
     context.read<GetOneTeamCubit>().getOneTeam(widget.teamId);
-    context.read<FetchPlayersTeamCubit>().getPlayersByTeam(widget.teamId);
+    context.read<FetchPlayersTeamCubit>().fetchPlayersByTeam(widget.teamId);
+    context.read<FetchTrophiesTeamCubit>().fetchTrophiesByTeam(widget.teamId);
   }
 
   @override
@@ -331,7 +333,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
       onRefresh: () async {
         await context
             .read<FetchPlayersTeamCubit>()
-            .getPlayersByTeam(widget.teamId);
+            .fetchPlayersByTeam(widget.teamId);
       },
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -933,52 +935,65 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
   }
 
   Widget _buildTrophiesTeam() {
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: 10, // Replace with the actual number of trophies
-      itemBuilder: (context, index) {
-        return Container(
-          margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.09),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: ListTile(
-            leading: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '#${index + 1}',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primary,
-                  ),
+    return BlocBuilder<FetchTrophiesTeamCubit, FetchTrophiesTeamState>(
+      builder: (context, state) {
+        if (state is FetchTrophiesTeamLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is FetchTrophiesTeamFailure) {
+          return Center(child: Text(state.error));
+        } else if (state is FetchTrophiesTeamLoaded) {
+          final trophies = state.trophies;
+          return ListView.builder(
+            padding: const EdgeInsets.all(16),
+            itemCount: trophies.length,
+            itemBuilder: (context, index) {
+              final trophy = trophies[index];
+              return Container(
+                margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.09),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            title: Text(
-              'Troféu ${index + 1}',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            subtitle: Text(
-              'Temporada ${2023 - index} - Ano ${2023 - index}',
-              style: const TextStyle(color: Colors.grey),
-            ),
-            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {
-              // Handle trophy click
+                child: ListTile(
+                  leading: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '#${index + 1}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                  title: Text(
+                    trophy.name!,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  subtitle: Text(
+                    'Ano ${trophy.awardedAt}',
+                    style: const TextStyle(color: Colors.grey),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () {
+                    // Handle trophy click
+                  },
+                ),
+              );
             },
-          ),
-        );
+          );
+        }
+        return const SizedBox.shrink();
       },
     );
   }
