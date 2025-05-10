@@ -1,5 +1,6 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:game_on/src/features/players/presentation/cubit/fetch_players_team_cubit/fetch_players_team_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../core/cache/i_secure_storage_helper.dart';
@@ -70,7 +71,8 @@ void _registerCubits() {
   sl.registerFactory(() => GetOneTeamCubit(getTeamByIdUseCase: sl()));
 
   //PLAYER
-  sl.registerFactory(() => GetOneTeamCubit(getTeamByIdUseCase: sl()));
+  sl.registerFactory(
+      () => FetchPlayersTeamCubit(getPlayersByTeamUseCase: sl()));
 }
 
 void _registerRepositories() {

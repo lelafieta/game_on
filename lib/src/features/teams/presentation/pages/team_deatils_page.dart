@@ -9,6 +9,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:game_on/src/core/resources/app_images.dart';
 import 'package:game_on/src/core/strings/app_strings.dart';
+import 'package:game_on/src/features/players/domain/entities/player_entity.dart';
+import 'package:game_on/src/features/players/presentation/cubit/fetch_players_team_cubit/fetch_players_team_cubit.dart';
 import 'package:game_on/src/features/teams/presentation/cubit/get_one_team_cubit/get_one_team_cubit.dart';
 import 'package:game_on/src/features/teams/presentation/pages/build_equipament_page.dart';
 import 'package:get/get.dart';
@@ -201,6 +203,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     super.initState();
     _tabController = TabController(length: 6, vsync: this);
     context.read<GetOneTeamCubit>().getOneTeam(widget.teamId);
+    context.read<FetchPlayersTeamCubit>().getPlayersByTeam(widget.teamId);
   }
 
   @override
@@ -377,21 +380,31 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
               isScrollable: true,
               tabAlignment: TabAlignment.center,
               tabs: [
-                Tab(
-                  text: 'Jogadores Fictícios',
-                ),
                 Tab(text: 'Jogadores Reais'),
-                // Tab(text: 'Defesas'),
-                Tab(text: 'Novo jogador'),
+                Tab(text: 'Jogadores Fictícios'),
+                Tab(text: 'Defesas'),
+                // Tab(text: 'Novo jogador'),
               ],
             ),
             Expanded(
-              child: TabBarView(
-                children: [
-                  // _buildPlayerRealWidget(team),
-                  _buildPlayerImaginaryWidget(team),
-                  _buildNewPlayerWidget(team),
-                ],
+              child: BlocBuilder<FetchPlayersTeamCubit, FetchPlayersTeamState>(
+                builder: (context, state) {
+                  if (state is FetchPlayersTeamLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is FetchPlayersTeamFailure) {
+                    return Center(child: Text(state.error));
+                  } else if (state is FetchPlayersTeamLoaded) {
+                    final players = state.players;
+                    return TabBarView(
+                      children: [
+                        _buildPlayerRealWidget(players),
+                        _buildPlayerImaginaryWidget(team),
+                        _buildNewPlayerWidget(team),
+                      ],
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
               ),
             ),
           ],
@@ -1759,6 +1772,86 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
           // ),
         ],
       ),
+    );
+  }
+
+  Widget _buildPlayerRealWidget(List<PlayerEntity> players) {
+    return ListView.builder(
+      itemCount: players.length,
+      shrinkWrap: true,
+      physics: const ClampingScrollPhysics(),
+      itemBuilder: (context, index) {
+        final player = players[index];
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.09),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: ListTile(
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: (player.avatarUrl == null)
+                  ? Image.asset(
+                      width: 40,
+                      height: 40,
+                      AppImages.avatar,
+                    )
+                  : CachedNetworkImage(
+                      imageUrl: player.avatarUrl!,
+                      width: 40,
+                      height: 40,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
+            ),
+            title: Text(
+              player.fullName!,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 0),
+              child: Row(
+                children: [
+                  Text(player.position ?? "Unknown"),
+                ],
+              ),
+            ),
+            trailing: RichText(
+              text: TextSpan(
+                children: [
+                  WidgetSpan(
+                    child: SvgPicture.asset(
+                      width: 20,
+                      AppIcons.footballJersey,
+                    ),
+                  ),
+                  TextSpan(
+                    text: " ${player.shirtNumber}",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontFamily: AppStrings.fontFamily),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
