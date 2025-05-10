@@ -327,87 +327,95 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
   }
 
   Widget _buildPlyersTeam(TeamEntity team) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: DefaultTabController(
-        length: 3,
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.link),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text("Partilhar link"),
-                      ],
+    return RefreshIndicator(
+      onRefresh: () async {
+        await context
+            .read<FetchPlayersTeamCubit>()
+            .getPlayersByTeam(widget.teamId);
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: DefaultTabController(
+          length: 3,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.link),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text("Partilhar link"),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                InkWell(
-                  child: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(.1),
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        "?",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22,
-                          color: AppColors.primary,
+                  const SizedBox(width: 10),
+                  InkWell(
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withOpacity(.1),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          "?",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22,
+                            color: AppColors.primary,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const TabBar(
-              indicatorColor: AppColors.primary,
-              labelColor: AppColors.primary,
-              unselectedLabelColor: Colors.grey,
-              isScrollable: true,
-              tabAlignment: TabAlignment.center,
-              tabs: [
-                Tab(text: 'Jogadores Reais'),
-                Tab(text: 'Jogadores Fictícios'),
-                Tab(text: 'Defesas'),
-                // Tab(text: 'Novo jogador'),
-              ],
-            ),
-            Expanded(
-              child: BlocBuilder<FetchPlayersTeamCubit, FetchPlayersTeamState>(
-                builder: (context, state) {
-                  if (state is FetchPlayersTeamLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state is FetchPlayersTeamFailure) {
-                    return Center(child: Text(state.error));
-                  } else if (state is FetchPlayersTeamLoaded) {
-                    final players = state.players;
-                    return TabBarView(
-                      children: [
-                        _buildPlayerRealWidget(players),
-                        _buildPlayerImaginaryWidget(players),
-                        _buildNewPlayerWidget(team),
-                      ],
-                    );
-                  }
-                  return const SizedBox.shrink();
-                },
+                ],
               ),
-            ),
-          ],
+              const TabBar(
+                indicatorColor: AppColors.primary,
+                labelColor: AppColors.primary,
+                unselectedLabelColor: Colors.grey,
+                isScrollable: true,
+                tabAlignment: TabAlignment.center,
+                tabs: [
+                  Tab(text: 'Jogadores Reais'),
+                  Tab(text: 'Jogadores Fictícios'),
+                  Tab(text: 'Defesas'),
+                  // Tab(text: 'Novo jogador'),
+                ],
+              ),
+              Expanded(
+                child:
+                    BlocBuilder<FetchPlayersTeamCubit, FetchPlayersTeamState>(
+                  builder: (context, state) {
+                    if (state is FetchPlayersTeamLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is FetchPlayersTeamFailure) {
+                      return Center(child: Text(state.error));
+                    } else if (state is FetchPlayersTeamLoaded) {
+                      final players = state.players;
+                      return TabBarView(
+                        children: [
+                          _buildPlayerRealWidget(players),
+                          _buildPlayerImaginaryWidget(players),
+                          _buildNewPlayerWidget(team),
+                        ],
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -848,11 +856,11 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
       physics: const ClampingScrollPhysics(),
       itemBuilder: (context, index) {
         final player = players[index];
-        if (player.type != 'real') {
+        if (player.type == 'real') {
           return const SizedBox.shrink();
         }
         return Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
@@ -925,8 +933,53 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
   }
 
   Widget _buildTrophiesTeam() {
-    return Center(
-      child: Text("Troféos"),
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: 10, // Replace with the actual number of trophies
+      itemBuilder: (context, index) {
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.09),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: ListTile(
+            leading: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '#${index + 1}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primary,
+                  ),
+                ),
+              ],
+            ),
+            title: Text(
+              'Troféu ${index + 1}',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            subtitle: Text(
+              'Temporada ${2023 - index} - Ano ${2023 - index}',
+              style: const TextStyle(color: Colors.grey),
+            ),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: () {
+              // Handle trophy click
+            },
+          ),
+        );
+      },
     );
   }
 
@@ -1794,7 +1847,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
           return const SizedBox.shrink();
         }
         return Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
