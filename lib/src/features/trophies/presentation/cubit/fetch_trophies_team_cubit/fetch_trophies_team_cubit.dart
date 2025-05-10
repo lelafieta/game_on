@@ -8,7 +8,7 @@ part 'fetch_trophies_team_state.dart';
 
 class FetchTrophiesTeamCubit extends Cubit<FetchTrophiesTeamState> {
   final GetTrophiesByTeamUseCase getTrophiesByTeamUseCase;
-  FetchTrophiesTeamCubit(this.getTrophiesByTeamUseCase)
+  FetchTrophiesTeamCubit({required this.getTrophiesByTeamUseCase})
       : super(FetchTrophiesTeamInitial());
 
   Future<void> fetchTrophiesByTeam(String teamId) async {

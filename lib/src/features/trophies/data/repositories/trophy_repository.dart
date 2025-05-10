@@ -6,14 +6,14 @@ import '../datasources/i_trophy_datasource.dart';
 import '../models/trophy_model.dart';
 
 class TrophyRepository extends ITrophyRepository {
-  final IRemoteTrophyDataSource remoteTrophyDataSource;
+  final ITrophyRemoteDataSource trophyDataSource;
 
-  TrophyRepository({required this.remoteTrophyDataSource});
+  TrophyRepository({required this.trophyDataSource});
 
   @override
   Future<Either<Failure, Unit>> createTrophy(TrophyEntity trophy) async {
     try {
-      await remoteTrophyDataSource.createTrophy(TrophyModel.fromEntity(trophy));
+      await trophyDataSource.createTrophy(TrophyModel.fromEntity(trophy));
       return const Right(unit);
     } catch (e) {
       return Left(Failure(message: e.toString()));
@@ -23,7 +23,7 @@ class TrophyRepository extends ITrophyRepository {
   @override
   Future<Either<Failure, Unit>> deleteTrophy(String id) async {
     try {
-      await remoteTrophyDataSource.deleteTrophy(id);
+      await trophyDataSource.deleteTrophy(id);
       return const Right(unit);
     } catch (e) {
       return Left(Failure(message: e.toString()));
@@ -34,8 +34,8 @@ class TrophyRepository extends ITrophyRepository {
   Future<Either<Failure, List<TrophyEntity>>> getTrophies(
       {String? competitionId}) async {
     try {
-      final trophies = await remoteTrophyDataSource.getTrophies(
-          competitionId: competitionId);
+      final trophies =
+          await trophyDataSource.getTrophies(competitionId: competitionId);
       return Right(trophies);
     } catch (e) {
       return Left(Failure(message: e.toString()));
@@ -46,7 +46,7 @@ class TrophyRepository extends ITrophyRepository {
   Future<Either<Failure, List<TrophyEntity>>> getTrophiesByTeam(
       String teamId) async {
     try {
-      final trophies = await remoteTrophyDataSource.getTrophiesByTeam(teamId);
+      final trophies = await trophyDataSource.getTrophiesByTeam(teamId);
       return Right(trophies);
     } catch (e) {
       return Left(Failure(message: e.toString()));
@@ -56,7 +56,7 @@ class TrophyRepository extends ITrophyRepository {
   @override
   Future<Either<Failure, TrophyEntity?>> getTrophyById(String id) async {
     try {
-      final trophy = await remoteTrophyDataSource.getTrophyById(id);
+      final trophy = await trophyDataSource.getTrophyById(id);
       return Right(trophy);
     } catch (e) {
       return Left(Failure(message: e.toString()));
@@ -66,7 +66,7 @@ class TrophyRepository extends ITrophyRepository {
   @override
   Future<Either<Failure, Unit>> updateTrophy(TrophyEntity trophy) async {
     try {
-      await remoteTrophyDataSource.updateTrophy(TrophyModel.fromEntity(trophy));
+      await trophyDataSource.updateTrophy(TrophyModel.fromEntity(trophy));
       return const Right(unit);
     } catch (e) {
       return Left(Failure(message: e.toString()));

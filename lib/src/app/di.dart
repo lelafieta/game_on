@@ -1,6 +1,10 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:game_on/src/features/players/presentation/cubit/fetch_players_team_cubit/fetch_players_team_cubit.dart';
+import 'package:game_on/src/features/trophies/domain/usecases/create_trophy_usecase.dart';
+import 'package:game_on/src/features/trophies/domain/usecases/get_trophies_by_team_usecase.dart';
+import 'package:game_on/src/features/trophies/domain/usecases/get_trophies_usecase.dart';
+import 'package:game_on/src/features/trophies/domain/usecases/get_trophy_by_id_usecase.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../core/cache/i_secure_storage_helper.dart';
@@ -35,6 +39,13 @@ import '../features/teams/domain/usecases/update_team_usecase.dart';
 import '../features/teams/presentation/cubit/get_one_team_cubit/get_one_team_cubit.dart';
 import '../features/teams/presentation/cubit/team_action_cubit/team_action_cubit.dart';
 import '../features/teams/presentation/cubit/team_fetch_cubit/team_fetch_cubit.dart';
+import '../features/trophies/data/datasources/i_trophy_datasource.dart';
+import '../features/trophies/data/datasources/trophy_datasource.dart';
+import '../features/trophies/data/repositories/trophy_repository.dart';
+import '../features/trophies/domain/repositories/i_trophy_repository.dart';
+import '../features/trophies/domain/usecases/delete_trophy_usecase.dart';
+import '../features/trophies/domain/usecases/update_tropy_usecase.dart';
+import '../features/trophies/presentation/cubit/fetch_trophies_team_cubit/fetch_trophies_team_cubit.dart';
 // import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 
 GetIt sl = GetIt.instance;
@@ -73,6 +84,11 @@ void _registerCubits() {
   //PLAYER
   sl.registerFactory(
       () => FetchPlayersTeamCubit(getPlayersByTeamUseCase: sl()));
+
+  // TROPHY
+
+  sl.registerFactory(
+      () => FetchTrophiesTeamCubit(getTrophiesByTeamUseCase: sl()));
 }
 
 void _registerRepositories() {
@@ -87,6 +103,10 @@ void _registerRepositories() {
   //PLAYER
   sl.registerLazySingleton<IPlayerRepository>(
       () => PlayerRepository(playerDataSource: sl()));
+
+  // TROPHY
+  sl.registerLazySingleton<ITrophyRepository>(
+      () => TrophyRepository(trophyDataSource: sl()));
 }
 
 void _registerDatasources() {
@@ -101,6 +121,10 @@ void _registerDatasources() {
   // PLAYER
   sl.registerLazySingleton<IPlayerRemoteDataSource>(
       () => PlayerRemoteDataSource(client: sl()));
+
+  // TROPHY
+  sl.registerLazySingleton<ITrophyRemoteDataSource>(
+      () => TrophyRemoteDataSource(client: sl()));
 }
 
 void _registerUseCases() {
@@ -122,10 +146,18 @@ void _registerUseCases() {
   sl.registerLazySingleton(() => GetPlayerByIdUseCase(playerRepository: sl()));
   sl.registerLazySingleton(
       () => GetPlayersByTeamUseCase(playerRepository: sl()));
-
   sl.registerLazySingleton(() => UpdatePlayerUseCase(playerRepository: sl()));
   sl.registerLazySingleton(
       () => GetTeamTacticalFormationUseCase(teamRepository: sl()));
+
+  // TROPHY
+  sl.registerLazySingleton(() => CreateTrophyUseCase(trophyRepository: sl()));
+  sl.registerLazySingleton(() => DeleteTrophyUseCase(trophyRepository: sl()));
+  sl.registerLazySingleton(
+      () => GetTrophiesByTeamUseCase(trophyRepository: sl()));
+  sl.registerLazySingleton(() => GetTrophiesUseCase(trophyRepository: sl()));
+  sl.registerLazySingleton(() => GetTrophyByIdUseCase(trophyRepository: sl()));
+  sl.registerLazySingleton(() => UpdateTrophyUseCase(trophyRepository: sl()));
 }
 
 void _registerExternal() {

@@ -3,10 +3,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/trophy_model.dart';
 import 'i_trophy_datasource.dart';
 
-class RemoteTrophyDataSource implements IRemoteTrophyDataSource {
+class TrophyRemoteDataSource implements ITrophyRemoteDataSource {
   final SupabaseClient client;
 
-  RemoteTrophyDataSource(this.client);
+  TrophyRemoteDataSource({required this.client});
 
   @override
   Future<List<TrophyModel>> getTrophies({String? competitionId}) async {

@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import '../models/trophy_model.dart';
 
-abstract class IRemoteTrophyDataSource {
+abstract class ITrophyRemoteDataSource {
   Future<List<TrophyModel>> getTrophies({String? competitionId});
   Future<TrophyModel?> getTrophyById(String id);
   Future<Unit> createTrophy(TrophyModel trophy);
