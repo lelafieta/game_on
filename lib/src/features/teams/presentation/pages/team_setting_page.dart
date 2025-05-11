@@ -172,7 +172,6 @@ class _TeamSettingPageState extends State<TeamSettingPage> {
                         Expanded(
                           child: InkWell(
                             onTap: () {
-                              print("object");
                               Get.to(BuildEquipamentPage(
                                 teamData: {},
                               ));

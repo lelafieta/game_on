@@ -49,9 +49,9 @@ class TeamModel extends TeamEntity {
           ? DateTime.tryParse(json['created_at'])
           : null,
       equipmentType: json['equipment_type'] as String?,
-      equipmentMainColor: json['equipment_main_color'] as String?,
-      equipmentTypeColor: json['equipment_type_color'] as String?,
-      equipmentNumberColor: json['equipment_number_color'] as String?,
+      equipmentMainColor: json['equipament_main_color'] as String?,
+      equipmentTypeColor: json['equipament_type_color'] as String?,
+      equipmentNumberColor: json['equipament_number_color'] as String?,
       abbreviation: json['abbreviation'] as String?,
       formation: json['formation'] as String?,
       gameType: json['game_type'] as String?,

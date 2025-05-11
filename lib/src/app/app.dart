@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import '../config/routes/app_pages.dart';
 import '../config/themes/app_theme.dart';
 import '../features/auth/presentation/cubit/auth_cubit.dart';
+import '../features/teams/presentation/cubit/get_team_equipament_cubit/get_team_equipament_cubit.dart';
 import '../features/teams/presentation/cubit/team_action_cubit/team_action_cubit.dart';
 import '../features/teams/presentation/cubit/team_fetch_cubit/team_fetch_cubit.dart';
 import '../features/trophies/presentation/cubit/fetch_trophies_team_cubit/fetch_trophies_team_cubit.dart';
@@ -27,6 +28,7 @@ class GameOnApp extends StatelessWidget {
         BlocProvider(create: (context) => di.sl<GetOneTeamCubit>()),
         BlocProvider(create: (context) => di.sl<FetchPlayersTeamCubit>()),
         BlocProvider(create: (context) => di.sl<FetchTrophiesTeamCubit>()),
+        BlocProvider(create: (context) => di.sl<GetTeamEquipamentCubit>()),
       ],
       child: GetMaterialApp(
         title: 'GameOn',

@@ -12,12 +12,14 @@ import 'package:game_on/src/core/strings/app_strings.dart';
 import 'package:game_on/src/features/players/domain/entities/player_entity.dart';
 import 'package:game_on/src/features/players/presentation/cubit/fetch_players_team_cubit/fetch_players_team_cubit.dart';
 import 'package:game_on/src/features/teams/presentation/cubit/get_one_team_cubit/get_one_team_cubit.dart';
+import 'package:game_on/src/features/teams/presentation/cubit/get_team_equipament_cubit/get_team_equipament_cubit.dart';
 import 'package:game_on/src/features/teams/presentation/pages/build_equipament_page.dart';
 import 'package:get/get.dart';
 
 import '../../../../config/themes/app_colors.dart';
 import '../../../../core/resources/app_icons.dart';
 import '../../../../core/utils/app_date_utils.dart';
+import '../../../../core/utils/equipment_widget_utils.dart';
 import '../../../home/presentantion/home_page.dart';
 import '../../../home/presentantion/old_home';
 import '../../../trophies/presentation/cubit/fetch_trophies_team_cubit/fetch_trophies_team_cubit.dart';
@@ -40,10 +42,10 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
   final ValueNotifier<Color> selectedStyleShirtColor =
       ValueNotifier<Color>(Colors.blue);
 
-  final Map<String, String> typeToImage = {
-    'treeBarras': AppImages.treeBarras,
-    'leftOneLongVerticalBar': AppImages.leftOneLongVerticalBar,
-  };
+  // final Map<String, String> typeToImage = {
+  //   'treeBarras': AppImages.treeBarras,
+  //   'leftOneLongVerticalBar': AppImages.leftOneLongVerticalBar,
+  // };
 
   final List<Color> colors = [
     Colors.yellow,
@@ -74,7 +76,8 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     return selectedFormation.split('-').map(int.parse).toList();
   }
 
-  List<Widget> _buildFormationWithLimit(List<int> formationLines) {
+  List<Widget> _buildFormationWithLimit(
+      List<int> formationLines, TeamEntity team) {
     int totalPlayers = int.tryParse(selectedCount.split('x').first) ?? 11;
     int playersUsed = 0;
     List<Widget> lines = [];
@@ -85,7 +88,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
       int remaining = totalPlayers - playersUsed;
       int playersInLine = count <= remaining ? count : remaining;
 
-      lines.add(_buildLine(playersInLine));
+      lines.add(_buildLine(playersInLine, team));
       playersUsed += playersInLine;
     }
 
@@ -114,7 +117,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     );
   }
 
-  Widget _buildLine(int playerCount) {
+  Widget _buildLine(int playerCount, TeamEntity team) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 0),
       child: Row(
@@ -123,42 +126,9 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
           return Column(
             children: [
               Container(
-                width: 40,
-                height: 40,
-                // color: Colors.red,
-                child: Stack(
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      height: double.infinity,
-                      child: Image.asset(
-                        AppImages.mainTShirt,
-                        color: Colors.blue.shade900,
-                      ),
-                    ),
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      top: 0,
-                      bottom: 0,
-                      child: Image.asset(
-                        AppImages.bodyBack,
-                        color: Colors.black38,
-                      ),
-                    ),
-                    Positioned.fill(
-                      child: Center(
-                        child: Text(
-                          "${index + 1}",
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+                width: 50,
+                height: 50,
+                child: EquipmentWidgetUtils.equipamentBackComponent(team),
               ),
               Container(
                 width: 50,
@@ -199,6 +169,14 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
   String formationSelected = "4-4-2";
   int selectedTabIndex = 0;
 
+  Color parseColorFromString(String colorString) {
+    // Remove a parte "Color(" e ")"
+    final hexString = colorString.replaceAll(RegExp(r'[^0-9a-fA-F]'), '');
+
+    // Converte a string hexadecimal para inteiro
+    return Color(int.parse('0xff$hexString'));
+  }
+
   @override
   void initState() {
     super.initState();
@@ -206,6 +184,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     context.read<GetOneTeamCubit>().getOneTeam(widget.teamId);
     context.read<FetchPlayersTeamCubit>().fetchPlayersByTeam(widget.teamId);
     context.read<FetchTrophiesTeamCubit>().fetchTrophiesByTeam(widget.teamId);
+    context.read<GetTeamEquipamentCubit>().getTeamEquipament(widget.teamId);
   }
 
   @override
@@ -309,7 +288,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                     children: [
                       _buildContantTeam(team!),
                       _buildMatchesTeam(team),
-                      _buildPlantelTeam(),
+                      _buildPlantelTeam(team),
                       // _buildSettings(team),
                       _buildTrophiesTeam(),
                       // _buildTeamsList(),
@@ -437,7 +416,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                   Image.network(
                     backgroundUrl,
                     width: double.infinity,
-                    height: 180,
+                    height: 150,
                     fit: BoxFit.cover,
                   ),
                   Positioned(
@@ -563,8 +542,78 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
           ListView(
             padding: const EdgeInsets.all(16),
             shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
+            physics: const ClampingScrollPhysics(),
             children: [
+              BlocBuilder<GetTeamEquipamentCubit, GetTeamEquipamentState>(
+                builder: (context, state) {
+                  if (state is GetTeamEquipamentLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is GetTeamEquipamentFailure) {
+                    return Center(child: Text(state.error));
+                  } else if (state is GetTeamEquipamentLoaded) {
+                    final team = state.team;
+                    return Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 20,
+                        horizontal: 16,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              // Get.to(BuildEquipamentPage(
+                              //   teamData: equipament,
+                              // ));
+                            },
+                            child: Container(
+                              height: 150,
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                                border: Border.all(
+                                  width: 1,
+                                  color: Colors.grey.shade400,
+                                ),
+                              ),
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          child: EquipmentWidgetUtils
+                                              .equipamentFrontComponent(team),
+                                        ),
+                                        Expanded(
+                                          child: EquipmentWidgetUtils
+                                              .equipamentBackComponent(team),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
+
               ListTile(
                 leading: SvgPicture.asset(
                   AppIcons.userColor,
@@ -607,87 +656,87 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
-              RichText(
-                text: TextSpan(
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  children: [
-                    TextSpan(
-                      text: 'Trofeos',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                  ],
-                ),
-              ),
+              // RichText(
+              //   text: TextSpan(
+              //     style: Theme.of(context).textTheme.bodyMedium,
+              //     children: [
+              //       TextSpan(
+              //         text: 'Trofeos',
+              //         style: Theme.of(context).textTheme.titleLarge,
+              //       ),
+              //     ],
+              //   ),
+              // ),
               const SizedBox(height: 8),
-              Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(.1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              AppIcons.medalChampionAward3,
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              "10",
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              AppIcons.medalChampionAward1,
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              "1",
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              AppIcons.medalChampionAward2,
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              "2",
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                // child: ListTile(
-                //   leading: const Icon(Icons.emoji_events, color: Colors.amber),
-                //   title: const Text('1000000 \$ - Valor do grande prêmio'),
-                // ),
-              ),
+              // Container(
+              //   padding: const EdgeInsets.all(10),
+              //   decoration: BoxDecoration(
+              //     color: AppColors.primary.withOpacity(.1),
+              //     borderRadius: BorderRadius.circular(10),
+              //   ),
+              //   child: Row(
+              //     children: [
+              //       Expanded(
+              //         child: Container(
+              //           child: Column(
+              //             crossAxisAlignment: CrossAxisAlignment.center,
+              //             mainAxisAlignment: MainAxisAlignment.center,
+              //             children: [
+              //               SvgPicture.asset(
+              //                 AppIcons.medalChampionAward3,
+              //               ),
+              //               const SizedBox(height: 5),
+              //               Text(
+              //                 "10",
+              //                 style: Theme.of(context).textTheme.titleMedium,
+              //               ),
+              //             ],
+              //           ),
+              //         ),
+              //       ),
+              //       Expanded(
+              //         child: Container(
+              //           child: Column(
+              //             crossAxisAlignment: CrossAxisAlignment.center,
+              //             mainAxisAlignment: MainAxisAlignment.center,
+              //             children: [
+              //               SvgPicture.asset(
+              //                 AppIcons.medalChampionAward1,
+              //               ),
+              //               const SizedBox(height: 5),
+              //               Text(
+              //                 "1",
+              //                 style: Theme.of(context).textTheme.titleMedium,
+              //               ),
+              //             ],
+              //           ),
+              //         ),
+              //       ),
+              //       Expanded(
+              //         child: Container(
+              //           child: Column(
+              //             crossAxisAlignment: CrossAxisAlignment.center,
+              //             mainAxisAlignment: MainAxisAlignment.center,
+              //             children: [
+              //               SvgPicture.asset(
+              //                 AppIcons.medalChampionAward2,
+              //               ),
+              //               const SizedBox(height: 5),
+              //               Text(
+              //                 "2",
+              //                 style: Theme.of(context).textTheme.titleMedium,
+              //               ),
+              //             ],
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              //   // child: ListTile(
+              //   //   leading: const Icon(Icons.emoji_events, color: Colors.amber),
+              //   //   title: const Text('1000000 \$ - Valor do grande prêmio'),
+              //   // ),
+              // ),
               const SizedBox(height: 16),
               ListTile(
                 leading: SvgPicture.asset(
@@ -1576,7 +1625,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     );
   }
 
-  Widget _buildPlantelTeam() {
+  Widget _buildPlantelTeam(TeamEntity team) {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Column(
@@ -1677,7 +1726,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: _buildFormationWithLimit(
-                              fieldFormation.reversed.toList()),
+                              fieldFormation.reversed.toList(), team),
                         ),
                       ),
                     ),
@@ -1693,43 +1742,49 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                                 const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Column(
                               children: [
+                                // Container(
+                                //   width: 60,
+                                //   height: 60,
+                                //   child: Stack(
+                                //     children: [
+                                //       Container(
+                                //         width: double.infinity,
+                                //         height: double.infinity,
+                                //         child: Image.asset(
+                                //           AppImages.mainTShirt,
+                                //           color: Colors.blue.shade900,
+                                //         ),
+                                //       ),
+                                //       Positioned(
+                                //         left: 0,
+                                //         right: 0,
+                                //         top: 0,
+                                //         bottom: 0,
+                                //         child: Image.asset(
+                                //           AppImages.bodyBack,
+                                //           color: Colors.black38,
+                                //         ),
+                                //       ),
+                                //       Positioned.fill(
+                                //         child: Center(
+                                //           child: Text(
+                                //             "${index + 1}",
+                                //             style: const TextStyle(
+                                //               color: Colors.white,
+                                //               fontWeight: FontWeight.bold,
+                                //               fontSize: 18,
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       )
+                                //     ],
+                                //   ),
+                                // ),
                                 Container(
-                                  width: 60,
-                                  height: 60,
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                        child: Image.asset(
-                                          AppImages.mainTShirt,
-                                          color: Colors.blue.shade900,
-                                        ),
-                                      ),
-                                      Positioned(
-                                        left: 0,
-                                        right: 0,
-                                        top: 0,
-                                        bottom: 0,
-                                        child: Image.asset(
-                                          AppImages.bodyBack,
-                                          color: Colors.black38,
-                                        ),
-                                      ),
-                                      Positioned.fill(
-                                        child: Center(
-                                          child: Text(
-                                            "${index + 1}",
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                  width: 80,
+                                  height: 80,
+                                  child: EquipmentWidgetUtils
+                                      .equipamentBackComponent(team),
                                 ),
                                 Container(
                                   width: 50,
