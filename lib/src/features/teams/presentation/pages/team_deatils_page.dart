@@ -1738,7 +1738,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                             Container(
                               width: 50,
                               height: 50,
-                              color: Colors.red,
+                              // color: Colors.red,
                               child:
                                   EquipmentWidgetUtils.equipamentBackComponent(
                                       team),
@@ -1906,7 +1906,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                     ),
             ),
             title: Text(
-              player.fullName!,
+              player.nickname!,
               style: const TextStyle(
                 fontWeight: FontWeight.w600,
               ),
