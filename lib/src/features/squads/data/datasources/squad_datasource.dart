@@ -1,7 +1,4 @@
-import 'package:dartz/dartz.dart';
-
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import '../models/squad_model.dart';
 import 'i_squad_datasource.dart';
 
@@ -11,9 +8,9 @@ class SquadRemoteDataSource extends ISquadRemoteDataSource {
   SquadRemoteDataSource({required this.client});
 
   @override
-  Future<Unit> createSquad(SquadModel squad) async {
+  Future<SquadModel> createSquad(SquadModel squad) async {
     await client.from('squads').insert(squad.toMap());
-    return unit;
+    return squad;
   }
 
   @override

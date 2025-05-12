@@ -22,6 +22,18 @@ class SquadModel extends SquadEntity {
     );
   }
 
+  factory SquadModel.fromEntity(SquadEntity entity) {
+    return SquadModel(
+      id: entity.id,
+      teamId: entity.teamId,
+      size: entity.size,
+      formation: entity.formation,
+      players: entity.players
+          ?.map((player) => SquadPlayerModel.fromEntity(player))
+          .toList(),
+    );
+  }
+
   Map<String, dynamic> toMap() => {
         'id': id,
         'team_id': teamId,

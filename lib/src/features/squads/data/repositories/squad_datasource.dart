@@ -12,10 +12,10 @@ class SquadRepository implements ISquadRepository {
   SquadRepository({required this.squadDataSource});
 
   @override
-  Future<Either<Failure, Unit>> createSquad(SquadEntity squad) async {
+  Future<Either<Failure, SquadEntity>> createSquad(SquadEntity squad) async {
     try {
       await squadDataSource.createSquad(SquadModel.fromEntity(squad));
-      return const Right(unit);
+      return Right(squad);
     } catch (e) {
       return Left(Failure(message: e.toString()));
     }

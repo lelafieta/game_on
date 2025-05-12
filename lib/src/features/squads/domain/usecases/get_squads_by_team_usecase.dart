@@ -5,11 +5,10 @@ import '../../../../core/usecases/base_usecases.dart';
 import '../entities/squad_entity.dart';
 import '../repositories/squad_repository.dart';
 
-class GetSquadsByTeamSquadUseCase
-    extends BaseUseCases<List<SquadEntity>, String> {
+class GetSquadsByTeamUseCase extends BaseUseCases<List<SquadEntity>, String> {
   final ISquadRepository squadRepository;
 
-  GetSquadsByTeamSquadUseCase({required this.squadRepository});
+  GetSquadsByTeamUseCase({required this.squadRepository});
 
   @override
   Future<Either<Failure, List<SquadEntity>>> call(String params) {
