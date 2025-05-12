@@ -263,10 +263,10 @@ class _GameOnPageState extends State<GameOnPage> {
     // );
 
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         image: DecorationImage(
           image: AssetImage(AppImages.bg2),
-          opacity: .5,
+          opacity: .2,
           fit: BoxFit.cover,
         ),
       ),
