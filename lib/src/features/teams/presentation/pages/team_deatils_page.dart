@@ -1721,92 +1721,48 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                           ),
                         ),
                       ),
-                      child: Container(
-                        // padding: const EdgeInsets.only(bottom: 55),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: _buildFormationWithLimit(
-                              fieldFormation.reversed.toList(), team),
-                        ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: _buildFormationWithLimit(
+                            fieldFormation.reversed.toList(), team),
                       ),
                     ),
                     const SizedBox(height: 25),
-                    Container(
-                      height: 100,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 10, // Adjust the number of items as needed
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Column(
-                              children: [
-                                // Container(
-                                //   width: 60,
-                                //   height: 60,
-                                //   child: Stack(
-                                //     children: [
-                                //       Container(
-                                //         width: double.infinity,
-                                //         height: double.infinity,
-                                //         child: Image.asset(
-                                //           AppImages.mainTShirt,
-                                //           color: Colors.blue.shade900,
-                                //         ),
-                                //       ),
-                                //       Positioned(
-                                //         left: 0,
-                                //         right: 0,
-                                //         top: 0,
-                                //         bottom: 0,
-                                //         child: Image.asset(
-                                //           AppImages.bodyBack,
-                                //           color: Colors.black38,
-                                //         ),
-                                //       ),
-                                //       Positioned.fill(
-                                //         child: Center(
-                                //           child: Text(
-                                //             "${index + 1}",
-                                //             style: const TextStyle(
-                                //               color: Colors.white,
-                                //               fontWeight: FontWeight.bold,
-                                //               fontSize: 18,
-                                //             ),
-                                //           ),
-                                //         ),
-                                //       )
-                                //     ],
-                                //   ),
-                                // ),
-                                Container(
-                                  width: 80,
-                                  height: 80,
-                                  child: EquipmentWidgetUtils
-                                      .equipamentBackComponent(team),
-                                ),
-                                Container(
-                                  width: 50,
-                                  decoration: BoxDecoration(
-                                    color: Colors.black54,
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "nome",
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                    Wrap(
+                      spacing: 5,
+                      runSpacing: 5,
+                      children: List.generate(10, (index) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 50,
+                              height: 50,
+                              color: Colors.red,
+                              child:
+                                  EquipmentWidgetUtils.equipamentBackComponent(
+                                      team),
                             ),
-                          );
-                        },
-                      ),
+                            Container(
+                              width: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.black54,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "nome d",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.white,
+                                      fontSize: 12),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }),
                     )
 
                     // Row(
