@@ -21,6 +21,17 @@ class SquadPlayerModel extends SquadPlayerEntity {
     );
   }
 
+  factory SquadPlayerModel.fromEntity(SquadPlayerEntity entity) {
+    return SquadPlayerModel(
+      id: entity.id,
+      squadId: entity.squadId,
+      playerId: entity.playerId,
+      tacticalPosition: entity.tacticalPosition,
+      jerseyNumber: entity.jerseyNumber,
+      isStarter: entity.isStarter,
+    );
+  }
+
   Map<String, dynamic> toMap() => {
         'id': id,
         'squad_id': squadId,
