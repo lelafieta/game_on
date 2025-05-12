@@ -8,10 +8,10 @@ class SquadEntity {
   final List<SquadPlayerEntity>? players;
 
   SquadEntity({
-    required this.id,
-    required this.teamId,
-    required this.size,
-    required this.formation,
-    required this.players,
+    this.id,
+    this.teamId,
+    this.size,
+    this.formation,
+    this.players,
   });
 }
