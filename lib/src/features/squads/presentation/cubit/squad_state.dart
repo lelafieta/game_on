@@ -12,12 +12,12 @@ final class SquadInitial extends SquadState {}
 final class SquadLoading extends SquadState {}
 
 final class SquadLoaded extends SquadState {
-  final SquadEntity squad;
+  final SquadEntity? squad;
 
-  const SquadLoaded({required this.squad});
+  const SquadLoaded({this.squad});
 
-  @override
-  List<Object> get props => [squad];
+  // @override
+  // List<Object> get props => [squad!];
 }
 
 final class SquadFailure extends SquadState {

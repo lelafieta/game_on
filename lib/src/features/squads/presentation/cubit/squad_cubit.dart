@@ -27,17 +27,26 @@ class SquadCubit extends Cubit<SquadState> {
         (squad) => SquadLoaded(squad: squad));
   }
 
-  Future<void> fetchSquadsByTeam(String teamId) async {}
+  Future<void> fetchSquadsByTeam(String teamId) async {
+    // emit(SquadLoading());
+
+    // final result = await getSquadsByTeamUseCase.call(teamId);
+
+    // result.fold((failure) => emit(SquadFailure(error: failure.message)),
+    //     (squad) => SquadLoaded(squad: squad));
+  }
 
   Future<void> getSquadByGameTypeFormation(
-      String gameType, String formation) async {
+      String gameType, String formation, String teamId) async {
     emit(SquadLoading());
 
     final result = await getSquadByGameTypeFormationUseCase.call(
         GetSquadByGameTypeFormationParams(
-            formation: formation, gameType: gameType));
+            formation: formation, gameType: gameType, teamId: teamId));
 
-    result.fold((failure) => emit(SquadFailure(error: failure.message)),
-        (squad) => SquadLoaded(squad: squad!));
+    result.fold(
+      (failure) => emit(SquadFailure(error: failure.message)),
+      (squad) => emit(SquadLoaded(squad: squad)),
+    );
   }
 }

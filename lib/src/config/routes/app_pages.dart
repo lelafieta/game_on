@@ -12,6 +12,7 @@ import 'package:game_on/src/features/organizers/presentation/pages/organizer_pag
 import 'package:game_on/src/features/splash&onboarding/presentation/pages/splash_page.dart';
 import 'package:game_on/src/features/teams/presentation/pages/list_my_teams.dart';
 import '../../features/organizers/presentation/pages/organizer_home_page.dart';
+import '../../features/teams/domain/entities/team_entity.dart';
 import '../../features/teams/presentation/pages/create_team_page.dart';
 import '../../features/teams/presentation/pages/team_deatils_page.dart';
 import 'app_routes.dart';
@@ -214,10 +215,10 @@ class AppPages {
         );
 
       case AppRoutes.teamDetails:
-        final teamId = settings.arguments as String;
+        final team = settings.arguments as TeamEntity;
         return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) {
-            return TeamDetailsPage(teamId: teamId);
+            return TeamDetailsPage(team: team);
           },
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SharedAxisTransition(

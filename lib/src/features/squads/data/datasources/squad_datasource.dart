@@ -32,15 +32,19 @@ class SquadRemoteDataSource extends ISquadRemoteDataSource {
 
   @override
   Future<SquadModel?> getSquadByGameTypeFormation(
-      String gameType, String formation) async {
+      String gameType, String formation, String teamId) async {
     final res = await client
         .from('squads')
         .select()
         .eq('game_type', gameType)
         .eq('formation', formation)
-        .single();
+        .eq('team_id', teamId)
+        .maybeSingle(); // Evita erro caso não encontre
 
-    final squad = SquadModel.fromMap(res);
-    return squad;
+    if (res == null) {
+      return null;
+    }
+
+    return SquadModel.fromMap(res);
   }
 }

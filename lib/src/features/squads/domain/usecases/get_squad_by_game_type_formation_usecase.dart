@@ -15,16 +15,18 @@ class GetSquadByGameTypeFormationUseCase
   Future<Either<Failure, SquadEntity?>> call(
       GetSquadByGameTypeFormationParams params) {
     return squadRepository.getSquadByGameTypeFormation(
-        params.gameType, params.formation);
+        params.gameType, params.formation, params.teamId);
   }
 }
 
 class GetSquadByGameTypeFormationParams {
   final String formation;
   final String gameType;
+  final String teamId;
 
   GetSquadByGameTypeFormationParams({
     required this.formation,
     required this.gameType,
+    required this.teamId,
   });
 }

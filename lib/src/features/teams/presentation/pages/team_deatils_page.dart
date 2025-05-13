@@ -22,12 +22,13 @@ import '../../../../core/utils/app_date_utils.dart';
 import '../../../../core/utils/equipment_widget_utils.dart';
 import '../../../home/presentantion/home_page.dart';
 import '../../../home/presentantion/old_home';
+import '../../../squads/presentation/cubit/squad_cubit.dart';
 import '../../../trophies/presentation/cubit/fetch_trophies_team_cubit/fetch_trophies_team_cubit.dart';
 import '../../domain/entities/team_entity.dart';
 
 class TeamDetailsPage extends StatefulWidget {
-  final String teamId;
-  const TeamDetailsPage({super.key, required this.teamId});
+  final TeamEntity team;
+  const TeamDetailsPage({super.key, required this.team});
 
   @override
   State<TeamDetailsPage> createState() => _TeamDetailsPageState();
@@ -118,37 +119,50 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
   }
 
   Widget _buildLine(int playerCount, TeamEntity team) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: List.generate(playerCount, (index) {
-          return Column(
-            children: [
-              Container(
-                width: 50,
-                height: 50,
-                child: EquipmentWidgetUtils.equipamentBackComponent(team),
-              ),
-              Container(
-                width: 50,
-                decoration: BoxDecoration(
-                    color: Colors.black54,
-                    borderRadius: BorderRadius.circular(5)),
-                child: Center(
-                  child: Text(
-                    "nome",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
+    return BlocBuilder<SquadCubit, SquadState>(
+      builder: (context, state) {
+        print(state);
+        if (state is SquadLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is SquadFailure) {
+          return Center(child: Text(state.error));
+        } else if (state is SquadLoaded) {
+          final players = state.squad;
+          return Container(
+            padding: const EdgeInsets.symmetric(vertical: 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: List.generate(playerCount, (index) {
+                return Column(
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      child: EquipmentWidgetUtils.equipamentBackComponent(team),
                     ),
-                  ),
-                ),
-              )
-            ],
+                    Container(
+                      width: 50,
+                      decoration: BoxDecoration(
+                          color: Colors.black54,
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Center(
+                        child: Text(
+                          "nome",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              }),
+            ),
           );
-        }),
-      ),
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 
@@ -181,10 +195,14 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
   void initState() {
     super.initState();
     _tabController = TabController(length: 6, vsync: this);
-    context.read<GetOneTeamCubit>().getOneTeam(widget.teamId);
-    context.read<FetchPlayersTeamCubit>().fetchPlayersByTeam(widget.teamId);
-    context.read<FetchTrophiesTeamCubit>().fetchTrophiesByTeam(widget.teamId);
-    context.read<GetTeamEquipamentCubit>().getTeamEquipament(widget.teamId);
+    context.read<FetchPlayersTeamCubit>().fetchPlayersByTeam(widget.team.id!);
+    context.read<FetchTrophiesTeamCubit>().fetchTrophiesByTeam(widget.team.id!);
+    context.read<GetTeamEquipamentCubit>().getTeamEquipament(widget.team.id!);
+    context.read<SquadCubit>().getSquadByGameTypeFormation(
+          widget.team.gameType!,
+          widget.team.formation!,
+          widget.team.id!,
+        );
   }
 
   @override
@@ -312,7 +330,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
       onRefresh: () async {
         await context
             .read<FetchPlayersTeamCubit>()
-            .fetchPlayersByTeam(widget.teamId);
+            .fetchPlayersByTeam(widget.team.id!);
       },
       child: Padding(
         padding: const EdgeInsets.all(16.0),

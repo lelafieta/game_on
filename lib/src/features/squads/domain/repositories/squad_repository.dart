@@ -7,5 +7,5 @@ abstract class ISquadRepository {
   Future<Either<Failure, SquadEntity>> createSquad(SquadEntity squad);
   Future<Either<Failure, List<SquadEntity>>> getSquadsByTeam(String teamId);
   Future<Either<Failure, SquadEntity?>> getSquadByGameTypeFormation(
-      String gameType, String formation);
+      String gameType, String formation, String teamId);
 }
