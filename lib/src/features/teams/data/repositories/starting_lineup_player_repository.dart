@@ -7,9 +7,10 @@ import '../datasources/i_starting_lineup_player_datasource.dart';
 import '../models/starting_lineup_player_model.dart';
 
 class StartingLineupPlayerRepository extends IStartingLineupPlayerRepository {
-  final IStartingLineupPlayerRemoteDataSource remoteDataSource;
+  final IStartingLineupPlayerRemoteDataSource startingLineupPlayerDataSource;
 
-  StartingLineupPlayerRepository(this.remoteDataSource);
+  StartingLineupPlayerRepository(
+      {required this.startingLineupPlayerDataSource});
 
   @override
   Future<Either<Failure, List<StartingLineupPlayersModel>>>
@@ -17,8 +18,9 @@ class StartingLineupPlayerRepository extends IStartingLineupPlayerRepository {
     StartingLineupPlayersEntity startingLineupPlayer,
   ) async {
     try {
-      final result = await remoteDataSource.createStartingLineupPlayer(
-          StartingLineupPlayersModel.fromEntity(startingLineupPlayer));
+      final result =
+          await startingLineupPlayerDataSource.createStartingLineupPlayer(
+              StartingLineupPlayersModel.fromEntity(startingLineupPlayer));
       return Right(result);
     } catch (e) {
       return Left(Failure(
@@ -32,8 +34,8 @@ class StartingLineupPlayerRepository extends IStartingLineupPlayerRepository {
     String teamId,
   ) async {
     try {
-      final result =
-          await remoteDataSource.getTeamStartingLineupPlayers(teamId);
+      final result = await startingLineupPlayerDataSource
+          .getTeamStartingLineupPlayers(teamId);
       return Right(result);
     } catch (e) {
       return Left(Failure(

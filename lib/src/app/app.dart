@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:game_on/src/features/players/presentation/cubit/fetch_players_team_cubit/fetch_players_team_cubit.dart';
 import 'package:game_on/src/features/teams/presentation/cubit/get_one_team_cubit/get_one_team_cubit.dart';
+import 'package:game_on/src/features/teams/presentation/cubit/starting_lineup_player_cubit/starting_lineup_player_cubit.dart';
 import 'package:get/get.dart';
 
 import '../config/routes/app_pages.dart';
@@ -31,6 +32,7 @@ class GameOnApp extends StatelessWidget {
         BlocProvider(create: (context) => di.sl<FetchTrophiesTeamCubit>()),
         BlocProvider(create: (context) => di.sl<GetTeamEquipamentCubit>()),
         BlocProvider(create: (context) => di.sl<SquadCubit>()),
+        BlocProvider(create: (context) => di.sl<StartingLineupPlayerCubit>()),
       ],
       child: GetMaterialApp(
         title: 'GameOn',

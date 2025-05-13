@@ -1,7 +1,13 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:game_on/src/features/squads/presentation/cubit/squad_cubit.dart';
+import 'package:game_on/src/features/teams/data/datasources/i_starting_lineup_player_datasource.dart';
+import 'package:game_on/src/features/teams/data/datasources/starting_lineup_player_datasource.dart';
+import 'package:game_on/src/features/teams/domain/repositories/i_starting_lineup_player_repository.dart';
+import 'package:game_on/src/features/teams/domain/usecases/create_starting_lineup_players_usecase.dart';
+import 'package:game_on/src/features/teams/domain/usecases/get_team_starting_lineup_players_usecase.dart';
 import 'package:game_on/src/features/teams/presentation/cubit/get_team_equipament_cubit/get_team_equipament_cubit.dart';
+import 'package:game_on/src/features/teams/presentation/cubit/starting_lineup_player_cubit/starting_lineup_player_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../core/cache/i_secure_storage_helper.dart';
@@ -32,6 +38,7 @@ import '../features/squads/domain/usecases/get_squad_by_game_type_formation_usec
 import '../features/squads/domain/usecases/get_squads_by_team_usecase.dart';
 import '../features/teams/data/datasources/i_team_datasource.dart';
 import '../features/teams/data/datasources/team_datasource.dart';
+import '../features/teams/data/repositories/starting_lineup_player_repository.dart';
 import '../features/teams/data/repositories/team_repository.dart';
 import '../features/teams/domain/repositories/i_team_repository.dart';
 import '../features/teams/domain/usecases/create_team_usecase.dart';
@@ -104,6 +111,11 @@ void _registerCubits() {
       createSquadUseCase: sl(),
       getSquadsByTeamUseCase: sl(),
       getSquadByGameTypeFormationUseCase: sl()));
+
+  // STARTING LINEUP PLAYERS
+  sl.registerFactory(() => StartingLineupPlayerCubit(
+      createTeamStartingLineupPlayersUseCase: sl(),
+      getTeamStartingLineupPlayersUseCase: sl()));
 }
 
 void _registerRepositories() {
@@ -126,6 +138,10 @@ void _registerRepositories() {
   // SQUAD
   sl.registerLazySingleton<ISquadRepository>(
       () => SquadRepository(squadDataSource: sl()));
+
+  // STARTING LINEUP PLAYERS
+  sl.registerLazySingleton<IStartingLineupPlayerRepository>(() =>
+      StartingLineupPlayerRepository(startingLineupPlayerDataSource: sl()));
 }
 
 void _registerDatasources() {
@@ -148,6 +164,10 @@ void _registerDatasources() {
   // SQUAD
   sl.registerLazySingleton<ISquadRemoteDataSource>(
       () => SquadRemoteDataSource(client: sl()));
+
+  // STARTING LINEUP PLAYERS
+  sl.registerLazySingleton<IStartingLineupPlayerRemoteDataSource>(
+      () => StartingLineupPlayerRemoteDataSource(client: sl()));
 }
 
 void _registerUseCases() {
@@ -187,6 +207,12 @@ void _registerUseCases() {
   sl.registerLazySingleton(() => GetSquadsByTeamUseCase(squadRepository: sl()));
   sl.registerLazySingleton(
       () => GetSquadByGameTypeFormationUseCase(squadRepository: sl()));
+
+  // STARTING LINEUP PLAYERS
+  sl.registerLazySingleton(() => GetTeamStartingLineupPlayersUseCase(
+      startingLineupPlayerRepository: sl()));
+  sl.registerLazySingleton(() => CreateTeamStartingLineupPlayersUseCase(
+      startingLineupPlayerRepository: sl()));
 }
 
 void _registerExternal() {
