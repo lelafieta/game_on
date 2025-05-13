@@ -6,15 +6,15 @@ import '../entities/starting_lineup_player_entity.dart';
 import '../repositories/i_starting_lineup_player_repository.dart';
 
 class CreateTeamStartingLineupPlayersUseCase extends BaseUseCases<
-    List<StartingLineupPlayerEntity>, StartingLineupPlayerEntity> {
+    List<StartingLineupPlayersEntity>, StartingLineupPlayersEntity> {
   final IStartingLineupPlayerRepository startingLineupPlayerRepository;
 
   CreateTeamStartingLineupPlayersUseCase(
       {required this.startingLineupPlayerRepository});
 
   @override
-  Future<Either<Failure, List<StartingLineupPlayerEntity>>> call(
-      StartingLineupPlayerEntity params) {
+  Future<Either<Failure, List<StartingLineupPlayersEntity>>> call(
+      StartingLineupPlayersEntity params) {
     return startingLineupPlayerRepository.createStartingLineupPlayer(params);
   }
 }

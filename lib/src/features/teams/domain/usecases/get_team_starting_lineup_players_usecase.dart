@@ -6,14 +6,14 @@ import '../entities/starting_lineup_player_entity.dart';
 import '../repositories/i_starting_lineup_player_repository.dart';
 
 class GetTeamStartingLineupPlayersUseCase
-    extends BaseUseCases<List<StartingLineupPlayerEntity>, String> {
+    extends BaseUseCases<List<StartingLineupPlayersEntity>, String> {
   final IStartingLineupPlayerRepository startingLineupPlayerRepository;
 
   GetTeamStartingLineupPlayersUseCase(
       {required this.startingLineupPlayerRepository});
 
   @override
-  Future<Either<Failure, List<StartingLineupPlayerEntity>>> call(
+  Future<Either<Failure, List<StartingLineupPlayersEntity>>> call(
       String params) {
     return startingLineupPlayerRepository.getTeamStartingLineupPlayers(params);
   }
