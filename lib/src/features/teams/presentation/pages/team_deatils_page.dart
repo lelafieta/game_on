@@ -69,9 +69,9 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     '4-3-3',
     '3-5-2',
     '4-5-1',
-    '4-3-1-2',
     '5-4-1',
-    '4-3-2-1',
+    '5-3-2',
+    '3-4-3',
   ];
   List<int> get fieldFormation {
     return selectedFormation.split('-').map(int.parse).toList();
@@ -391,7 +391,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                 tabs: [
                   Tab(text: 'Jogadores Reais'),
                   Tab(text: 'Jogadores Fictícios'),
-                  Tab(text: 'Defesas'),
+                  Tab(text: 'À Venda'),
                   // Tab(text: 'Novo jogador'),
                 ],
               ),
@@ -409,7 +409,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                         children: [
                           _buildPlayerRealWidget(players),
                           _buildPlayerImaginaryWidget(players),
-                          _buildNewPlayerWidget(team),
+                          _buildPlayersToSendWidget(team),
                         ],
                       );
                     }
@@ -1393,7 +1393,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     // );
   }
 
-  Widget _buildNewPlayerWidget(TeamEntity team) {
+  Widget _buildPlayersToSendWidget(TeamEntity team) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
@@ -1908,17 +1908,17 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
           return const SizedBox.shrink();
         }
         return Container(
-          margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+          margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.09),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
-            ],
+            // boxShadow: [
+            //   BoxShadow(
+            //     color: Colors.black.withOpacity(0.09),
+            //     blurRadius: 12,
+            //     offset: const Offset(0, 4),
+            //   ),
+            // ],
           ),
           child: ListTile(
             leading: ClipRRect(
