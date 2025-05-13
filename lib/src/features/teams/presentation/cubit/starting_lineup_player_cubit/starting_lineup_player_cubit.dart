@@ -27,5 +27,12 @@ class StartingLineupPlayerCubit extends Cubit<StartingLineupPlayerState> {
             startingLineupPlayers: startingLineupPlayers)));
   }
 
-  Future<void> getTeamStartingLineupPlayers(String teamId) async {}
+  Future<void> getTeamStartingLineupPlayers(String teamId) async {
+    final result = await getTeamStartingLineupPlayersUseCase.call(teamId);
+
+    result.fold(
+        (failure) => emit(StartingLineupPlayerFilure(error: failure.message)),
+        (startingLineupPlayers) => emit(StartingLineupPlayerLoaded(
+            startingLineupPlayers: startingLineupPlayers)));
+  }
 }
