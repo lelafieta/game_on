@@ -35,16 +35,18 @@ class SquadRemoteDataSource extends ISquadRemoteDataSource {
       String gameType, String formation, String teamId) async {
     final res = await client
         .from('squads')
-        .select()
+        .select('*, squad_players(*, players(*))')
         .eq('game_type', gameType)
         .eq('formation', formation)
         .eq('team_id', teamId)
-        .maybeSingle(); // Evita erro caso não encontre
+        .maybeSingle();
 
     if (res == null) {
       return null;
     }
-
-    return SquadModel.fromMap(res);
+    return SquadModel.fromMap({
+      ...res,
+      'players': res['players'],
+    });
   }
 }

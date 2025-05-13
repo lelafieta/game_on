@@ -1,3 +1,4 @@
+import '../../../players/data/models/player_model.dart';
 import '../../domain/entities/squad_player_entity.dart';
 
 class SquadPlayerModel extends SquadPlayerEntity {
@@ -8,6 +9,7 @@ class SquadPlayerModel extends SquadPlayerEntity {
     super.tacticalPosition,
     super.jerseyNumber,
     super.isStarter,
+    super.player, // Atualizado para PlayerModel
   });
 
   factory SquadPlayerModel.fromMap(Map<String, dynamic> map) {
@@ -18,6 +20,8 @@ class SquadPlayerModel extends SquadPlayerEntity {
       tacticalPosition: map['tactical_position'],
       jerseyNumber: map['jersey_number'],
       isStarter: map['is_starter'],
+      player:
+          (map['players'] == null) ? null : PlayerModel.fromMap(map['players']),
     );
   }
 
@@ -29,9 +33,11 @@ class SquadPlayerModel extends SquadPlayerEntity {
       tacticalPosition: entity.tacticalPosition,
       jerseyNumber: entity.jerseyNumber,
       isStarter: entity.isStarter,
+      player: PlayerModel.fromEntity(entity.player!),
     );
   }
 
+  @override
   Map<String, dynamic> toMap() => {
         'id': id,
         'squad_id': squadId,
@@ -39,5 +45,6 @@ class SquadPlayerModel extends SquadPlayerEntity {
         'tactical_position': tacticalPosition,
         'jersey_number': jerseyNumber,
         'is_starter': isStarter,
+        'player': (player as PlayerModel).toMap(),
       };
 }

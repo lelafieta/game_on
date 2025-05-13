@@ -18,6 +18,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
+  void initState() {
+    if (int.parse(widget.arguments!["index"]!) == 1) {
+      final teamId = widget.arguments!["componentId"] as String;
+      context.read<GetOneTeamCubit>().getOneTeam(teamId);
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Widget content;
     if (widget.arguments == null) {
@@ -28,8 +37,6 @@ class _HomePageState extends State<HomePage> {
           content = const MyCompetitionDetailsPage();
           break;
         case 1:
-          final teamId = widget.arguments!["componentId"] as String;
-          context.read<GetOneTeamCubit>().getOneTeam(teamId);
           content = BlocBuilder<GetOneTeamCubit, GetOneTeamState>(
             builder: (context, state) {
               if (state is GetOneTeamLoading) {

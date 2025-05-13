@@ -14,9 +14,9 @@ class SquadModel extends SquadEntity {
     return SquadModel(
       id: map['id'],
       teamId: map['team_id'],
-      size: map['size'],
+      size: map['game_type'],
       formation: map['formation'],
-      players: (map['players'] as List)
+      players: (map['squad_players'] as List)
           .map((p) => SquadPlayerModel.fromMap(p))
           .toList(),
     );

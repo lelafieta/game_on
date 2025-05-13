@@ -59,8 +59,8 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     Colors.orange,
     Colors.purple,
   ];
-  String selectedCount = '11x11';
-  String selectedFormation = '4-4-2';
+  String gameType = '11x11';
+  String formation = '4-4-2';
 
   final List<String> playerCounts =
       List.generate(11, (i) => '${i + 1}x${i + 1}');
@@ -73,13 +73,13 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     '5-4-1',
     '4-3-2-1',
   ];
-  List<int> get fieldFormation {
-    return selectedFormation.split('-').map(int.parse).toList();
-  }
+  // List<int> get fieldFormation {
+  //   return widget.team.formation!.split('-').map(int.parse).toList();
+  // }
 
   List<Widget> _buildFormationWithLimit(
       List<int> formationLines, TeamEntity team) {
-    int totalPlayers = int.tryParse(selectedCount.split('x').first) ?? 11;
+    int totalPlayers = int.tryParse(gameType.split('x').first) ?? 11;
     int playersUsed = 0;
     List<Widget> lines = [];
 
@@ -119,15 +119,52 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
   }
 
   Widget _buildLine(int playerCount, TeamEntity team) {
+    // return Container(
+    //   padding: const EdgeInsets.symmetric(vertical: 0),
+    //   child: Row(
+    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //     children: List.generate(playerCount, (index) {
+    //       return Column(
+    //         children: [
+    //           Container(
+    //             width: 50,
+    //             height: 50,
+    //             child: EquipmentWidgetUtils.equipamentBackComponent(team),
+    //           ),
+    //           Container(
+    //             width: 50,
+    //             decoration: BoxDecoration(
+    //                 color: Colors.black54,
+    //                 borderRadius: BorderRadius.circular(5)),
+    //             child: Center(
+    //               child: Text(
+    //                 "nome",
+    //                 style: TextStyle(
+    //                   fontWeight: FontWeight.w600,
+    //                   color: Colors.white,
+    //                 ),
+    //               ),
+    //             ),
+    //           )
+    //         ],
+    //       );
+    //     }),
+    //   ),
+    // );
+
     return BlocBuilder<SquadCubit, SquadState>(
       builder: (context, state) {
-        print(state);
         if (state is SquadLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is SquadFailure) {
           return Center(child: Text(state.error));
         } else if (state is SquadLoaded) {
-          final players = state.squad;
+          final squad = state.squad;
+
+          if (squad == null) {
+            return const SizedBox.shrink();
+          }
+
           return Container(
             padding: const EdgeInsets.symmetric(vertical: 0),
             child: Row(
@@ -135,7 +172,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
               children: List.generate(playerCount, (index) {
                 return Column(
                   children: [
-                    Container(
+                    SizedBox(
                       width: 50,
                       height: 50,
                       child: EquipmentWidgetUtils.equipamentBackComponent(team),
@@ -145,7 +182,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                       decoration: BoxDecoration(
                           color: Colors.black54,
                           borderRadius: BorderRadius.circular(5)),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           "nome",
                           style: TextStyle(
@@ -1648,65 +1685,88 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
       backgroundColor: Colors.transparent,
       body: Column(
         children: [
-          // Dropdowns
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey.shade300),
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.white),
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: DropdownButton<String>(
-                      value: selectedCount,
-                      onChanged: (value) {
-                        if (value != null) {
-                          setState(() => selectedCount = value);
-                        }
-                      },
-                      isExpanded: true,
-                      underline: SizedBox(),
-                      items: playerCounts.map((e) {
-                        return DropdownMenuItem<String>(
-                          value: e,
-                          child: Text(e),
-                        );
-                      }).toList(),
-                    ),
+          // Dropdowns----
+          BlocBuilder<SquadCubit, SquadState>(
+            builder: (context, state) {
+              if (state is SquadLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state is SquadFailure) {
+                return Center(child: Text(state.error));
+              } else if (state is SquadLoaded) {
+                final squad = state.squad;
+
+                // print(squad);
+
+                if (squad != null) {
+                  gameType = squad.size!;
+                  formation = squad.formation!;
+                }
+
+                // return Text("${squad!.players}");
+
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey.shade300),
+                              borderRadius: BorderRadius.circular(8),
+                              color: Colors.white),
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: DropdownButton<String>(
+                            value: gameType,
+                            onChanged: (value) {
+                              if (value != null) {
+                                setState(() => gameType = value);
+                              }
+                            },
+                            isExpanded: true,
+                            underline: const SizedBox(),
+                            items: playerCounts.map((e) {
+                              return DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey.shade300),
+                              borderRadius: BorderRadius.circular(8),
+                              color: Colors.white),
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: DropdownButton<String>(
+                            value: formation,
+                            onChanged: (value) {
+                              if (value != null) {
+                                setState(() => formation = value);
+                              }
+                            },
+                            isExpanded: true,
+                            underline: const SizedBox.shrink(),
+                            items: formations.map((e) {
+                              return DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(width: 15),
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey.shade300),
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.white),
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: DropdownButton<String>(
-                      value: selectedFormation,
-                      onChanged: (value) {
-                        if (value != null) {
-                          setState(() => selectedFormation = value);
-                        }
-                      },
-                      isExpanded: true,
-                      underline: SizedBox(),
-                      items: formations.map((e) {
-                        return DropdownMenuItem<String>(
-                          value: e,
-                          child: Text(e),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+                );
+              }
+
+              return const SizedBox.shrink();
+            },
           ),
 
           const SizedBox(height: 16),
@@ -1739,12 +1799,35 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                           ),
                         ),
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: _buildFormationWithLimit(
-                            fieldFormation.reversed.toList(), team),
+                      child: BlocBuilder<SquadCubit, SquadState>(
+                        builder: (context, state) {
+                          if (state is SquadLoading) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (state is SquadFailure) {
+                            return Center(child: Text(state.error));
+                          } else if (state is SquadLoaded) {
+                            final squad = state.squad;
+
+                            if (squad == null) {
+                              return const SizedBox.shrink();
+                            }
+                            List<int> fieldFormation = widget.team.formation!
+                                .split('-')
+                                .map(int.parse)
+                                .toList();
+
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: _buildFormationWithLimit(
+                                  fieldFormation.reversed.toList(), team),
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
                       ),
                     ),
+
                     const SizedBox(height: 25),
                     Wrap(
                       spacing: 5,
@@ -1753,7 +1836,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                         return Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Container(
+                            SizedBox(
                               width: 50,
                               height: 50,
                               // color: Colors.red,
