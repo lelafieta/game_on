@@ -23,6 +23,8 @@ class GetSquadByGameTypeFormationParams {
   final String formation;
   final String gameType;
 
-  GetSquadByGameTypeFormationParams(
-      {required this.formation, required this.gameType});
+  GetSquadByGameTypeFormationParams({
+    required this.formation,
+    required this.gameType,
+  });
 }
