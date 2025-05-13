@@ -1,7 +1,7 @@
 import '../../domain/entities/starting_lineup_player_entity.dart';
 
-class StartingLineupPlayerModel extends StartingLineupPlayerEntity {
-  StartingLineupPlayerModel({
+class StartingLineupPlayersModel extends StartingLineupPlayersEntity {
+  StartingLineupPlayersModel({
     required super.id,
     required super.teamId,
     required super.playerId,
@@ -9,8 +9,8 @@ class StartingLineupPlayerModel extends StartingLineupPlayerEntity {
     required super.positionIndex,
   });
 
-  factory StartingLineupPlayerModel.fromMap(Map<String, dynamic> map) {
-    return StartingLineupPlayerModel(
+  factory StartingLineupPlayersModel.fromMap(Map<String, dynamic> map) {
+    return StartingLineupPlayersModel(
       id: map['id'] as String,
       teamId: map['team_id'] as String,
       playerId: map['player_id'] as String,
@@ -28,5 +28,16 @@ class StartingLineupPlayerModel extends StartingLineupPlayerEntity {
       'created_at': createdAt?.toIso8601String(),
       'position_index': positionIndex,
     };
+  }
+
+  factory StartingLineupPlayersModel.fromEntity(
+      StartingLineupPlayersEntity entity) {
+    return StartingLineupPlayersModel(
+      id: entity.id,
+      teamId: entity.teamId,
+      playerId: entity.playerId,
+      createdAt: entity.createdAt,
+      positionIndex: entity.positionIndex,
+    );
   }
 }

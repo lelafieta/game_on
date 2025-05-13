@@ -6,9 +6,6 @@ import '../entities/starting_lineup_player_entity.dart';
 abstract class IStartingLineupPlayerRepository {
   Future<Either<Failure, List<StartingLineupPlayerEntity>>>
       getTeamStartingLineupPlayers(String teamId);
-  Future<Either<Failure, List<StartingLineupPlayerEntity>>>
-      updateStartingLineupPlayer(
-          StartingLineupPlayerEntity startingLineupPlayer);
 
   Future<Either<Failure, List<StartingLineupPlayerEntity>>>
       createStartingLineupPlayer(
