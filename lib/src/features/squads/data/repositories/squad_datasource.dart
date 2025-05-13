@@ -31,4 +31,16 @@ class SquadRepository implements ISquadRepository {
       return Left(Failure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, SquadEntity?>> getSquadByGameTypeFormation(
+      String gameType, String formation) async {
+    try {
+      final result = await squadDataSource.getSquadByGameTypeFormation(
+          gameType, formation);
+      return Right(result);
+    } catch (e) {
+      return Left(Failure(message: e.toString()));
+    }
+  }
 }

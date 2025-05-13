@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import 'package:game_on/src/core/error/failure.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/squad_model.dart';
 import 'i_squad_datasource.dart';
@@ -26,5 +28,19 @@ class SquadRemoteDataSource extends ISquadRemoteDataSource {
               'players': json['squad_players'],
             }))
         .toList();
+  }
+
+  @override
+  Future<SquadModel?> getSquadByGameTypeFormation(
+      String gameType, String formation) async {
+    final res = await client
+        .from('squads')
+        .select()
+        .eq('game_type', gameType)
+        .eq('formation', formation)
+        .single();
+
+    final squad = SquadModel.fromMap(res);
+    return squad;
   }
 }
