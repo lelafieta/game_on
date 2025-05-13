@@ -59,8 +59,8 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     Colors.orange,
     Colors.purple,
   ];
-  String gameType = '11x11';
-  String formation = '4-4-2';
+  String selectedCount = '11x11';
+  String selectedFormation = '4-4-2';
 
   final List<String> playerCounts =
       List.generate(11, (i) => '${i + 1}x${i + 1}');
@@ -73,13 +73,13 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     '5-4-1',
     '4-3-2-1',
   ];
-  // List<int> get fieldFormation {
-  //   return widget.team.formation!.split('-').map(int.parse).toList();
-  // }
+  List<int> get fieldFormation {
+    return selectedFormation.split('-').map(int.parse).toList();
+  }
 
   List<Widget> _buildFormationWithLimit(
       List<int> formationLines, TeamEntity team) {
-    int totalPlayers = int.tryParse(gameType.split('x').first) ?? 11;
+    int totalPlayers = int.tryParse(selectedCount.split('x').first) ?? 11;
     int playersUsed = 0;
     List<Widget> lines = [];
 
@@ -119,39 +119,6 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
   }
 
   Widget _buildLine(int playerCount, TeamEntity team) {
-    // return Container(
-    //   padding: const EdgeInsets.symmetric(vertical: 0),
-    //   child: Row(
-    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    //     children: List.generate(playerCount, (index) {
-    //       return Column(
-    //         children: [
-    //           Container(
-    //             width: 50,
-    //             height: 50,
-    //             child: EquipmentWidgetUtils.equipamentBackComponent(team),
-    //           ),
-    //           Container(
-    //             width: 50,
-    //             decoration: BoxDecoration(
-    //                 color: Colors.black54,
-    //                 borderRadius: BorderRadius.circular(5)),
-    //             child: Center(
-    //               child: Text(
-    //                 "nome",
-    //                 style: TextStyle(
-    //                   fontWeight: FontWeight.w600,
-    //                   color: Colors.white,
-    //                 ),
-    //               ),
-    //             ),
-    //           )
-    //         ],
-    //       );
-    //     }),
-    //   ),
-    // );
-
     return BlocBuilder<SquadCubit, SquadState>(
       builder: (context, state) {
         if (state is SquadLoading) {
@@ -162,7 +129,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
           final squad = state.squad;
 
           if (squad == null) {
-            return const SizedBox.shrink();
+            return SizedBox.shrink();
           }
 
           return Container(
@@ -172,7 +139,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
               children: List.generate(playerCount, (index) {
                 return Column(
                   children: [
-                    SizedBox(
+                    Container(
                       width: 50,
                       height: 50,
                       child: EquipmentWidgetUtils.equipamentBackComponent(team),
@@ -182,7 +149,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                       decoration: BoxDecoration(
                           color: Colors.black54,
                           borderRadius: BorderRadius.circular(5)),
-                      child: const Center(
+                      child: Center(
                         child: Text(
                           "nome",
                           style: TextStyle(
@@ -1685,7 +1652,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
       backgroundColor: Colors.transparent,
       body: Column(
         children: [
-          // Dropdowns----
+          // Dropdowns
           BlocBuilder<SquadCubit, SquadState>(
             builder: (context, state) {
               if (state is SquadLoading) {
@@ -1694,16 +1661,6 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                 return Center(child: Text(state.error));
               } else if (state is SquadLoaded) {
                 final squad = state.squad;
-
-                // print(squad);
-
-                if (squad != null) {
-                  gameType = squad.size!;
-                  formation = squad.formation!;
-                }
-
-                // return Text("${squad!.players}");
-
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
@@ -1717,10 +1674,10 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                               color: Colors.white),
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: DropdownButton<String>(
-                            value: gameType,
+                            value: selectedCount,
                             onChanged: (value) {
                               if (value != null) {
-                                setState(() => gameType = value);
+                                setState(() => selectedCount = value);
                               }
                             },
                             isExpanded: true,
@@ -1743,14 +1700,14 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                               color: Colors.white),
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: DropdownButton<String>(
-                            value: formation,
+                            value: selectedFormation,
                             onChanged: (value) {
                               if (value != null) {
-                                setState(() => formation = value);
+                                setState(() => selectedFormation = value);
                               }
                             },
                             isExpanded: true,
-                            underline: const SizedBox.shrink(),
+                            underline: SizedBox(),
                             items: formations.map((e) {
                               return DropdownMenuItem<String>(
                                 value: e,
@@ -1799,35 +1756,12 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                           ),
                         ),
                       ),
-                      child: BlocBuilder<SquadCubit, SquadState>(
-                        builder: (context, state) {
-                          if (state is SquadLoading) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (state is SquadFailure) {
-                            return Center(child: Text(state.error));
-                          } else if (state is SquadLoaded) {
-                            final squad = state.squad;
-
-                            if (squad == null) {
-                              return const SizedBox.shrink();
-                            }
-                            List<int> fieldFormation = widget.team.formation!
-                                .split('-')
-                                .map(int.parse)
-                                .toList();
-
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: _buildFormationWithLimit(
-                                  fieldFormation.reversed.toList(), team),
-                            );
-                          }
-                          return const SizedBox.shrink();
-                        },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: _buildFormationWithLimit(
+                            fieldFormation.reversed.toList(), team),
                       ),
                     ),
-
                     const SizedBox(height: 25),
                     Wrap(
                       spacing: 5,
@@ -1836,7 +1770,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                         return Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            SizedBox(
+                            Container(
                               width: 50,
                               height: 50,
                               // color: Colors.red,
