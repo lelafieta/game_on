@@ -134,7 +134,25 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                         Border.all(width: 2, color: Colors.red.withOpacity(.6)),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: PlayerTile(player: selectedPlayer),
+                  child: Row(
+                    children: [
+                      Expanded(child: PlayerTile(player: selectedPlayer)),
+                      IconButton(
+                        style: const ButtonStyle(
+                            backgroundColor:
+                                MaterialStatePropertyAll(Colors.red)),
+                        onPressed: () {
+                          BlocProvider.of<StartingLineupPlayerCubit>(context)
+                              .removeTeamPlayerStartingLineup(selectedPlayer);
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.close,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
                 )
               : const SizedBox.shrink(),
           // Expanded(
@@ -424,82 +442,6 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
       },
     );
   }
-
-  Widget _buildGoalkeeper() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircleAvatar(
-            radius: 20,
-            backgroundColor: Colors.red[800],
-            child: const Icon(Icons.sports_soccer, color: Colors.white),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Widget _buildLine(int playerCount, TeamEntity team) {
-  //   return BlocBuilder<StartingLineupPlayerCubit, StartingLineupPlayerState>(
-  //     builder: (context, state) {
-  //       if (state is SquadLoading) {
-  //         return const Center(child: CircularProgressIndicator());
-  //       } else if (state is StartingLineupPlayerFailure) {
-  //         return Center(child: Text(state.error));
-  //       } else if (state is StartingLineupPlayerLoaded) {
-  //         final startingLineupPlayers = state.startingLineupPlayers;
-
-  //         if (startingLineupPlayers.isEmpty) {
-  //           return SizedBox.shrink();
-  //         }
-
-  //         return Container(
-  //           padding: const EdgeInsets.symmetric(vertical: 0),
-  //           child: Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //             children: List.generate(playerCount, (index) {
-  //               return Column(
-  //                 children: [
-  //                   Container(
-  //                     width: 50,
-  //                     height: 50,
-  //                     child: EquipmentWidgetUtils.equipamentBackComponent(team),
-  //                   ),
-  //                   Container(
-  //                     width: 50,
-  //                     decoration: BoxDecoration(
-  //                         color: Colors.black54,
-  //                         borderRadius: BorderRadius.circular(5)),
-  //   child: Center(
-  //     child: Text(
-  //       (startingLineupPlayers.any(
-  //               (element) => element.positionIndex == index))
-  //           ? startingLineupPlayers
-  //               .firstWhere((element) =>
-  //                   element.positionIndex == index)
-  //               .player!
-  //               .nickname
-  //               .toString()
-  //           : "",
-  //       style: const TextStyle(
-  //           fontWeight: FontWeight.w600,
-  //           color: Colors.white,
-  //           overflow: TextOverflow.ellipsis),
-  //     ),
-  //   ),
-  // )
-  //                 ],
-  //               );
-  //             }),
-  //           ),
-  //         );
-  //       }
-  //       return const SizedBox.shrink();
-  //     },
-  //   );
-  // }
 
   late TabController _tabController;
   final int totalPartidas = 6;

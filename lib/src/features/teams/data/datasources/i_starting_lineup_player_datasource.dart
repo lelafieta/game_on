@@ -1,3 +1,5 @@
+import '../../../players/data/models/player_model.dart';
+
 import '../models/starting_lineup_player_model.dart';
 
 abstract class IStartingLineupPlayerRemoteDataSource {
@@ -6,4 +8,7 @@ abstract class IStartingLineupPlayerRemoteDataSource {
 
   Future<List<StartingLineupPlayersModel>> createStartingLineupPlayer(
       StartingLineupPlayersModel startingLineupPlayer);
+
+  Future<List<StartingLineupPlayersModel>> removeStartingLineupPlayer(
+      PlayerModel player);
 }

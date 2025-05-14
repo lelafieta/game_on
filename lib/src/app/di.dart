@@ -6,6 +6,7 @@ import 'package:game_on/src/features/teams/data/datasources/starting_lineup_play
 import 'package:game_on/src/features/teams/domain/repositories/i_starting_lineup_player_repository.dart';
 import 'package:game_on/src/features/teams/domain/usecases/create_starting_lineup_players_usecase.dart';
 import 'package:game_on/src/features/teams/domain/usecases/get_team_starting_lineup_players_usecase.dart';
+import 'package:game_on/src/features/teams/domain/usecases/remove_starting_lineup_player_usecase.dart';
 import 'package:game_on/src/features/teams/presentation/cubit/get_team_equipament_cubit/get_team_equipament_cubit.dart';
 import 'package:game_on/src/features/teams/presentation/cubit/starting_lineup_player_cubit/starting_lineup_player_cubit.dart';
 import 'package:get_it/get_it.dart';
@@ -115,7 +116,8 @@ void _registerCubits() {
   // STARTING LINEUP PLAYERS
   sl.registerFactory(() => StartingLineupPlayerCubit(
       createTeamStartingLineupPlayersUseCase: sl(),
-      getTeamStartingLineupPlayersUseCase: sl()));
+      getTeamStartingLineupPlayersUseCase: sl(),
+      removeStartingLineupPlayerUseCase: sl()));
 }
 
 void _registerRepositories() {
@@ -213,6 +215,8 @@ void _registerUseCases() {
       startingLineupPlayerRepository: sl()));
   sl.registerLazySingleton(() => CreateTeamStartingLineupPlayersUseCase(
       startingLineupPlayerRepository: sl()));
+  sl.registerLazySingleton(() =>
+      RemoveStartingLineupPlayerUseCase(startingLineupPlayerRepository: sl()));
 }
 
 void _registerExternal() {

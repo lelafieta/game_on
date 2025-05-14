@@ -1,4 +1,6 @@
 import 'package:dartz/dartz.dart';
+import 'package:game_on/src/features/players/data/models/player_model.dart';
+import 'package:game_on/src/features/players/domain/entities/player_entity.dart';
 
 import '../../../../core/error/failure.dart';
 import '../../domain/entities/starting_lineup_player_entity.dart';
@@ -40,6 +42,19 @@ class StartingLineupPlayerRepository extends IStartingLineupPlayerRepository {
       return Right(result);
     } catch (e) {
       print("eror 2 $e");
+      return Left(Failure(
+          message: 'Erro ao buscar escalação inicial: ${e.toString()}'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<StartingLineupPlayersEntity>>>
+      removeStartingLineupPlayer(PlayerEntity player) async {
+    try {
+      final result = await startingLineupPlayerDataSource
+          .removeStartingLineupPlayer(PlayerModel.fromEntity(player));
+      return Right(result);
+    } catch (e) {
       return Left(Failure(
           message: 'Erro ao buscar escalação inicial: ${e.toString()}'));
     }

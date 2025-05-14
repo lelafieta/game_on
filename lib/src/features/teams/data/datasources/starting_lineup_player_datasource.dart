@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../players/data/models/player_model.dart';
 import '../models/starting_lineup_player_model.dart';
 import 'i_starting_lineup_player_datasource.dart';
 
@@ -71,5 +72,32 @@ class StartingLineupPlayerRemoteDataSource
     return data
         .map((item) => StartingLineupPlayersModel.fromMap(item))
         .toList();
+  }
+
+  @override
+  Future<List<StartingLineupPlayersModel>> removeStartingLineupPlayer(
+      PlayerModel player) async {
+    final playerId = player.id;
+    final teamId = player.teamId;
+
+    // Verifica se existe um registro do jogador na escalação
+    final existing = await client
+        .from('starting_lineup_players')
+        .select()
+        .eq('player_id', playerId!)
+        .eq('team_id', teamId!)
+        .maybeSingle();
+
+    if (existing != null) {
+      final existingId = existing['id'];
+
+      await client
+          .from('starting_lineup_players')
+          .delete()
+          .eq('id', existingId);
+    }
+
+    // Retorna a escalação atualizada
+    return await getTeamStartingLineupPlayers(teamId);
   }
 }
