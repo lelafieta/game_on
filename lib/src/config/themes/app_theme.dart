@@ -149,7 +149,7 @@ class AppTheme {
           //   color: Colors.black,
           //   fontFamily: AppStrings.fontFamily,
           //   fontSize: 14,
-          //   fontWeight: FontWeight.bold,
+          //   fontWeight: FontWeight.w500,
           // ),
           titleLarge: TextStyle(
             color: AppColors.primary,

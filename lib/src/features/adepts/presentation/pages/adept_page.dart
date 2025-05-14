@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:game_on/src/features/communities/presentation/pages/community_page.dart';
+import 'package:game_on/src/features/followers/presentation/pages/follower_page.dart';
 
 import '../../../../config/themes/app_colors.dart';
 import '../../../../core/resources/app_icons.dart';
@@ -76,7 +78,7 @@ class _AdeptPageState extends State<AdeptPage> with TickerProviderStateMixin {
                         ? Colors.white
                         : AppColors.white.withOpacity(.6),
                   ),
-                  text: 'Comunidade',
+                  text: 'Comunidades',
                 ),
                 Tab(
                   icon: SvgPicture.asset(
@@ -104,8 +106,8 @@ class _AdeptPageState extends State<AdeptPage> with TickerProviderStateMixin {
               controller: _tabController,
               children: const [
                 AdeptHomePage(), // Feed de notícias
-                Center(child: Text('Perfil')), // Dados pessoais e histórico
-                Center(child: Text('Palpites')), // Meus palpites
+                CommunityPage(), // Dados pessoais e histórico
+                FollowerPage(), // Meus palpites
                 Center(child: Text('Jogos')), // Jogos próximos
                 Center(child: Text('Fórum')), // Comunidade
               ],
