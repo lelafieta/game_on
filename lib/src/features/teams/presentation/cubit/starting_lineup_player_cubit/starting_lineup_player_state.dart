@@ -19,10 +19,10 @@ final class StartingLineupPlayerLoaded extends StartingLineupPlayerState {
   List<Object> get props => [startingLineupPlayers];
 }
 
-final class StartingLineupPlayerFilure extends StartingLineupPlayerState {
+final class StartingLineupPlayerFailure extends StartingLineupPlayerState {
   final String error;
 
-  const StartingLineupPlayerFilure({required this.error});
+  const StartingLineupPlayerFailure({required this.error});
   @override
   List<Object> get props => [error];
 }

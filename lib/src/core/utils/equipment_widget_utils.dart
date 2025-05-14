@@ -53,6 +53,47 @@ class EquipmentWidgetUtils {
     );
   }
 
+  static Widget equipamentBackComponentCustom(TeamEntity? team,
+      {String? number = "7"}) {
+    return Stack(
+      children: [
+        Image.asset(
+          width: double.infinity,
+          height: double.infinity,
+          AppImages.backPartTShirt,
+          color: team!.equipmentMainColor == null
+              ? Colors.black
+              : parseColorFromString(team.equipmentMainColor!),
+        ),
+        Positioned.fill(
+          child: Image.asset(
+            AppImages.bodyBack,
+            color: Colors.black.withOpacity(.10),
+          ),
+        ),
+        Positioned.fill(
+          child: Center(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                double fontSize = constraints.maxWidth * 0.3;
+                return Text(
+                  number ?? "7",
+                  style: TextStyle(
+                    fontSize: fontSize,
+                    fontWeight: FontWeight.bold,
+                    color: (team.equipmentNumberColor != null)
+                        ? parseColorFromString(team.equipmentNumberColor!)
+                        : Colors.transparent,
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   static Widget equipamentFrontComponent(TeamEntity? team) {
     final Map<String, String> typeToImage = {
       'main': AppImages.typeEmpty,

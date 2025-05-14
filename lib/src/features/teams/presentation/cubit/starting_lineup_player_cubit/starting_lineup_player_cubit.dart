@@ -22,7 +22,7 @@ class StartingLineupPlayerCubit extends Cubit<StartingLineupPlayerState> {
         .call(startingLineupPlayers);
 
     result.fold(
-        (failure) => emit(StartingLineupPlayerFilure(error: failure.message)),
+        (failure) => emit(StartingLineupPlayerFailure(error: failure.message)),
         (startingLineupPlayers) => emit(StartingLineupPlayerLoaded(
             startingLineupPlayers: startingLineupPlayers)));
   }
@@ -31,7 +31,7 @@ class StartingLineupPlayerCubit extends Cubit<StartingLineupPlayerState> {
     final result = await getTeamStartingLineupPlayersUseCase.call(teamId);
 
     result.fold(
-        (failure) => emit(StartingLineupPlayerFilure(error: failure.message)),
+        (failure) => emit(StartingLineupPlayerFailure(error: failure.message)),
         (startingLineupPlayers) => emit(StartingLineupPlayerLoaded(
             startingLineupPlayers: startingLineupPlayers)));
   }

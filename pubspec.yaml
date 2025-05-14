@@ -76,6 +76,7 @@ dependencies:
   input_quantity: ^2.3.2
   uuid: ^4.5.1
   intl: ^0.18.1
+  bottom_sheet: ^4.0.4
 
 dev_dependencies:
   flutter_test:

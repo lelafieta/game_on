@@ -16,7 +16,7 @@ class StartingLineupPlayerRemoteDataSource
     final insertResponse = await client
         .from('starting_lineup_players')
         .insert(startingLineupPlayer.toMap())
-        .select('*, players:profiles(*), team:teams(*)');
+        .select('*, players:players(*), team:teams(*)');
 
     final data = insertResponse as List;
 
@@ -30,7 +30,7 @@ class StartingLineupPlayerRemoteDataSource
       String teamId) async {
     final response = await client
         .from('starting_lineup_players')
-        .select('*, players:profiles(*), team:teams(*)')
+        .select('*, players:players(*), team:teams(*)')
         .eq('team_id', teamId);
 
     final data = response as List;
