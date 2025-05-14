@@ -23,6 +23,15 @@ class GameOnPage extends StatefulWidget {
 class _GameOnPageState extends State<GameOnPage> {
   var _currentIndex = 0;
 
+  List<String> pagesParameters = [
+    "competitions",
+    "teams",
+    "players",
+    "references",
+    "adepts",
+    "logout",
+  ];
+
   late List<Widget> widgets;
 
   @override
@@ -123,7 +132,9 @@ class _GameOnPageState extends State<GameOnPage> {
                             backgroundImage: AssetImage(AppImages.avatar),
                           ),
                           trailing: IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              _showBlurModalChangeProfile(context);
+                            },
                             icon: SvgPicture.asset(
                               width: 18,
                               AppIcons.convertShapes,
@@ -289,6 +300,50 @@ class _GameOnPageState extends State<GameOnPage> {
                     _buildItem(
                         AppIcons.copyLink, "Participar em torneio", () {}),
                     _buildItem(AppIcons.copyLink, "Convidar Equipes", () {}),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showBlurModalChangeProfile(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.5),
+      builder: (context) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+          child: Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Material(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "Trocar Perfil",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    Divider(color: Colors.grey.shade300),
+                    _buildItem(AppIcons.competitionchampion, "Adepto", () {
+                      Get.toNamed(AppRoutes.createCompetition);
+                    }),
+                    _buildItem(AppIcons.footballJersey, "Organizador", () {
+                      Get.toNamed(AppRoutes.createTeam);
+                    }),
+                    _buildItem(AppIcons.footballJersey, "Árbitro", () {
+                      Get.toNamed(AppRoutes.createTeam);
+                    }),
+                    _buildItem(AppIcons.userColor, "Jogador", () {}),
                   ],
                 ),
               ),

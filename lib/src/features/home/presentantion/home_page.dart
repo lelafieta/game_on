@@ -6,6 +6,7 @@ import 'package:game_on/src/features/competitions/presentation/pages/list_my_com
 import 'package:game_on/src/features/teams/presentation/pages/list_my_teams.dart';
 import 'package:game_on/src/features/teams/presentation/pages/team_deatils_page.dart';
 
+import '../../players/presentation/pages/player_page.dart';
 import '../../squads/presentation/cubit/squad_cubit.dart';
 import '../../teams/presentation/cubit/get_one_team_cubit/get_one_team_cubit.dart';
 
@@ -20,7 +21,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    if (int.parse(widget.arguments!["index"]!) == 1) {
+    if (widget.arguments!["pageParams"] == "teams") {
       final teamId = widget.arguments!["componentId"] as String;
       context.read<GetOneTeamCubit>().getOneTeam(teamId);
     }
@@ -33,11 +34,11 @@ class _HomePageState extends State<HomePage> {
     if (widget.arguments == null) {
       content = const MyCompetitionDetailsPage();
     } else {
-      switch (int.parse(widget.arguments!["index"]!)) {
-        case 0:
-          content = const MyCompetitionDetailsPage();
+      switch (widget.arguments!["pageParams"]) {
+        case "players":
+          content = const PlayerPage();
           break;
-        case 1:
+        case "teams":
           content = BlocBuilder<GetOneTeamCubit, GetOneTeamState>(
             builder: (context, state) {
               if (state is GetOneTeamLoading) {
@@ -53,10 +54,10 @@ class _HomePageState extends State<HomePage> {
             },
           );
           break;
-        case 2:
+        case "2":
           content = const Center(child: Text('Tela 2'));
 
-        case 5:
+        case "adepts":
           content = AdeptPage();
           break;
         default:

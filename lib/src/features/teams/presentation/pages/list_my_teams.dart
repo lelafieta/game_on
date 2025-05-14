@@ -132,7 +132,7 @@ class TeamProfileWidget extends StatelessWidget {
     return InkWell(
       onTap: () {
         Map<dynamic, String?> arguments = {
-          "index": "1",
+          "pageParams": "teams",
           "componentId": team.id.toString()
         };
         Get.toNamed(AppRoutes.gameOn, arguments: arguments);
