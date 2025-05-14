@@ -11,4 +11,6 @@ abstract class IStartingLineupPlayerRemoteDataSource {
 
   Future<List<StartingLineupPlayersModel>> removeStartingLineupPlayer(
       PlayerModel player);
+  Future<List<StartingLineupPlayersModel>> deleteStartingLineupTeam(
+      String teamId);
 }

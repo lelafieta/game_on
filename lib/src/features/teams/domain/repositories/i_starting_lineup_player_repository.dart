@@ -14,4 +14,7 @@ abstract class IStartingLineupPlayerRepository {
 
   Future<Either<Failure, List<StartingLineupPlayersEntity>>>
       removeStartingLineupPlayer(PlayerEntity player);
+
+  Future<Either<Failure, List<StartingLineupPlayersEntity>>>
+      deleteStartingLineupTeam(String teamId);
 }

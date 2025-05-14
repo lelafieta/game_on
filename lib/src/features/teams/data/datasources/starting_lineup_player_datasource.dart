@@ -100,4 +100,11 @@ class StartingLineupPlayerRemoteDataSource
     // Retorna a escalação atualizada
     return await getTeamStartingLineupPlayers(teamId);
   }
+
+  @override
+  Future<List<StartingLineupPlayersModel>> deleteStartingLineupTeam(
+      String teamId) async {
+    await client.from('starting_lineup_players').delete().eq('team_id', teamId);
+    return [];
+  }
 }

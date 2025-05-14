@@ -59,4 +59,17 @@ class StartingLineupPlayerRepository extends IStartingLineupPlayerRepository {
           message: 'Erro ao buscar escalação inicial: ${e.toString()}'));
     }
   }
+
+  @override
+  Future<Either<Failure, List<StartingLineupPlayersEntity>>>
+      deleteStartingLineupTeam(String teamId) async {
+    try {
+      final result =
+          await startingLineupPlayerDataSource.deleteStartingLineupTeam(teamId);
+      return Right(result);
+    } catch (e) {
+      return Left(Failure(
+          message: 'Erro ao buscar escalação inicial: ${e.toString()}'));
+    }
+  }
 }

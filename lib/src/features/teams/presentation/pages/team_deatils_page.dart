@@ -149,7 +149,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                               .removeTeamPlayerStartingLineup(selectedPlayer);
                           Navigator.pop(context);
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.close,
                           color: Colors.white,
                         ),
@@ -2090,7 +2090,15 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                         );
                       },
                     ),
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 10),
+                    TextButton(
+                        onPressed: () {
+                          BlocProvider.of<StartingLineupPlayerCubit>(context)
+                              .deleteSquadTeamUse(team.id!);
+                        },
+                        child: const Text("Zerar Escalação")),
+                    const SizedBox(height: 10),
+
                     BlocBuilder<StartingLineupPlayerCubit,
                         StartingLineupPlayerState>(
                       builder: (context, lineupState) {

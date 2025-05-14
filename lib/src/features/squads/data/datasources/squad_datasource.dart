@@ -44,9 +44,10 @@ class SquadRemoteDataSource extends ISquadRemoteDataSource {
     if (res == null) {
       return null;
     }
+
     return SquadModel.fromMap({
       ...res,
-      'players': res['players'],
+      'players': res['players'], // Adiciona os players ao map
     });
   }
 }
