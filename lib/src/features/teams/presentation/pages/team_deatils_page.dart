@@ -1961,13 +1961,13 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                               if (value != null) {
                                 setState(() {
                                   selectedCount = value;
-                                  TeamEntity myTeam = TeamModel.fromEntity(team)
-                                      .copyWith(
-                                          gameType: selectedCount,
-                                          formation: selectedFormation);
-                                  print(myTeam.gameType);
-                                  // BlocProvider.of<ActionTeamSquadCubit>(context)
-                                  //     .updateTeamSquad(myTeam);
+
+                                  BlocProvider.of<ActionTeamSquadCubit>(context)
+                                      .updateTeamSquad(
+                                    selectedCount,
+                                    selectedFormation,
+                                    team.id!,
+                                  );
                                 });
                               }
                             },
@@ -1994,7 +1994,15 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                             value: selectedFormation,
                             onChanged: (value) {
                               if (value != null) {
-                                setState(() => selectedFormation = value);
+                                setState(() {
+                                  selectedFormation = value;
+                                  BlocProvider.of<ActionTeamSquadCubit>(context)
+                                      .updateTeamSquad(
+                                    selectedCount,
+                                    selectedFormation,
+                                    team.id!,
+                                  );
+                                });
                               }
                             },
                             isExpanded: true,

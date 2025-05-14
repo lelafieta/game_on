@@ -81,4 +81,16 @@ class TeamRepository extends ITeamRepository {
     // TODO: implement getTeamTacticalFormation
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<Failure, Unit>> updateTeamSquad(
+      String gameType, String formation, String teamId) async {
+    try {
+      await teamDatasource.updateTeamSquad(gameType, formation, teamId);
+
+      return const Right(unit);
+    } catch (e) {
+      return Left(Failure(message: e.toString()));
+    }
+  }
 }

@@ -12,5 +12,7 @@ abstract class ITeamRepository {
       String teamId);
   Future<Either<Failure, TeamEntity?>> getTeamById(String teamId);
   Future<Either<Failure, Unit>> updateTeam(TeamEntity team);
+  Future<Either<Failure, Unit>> updateTeamSquad(
+      String gameType, String formation, String teamId);
   Future<Either<Failure, Unit>> deleteTeam(String teamId);
 }

@@ -10,5 +10,7 @@ abstract class ITeamRemoteDataSource {
   Future<TacticalFormationModel?> getTeamTacticalFormation(String teamId);
   Future<TeamModel?> getTeamById(String id);
   Future<Unit> updateTeam(TeamModel team);
+  Future<Unit> updateTeamSquad(
+      String gameType, String formation, String teamId);
   Future<Unit> deleteTeam(String id);
 }

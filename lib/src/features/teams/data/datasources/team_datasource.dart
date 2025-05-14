@@ -66,4 +66,14 @@ class TeamRemoteDataSource implements ITeamRemoteDataSource {
     // TODO: implement getTeamTacticalFormation
     throw UnimplementedError();
   }
+
+  @override
+  Future<Unit> updateTeamSquad(
+      String gameType, String formation, String teamId) async {
+    await client.from('teams').update({
+      "game_type": gameType,
+      "formation": formation,
+    }).eq('id', teamId);
+    return unit;
+  }
 }
