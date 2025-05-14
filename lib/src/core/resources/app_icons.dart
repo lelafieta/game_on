@@ -103,4 +103,5 @@ class AppIcons {
   static const String thumbsup = "assets/icons/thumbs-up.svg";
   static const String populationGlobe = "assets/icons/population-globe.svg";
   static const String football = "assets/icons/football.svg";
+  static const String memo = "assets/icons/memo.svg";
 }
