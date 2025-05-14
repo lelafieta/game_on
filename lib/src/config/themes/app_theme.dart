@@ -85,6 +85,9 @@ class AppTheme {
             padding: const MaterialStatePropertyAll(
               EdgeInsets.symmetric(vertical: 15),
             ),
+            minimumSize: const MaterialStatePropertyAll(
+              Size.fromHeight(50), // altura fixa
+            ),
           ),
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(

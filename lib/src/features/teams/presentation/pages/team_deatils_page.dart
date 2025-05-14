@@ -111,32 +111,27 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
   }
 
   Widget _buildBottomSheet(
-    BuildContext context,
-    ScrollController scrollController,
-    double bottomSheetOffset,
-  ) {
+      BuildContext context,
+      ScrollController scrollController,
+      double bottomSheetOffset,
+      PlayerEntity? selectedPlayer) {
     return Material(
       child: Column(
         children: [
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(20),
-            color: Colors.grey.shade500,
-            child: Row(
-              children: [
-                Container(
-                  width: 50,
-                  height: 50,
+          (selectedPlayer != null)
+              ? Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(5),
+                  margin: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.grey.withOpacity(.2),
+                    border:
+                        Border.all(width: 2, color: Colors.red.withOpacity(.6)),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                ),
-                SizedBox(width: 10),
-                Text("Lela Fieta"),
-              ],
-            ),
-          ),
+                  child: PlayerTile(player: selectedPlayer),
+                )
+              : const SizedBox.shrink(),
           // Expanded(
           //   child: Container(
           //     child: SizedBox(
@@ -192,7 +187,21 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                   final players = state.players;
                   return Padding(
                     padding: const EdgeInsets.only(left: 16, right: 16),
-                    child: _buildPlayerRealWidget(players, scrollController),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: _showPlayersToPlantel(
+                              players, scrollController, selectedPlayer),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: ElevatedButton(
+                            child: Text("Selecionar"),
+                            onPressed: () {},
+                          ),
+                        )
+                      ],
+                    ),
                   );
                 }
                 return const SizedBox.shrink();
@@ -204,12 +213,8 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     );
   }
 
-  Widget _buildLine(
-    int playerCount,
-    TeamEntity team,
-    int startIndex, {
-    bool isGoalkeeper = false,
-  }) {
+  Widget _buildLine(int playerCount, TeamEntity team, int startIndex,
+      {bool isGoalkeeper = false, PlayerEntity? selectedPlayer}) {
     return BlocBuilder<StartingLineupPlayerCubit, StartingLineupPlayerState>(
       builder: (context, state) {
         if (state is SquadLoading) {
@@ -236,10 +241,16 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                         builder:
                             (context, scrollController, bottomSheetOffset) =>
                                 _buildBottomSheet(
-                          context,
-                          scrollController,
-                          bottomSheetOffset,
-                        ),
+                                    context,
+                                    scrollController,
+                                    bottomSheetOffset,
+                                    (startingLineupPlayers.any((element) =>
+                                            element.positionIndex == index))
+                                        ? startingLineupPlayers
+                                            .firstWhere((element) =>
+                                                element.positionIndex == index)
+                                            .player!
+                                        : null),
                         anchors: [0, 0.5, 1],
                         isSafeArea: true,
                       );
@@ -2180,6 +2191,112 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     );
   }
 
+  Widget _showPlayersToPlantel(List<PlayerEntity> players,
+      ScrollController scrollController, PlayerEntity? selectedPlayer) {
+    ValueNotifier<PlayerEntity?> theSelectedPlayer =
+        ValueNotifier<PlayerEntity?>(null);
+    const positionOrder = [
+      'GoalKeeper',
+      'Center Back',
+      'Right Back',
+      'Left Back',
+      'Midfielder',
+      'Forward'
+    ];
+    final groupedPlayers = <String, List<PlayerEntity>>{};
+    for (var pos in positionOrder) {
+      groupedPlayers[pos] =
+          players.where((p) => p.type == 'real' && p.position == pos).toList();
+    }
+
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const ClampingScrollPhysics(),
+      controller: scrollController,
+      itemCount: positionOrder.fold<int>(0, (count, pos) {
+        final group = groupedPlayers[pos]!;
+        return count +
+            (group.isNotEmpty ? group.length + 1 : 0); // +1 para o título
+      }),
+      itemBuilder: (context, index) {
+        int runningIndex = 0;
+
+        for (final position in positionOrder) {
+          final playersInGroup = groupedPlayers[position]!;
+
+          if (playersInGroup.isEmpty) continue;
+
+          // Cabeçalho da posição
+          if (index == runningIndex) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Text(
+                position,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black54,
+                ),
+              ),
+            );
+          }
+
+          final playerIndex = index - runningIndex - 1;
+          if (playerIndex < playersInGroup.length) {
+            final player = playersInGroup[playerIndex];
+
+            return ValueListenableBuilder(
+                valueListenable: theSelectedPlayer,
+                builder: (context, value, _) {
+                  final isSlected =
+                      value != null && theSelectedPlayer.value!.id == player.id;
+                  return InkWell(
+                    onTap: () {
+                      theSelectedPlayer.value = player;
+                    },
+                    child: Stack(
+                      children: [
+                        Container(
+                          margin: (isSlected)
+                              ? const EdgeInsets.symmetric(vertical: 10)
+                              : EdgeInsets.zero,
+                          decoration: BoxDecoration(
+                              color: isSlected
+                                  ? Colors.green.withOpacity(.2)
+                                  : Colors.white,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: PlayerTile(player: player),
+                        ),
+                        (isSlected)
+                            ? Positioned(
+                                top: 0,
+                                right: 0,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    color: Colors.blue.shade800,
+                                  ),
+                                  child: Icon(
+                                    Icons.check,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              )
+                            : const SizedBox.shrink()
+                      ],
+                    ),
+                  );
+                });
+          }
+
+          runningIndex += playersInGroup.length + 1;
+        }
+
+        return const SizedBox.shrink();
+      },
+    );
+  }
+
   Widget _buildPlayerRealWidget(
       List<PlayerEntity> players, ScrollController scrollController,
       {String type = "players"}) {
@@ -2259,10 +2376,10 @@ class PlayerTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
+      // decoration: BoxDecoration(
+      //   color: Colors.white,
+      //   borderRadius: BorderRadius.circular(10),
+      // ),
       child: ListTile(
         onTap: onTap,
         leading: ClipRRect(
