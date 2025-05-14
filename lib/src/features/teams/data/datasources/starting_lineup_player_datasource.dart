@@ -11,8 +11,29 @@ class StartingLineupPlayerRemoteDataSource
 
   @override
   Future<List<StartingLineupPlayersModel>> createStartingLineupPlayer(
-      StartingLineupPlayersModel startingLineupPlayer) async {
-    // Inserção
+    StartingLineupPlayersModel startingLineupPlayer,
+  ) async {
+    final teamId = startingLineupPlayer.teamId;
+    final playerId = startingLineupPlayer.playerId;
+
+    // 1. Verifica se já existe
+    final existing = await client
+        .from('starting_lineup_players')
+        .select()
+        .eq('team_id', teamId)
+        .eq('player_id', playerId)
+        .maybeSingle();
+
+    // 2. Se existir, deleta
+    if (existing != null) {
+      final existingId = existing['id']; // ou use a PK correta
+      await client
+          .from('starting_lineup_players')
+          .delete()
+          .eq('id', existingId);
+    }
+
+    // 3. Inserção
     final insertResponse = await client
         .from('starting_lineup_players')
         .insert(startingLineupPlayer.toMap())

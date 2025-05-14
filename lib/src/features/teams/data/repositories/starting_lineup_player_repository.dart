@@ -23,6 +23,7 @@ class StartingLineupPlayerRepository extends IStartingLineupPlayerRepository {
               StartingLineupPlayersModel.fromEntity(startingLineupPlayer));
       return Right(result);
     } catch (e) {
+      print(e);
       return Left(Failure(
           message: 'Erro ao criar jogador do 11 inicial: ${e.toString()}'));
     }

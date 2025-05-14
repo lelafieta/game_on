@@ -17,6 +17,7 @@ import 'package:game_on/src/features/teams/presentation/cubit/get_team_equipamen
 import 'package:game_on/src/features/teams/presentation/cubit/starting_lineup_player_cubit/starting_lineup_player_cubit.dart';
 import 'package:game_on/src/features/teams/presentation/pages/build_equipament_page.dart';
 import 'package:get/get.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../config/themes/app_colors.dart';
 import '../../../../core/resources/app_icons.dart';
@@ -64,6 +65,10 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
   ];
   String selectedCount = '11x11';
   String selectedFormation = '4-4-2';
+
+  ValueNotifier<PlayerEntity?> theSelectedPlayer =
+      ValueNotifier<PlayerEntity?>(null);
+  ValueNotifier<int?> plantelIndex = ValueNotifier<int?>(null);
 
   final List<String> playerCounts =
       List.generate(11, (i) => '${i + 1}x${i + 1}');
@@ -195,10 +200,25 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: ElevatedButton(
-                            child: Text("Selecionar"),
-                            onPressed: () {},
-                          ),
+                          child: ValueListenableBuilder(
+                              valueListenable: plantelIndex,
+                              builder: (context, __, _) {
+                                return ElevatedButton(
+                                  child: Text("Selecionar"),
+                                  onPressed: () {
+                                    BlocProvider.of<
+                                            StartingLineupPlayerCubit>(context)
+                                        .createStartingLineupPlayer(
+                                            StartingLineupPlayersEntity(
+                                                id: const Uuid().v4(),
+                                                teamId: theSelectedPlayer
+                                                    .value!.teamId!,
+                                                playerId: theSelectedPlayer
+                                                    .value!.id!,
+                                                positionIndex: __!));
+                                  },
+                                );
+                              }),
                         )
                       ],
                     ),
@@ -233,6 +253,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                 children: [
                   InkWell(
                     onTap: () {
+                      plantelIndex.value = index;
                       showFlexibleBottomSheet(
                         minHeight: 0,
                         initHeight: 0.5,
@@ -2193,8 +2214,6 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
 
   Widget _showPlayersToPlantel(List<PlayerEntity> players,
       ScrollController scrollController, PlayerEntity? selectedPlayer) {
-    ValueNotifier<PlayerEntity?> theSelectedPlayer =
-        ValueNotifier<PlayerEntity?>(null);
     const positionOrder = [
       'GoalKeeper',
       'Center Back',
@@ -2253,12 +2272,13 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                   return InkWell(
                     onTap: () {
                       theSelectedPlayer.value = player;
+                      print(index);
                     },
                     child: Stack(
                       children: [
                         Container(
                           margin: (isSlected)
-                              ? const EdgeInsets.symmetric(vertical: 10)
+                              ? const EdgeInsets.symmetric(vertical: 0)
                               : EdgeInsets.zero,
                           decoration: BoxDecoration(
                               color: isSlected
@@ -2269,8 +2289,8 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                         ),
                         (isSlected)
                             ? Positioned(
-                                top: 0,
-                                right: 0,
+                                top: 5,
+                                right: 5,
                                 child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(50),
