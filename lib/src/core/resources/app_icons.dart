@@ -99,4 +99,8 @@ class AppIcons {
   static const String trophyStar = "assets/icons/trophy-star.svg";
   static const String courtSport = "assets/icons/court-sport.svg";
   static const String footballPlayer = "assets/icons/football-player.svg";
+
+  static const String thumbsup = "assets/icons/thumbs-up.svg";
+  static const String populationGlobe = "assets/icons/population-globe.svg";
+  static const String football = "assets/icons/football.svg";
 }

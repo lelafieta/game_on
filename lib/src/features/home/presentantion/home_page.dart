@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_on/src/features/adepts/presentation/pages/adept_page.dart';
 import 'package:game_on/src/features/competitions/presentation/pages/my_competition_details_page.dart';
 import 'package:game_on/src/features/competitions/presentation/pages/list_my_competitions_page.dart';
 import 'package:game_on/src/features/teams/presentation/pages/list_my_teams.dart';
@@ -30,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     Widget content;
     if (widget.arguments == null) {
-      content = MyCompetitionDetailsPage();
+      content = const MyCompetitionDetailsPage();
     } else {
       switch (int.parse(widget.arguments!["index"]!)) {
         case 0:
@@ -54,6 +55,9 @@ class _HomePageState extends State<HomePage> {
           break;
         case 2:
           content = const Center(child: Text('Tela 2'));
+
+        case 5:
+          content = AdeptPage();
           break;
         default:
           content = const Center(child: Text('Tela padrão'));

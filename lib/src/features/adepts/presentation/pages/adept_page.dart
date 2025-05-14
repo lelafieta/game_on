@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../../../config/themes/app_colors.dart';
+import '../../../../core/resources/app_icons.dart';
+import 'adept_home_page.dart';
 
 class AdeptPage extends StatefulWidget {
   const AdeptPage({super.key});
@@ -9,23 +15,21 @@ class AdeptPage extends StatefulWidget {
 
 class _AdeptPageState extends State<AdeptPage> with TickerProviderStateMixin {
   late TabController _tabController;
+  int selectedTabIndex = 0;
 
-  final List<Tab> myTabs = const [
-    Tab(icon: Icon(Icons.home), text: 'Início'),
-    Tab(icon: Icon(Icons.person), text: 'Perfil'),
-    Tab(icon: Icon(Icons.lightbulb), text: 'Palpites'),
-    Tab(icon: Icon(Icons.calendar_today), text: 'Jogos'),
-    Tab(icon: Icon(Icons.forum), text: 'Fórum'),
-    Tab(icon: Icon(Icons.emoji_events), text: 'Conquistas'),
-    Tab(icon: Icon(Icons.leaderboard), text: 'Rankings'),
-    Tab(icon: Icon(Icons.settings), text: 'Configurações'),
-    Tab(icon: Icon(Icons.support_agent), text: 'Suporte'),
-  ];
+  // final List<Tab> myTabs = const [
+  //   Tab(icon: Icon(Icons.home), text: 'Início'),
+  //   Tab(icon: Icon(Icons.lightbulb), text: 'Palpites'),
+  //   Tab(icon: Icon(Icons.calendar_today), text: 'Jogos'),
+  //   Tab(icon: Icon(Icons.forum), text: 'Fórum'),
+  //   Tab(icon: Icon(Icons.emoji_events), text: 'Conquistas'),
+  //   Tab(icon: Icon(Icons.leaderboard), text: 'Rankings'),
+  // ];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: myTabs.length, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
   }
 
   @override
@@ -37,26 +41,76 @@ class _AdeptPageState extends State<AdeptPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Adepto'),
-        bottom: TabBar(
-          controller: _tabController,
-          isScrollable: true,
-          tabs: myTabs,
-        ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: const [
-          Center(child: Text('Início')), // Feed de notícias
-          Center(child: Text('Perfil')), // Dados pessoais e histórico
-          Center(child: Text('Palpites')), // Meus palpites
-          Center(child: Text('Jogos')), // Jogos próximos
-          Center(child: Text('Fórum')), // Comunidade
-          Center(child: Text('Conquistas')), // Minhas conquistas
-          Center(child: Text('Rankings')), // Rankings
-          Center(child: Text('Configurações')), // Ajustes do app
-          Center(child: Text('Suporte')), // Suporte e contato
+      body: Column(
+        children: [
+          Container(
+            color: AppColors.primary,
+            child: TabBar(
+              controller: _tabController,
+              isScrollable: true,
+              tabAlignment: TabAlignment.center,
+              unselectedLabelColor: AppColors.white.withOpacity(.6),
+              labelColor: AppColors.white,
+              indicatorColor: Colors.white,
+              indicatorSize: TabBarIndicatorSize.tab,
+              onTap: (value) {
+                setState(() {
+                  selectedTabIndex = value;
+                });
+              },
+              tabs: [
+                Tab(
+                  icon: SvgPicture.asset(
+                    AppIcons.football,
+                    width: 20,
+                    color: selectedTabIndex == 0
+                        ? Colors.white
+                        : AppColors.white.withOpacity(.6),
+                  ),
+                  text: 'Jogos',
+                ),
+                Tab(
+                  icon: SvgPicture.asset(
+                    AppIcons.populationGlobe,
+                    color: selectedTabIndex == 1
+                        ? Colors.white
+                        : AppColors.white.withOpacity(.6),
+                  ),
+                  text: 'Comunidade',
+                ),
+                Tab(
+                  icon: SvgPicture.asset(
+                    AppIcons.thumbsup,
+                    color: selectedTabIndex == 2
+                        ? Colors.white
+                        : AppColors.white.withOpacity(.6),
+                  ),
+                  text: 'A seguir',
+                ),
+                Tab(
+                  icon: SvgPicture.asset(
+                    AppIcons.newspaper,
+                    color: selectedTabIndex == 3
+                        ? Colors.white
+                        : AppColors.white.withOpacity(.6),
+                  ),
+                  text: 'Notícias',
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: const [
+                AdeptHomePage(), // Feed de notícias
+                Center(child: Text('Perfil')), // Dados pessoais e histórico
+                Center(child: Text('Palpites')), // Meus palpites
+                Center(child: Text('Jogos')), // Jogos próximos
+                Center(child: Text('Fórum')), // Comunidade
+              ],
+            ),
+          ),
         ],
       ),
     );
