@@ -90,6 +90,8 @@ class TeamModel extends TeamEntity {
   }
 
   Map<String, dynamic> toJson() {
+    print(formation);
+    print(gameType);
     return {
       'id': id,
       'name': name,
@@ -111,7 +113,6 @@ class TeamModel extends TeamEntity {
       'equipament_main_color': equipmentMainColor,
       'equipament_type_color': equipmentTypeColor,
       'equipament_number_color': equipmentNumberColor,
-      'created_by_profile': createdByProfile,
       'formation': formation,
       'game_type': gameType,
     };
@@ -170,6 +171,7 @@ class TeamModel extends TeamEntity {
     String? formation,
     String? gameType,
   }) {
+    print("GAME TYPE: ${gameType}");
     return TeamModel(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -192,7 +194,7 @@ class TeamModel extends TeamEntity {
         equipmentNumberColor: abbreviation ?? equipmentNumberColor,
         abbreviation: abbreviation ?? this.abbreviation,
         createdByProfile: createdByProfile ?? createdByProfile,
-        formation: this.formation,
-        gameType: this.gameType);
+        formation: this.formation ?? formation,
+        gameType: this.gameType ?? gameType);
   }
 }

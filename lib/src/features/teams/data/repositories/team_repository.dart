@@ -67,8 +67,10 @@ class TeamRepository extends ITeamRepository {
   Future<Either<Failure, Unit>> updateTeam(TeamEntity team) async {
     try {
       await teamDatasource.updateTeam(TeamModel.fromEntity(team));
+      print("TRUE");
       return const Right(unit);
     } catch (e) {
+      print("Error ${e}");
       return Left(Failure(message: e.toString()));
     }
   }

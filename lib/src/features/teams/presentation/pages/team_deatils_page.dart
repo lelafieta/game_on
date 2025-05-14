@@ -12,9 +12,11 @@ import 'package:game_on/src/core/resources/app_images.dart';
 import 'package:game_on/src/core/strings/app_strings.dart';
 import 'package:game_on/src/features/players/domain/entities/player_entity.dart';
 import 'package:game_on/src/features/players/presentation/cubit/fetch_players_team_cubit/fetch_players_team_cubit.dart';
+import 'package:game_on/src/features/teams/presentation/cubit/action_team_squad_cubit/action_team_squad_cubit.dart';
 import 'package:game_on/src/features/teams/presentation/cubit/get_one_team_cubit/get_one_team_cubit.dart';
 import 'package:game_on/src/features/teams/presentation/cubit/get_team_equipament_cubit/get_team_equipament_cubit.dart';
 import 'package:game_on/src/features/teams/presentation/cubit/starting_lineup_player_cubit/starting_lineup_player_cubit.dart';
+import 'package:game_on/src/features/teams/presentation/cubit/team_action_cubit/team_action_cubit.dart';
 import 'package:game_on/src/features/teams/presentation/pages/build_equipament_page.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
@@ -27,6 +29,7 @@ import '../../../home/presentantion/home_page.dart';
 import '../../../home/presentantion/old_home';
 import '../../../squads/presentation/cubit/squad_cubit.dart';
 import '../../../trophies/presentation/cubit/fetch_trophies_team_cubit/fetch_trophies_team_cubit.dart';
+import '../../data/models/team_model.dart';
 import '../../domain/entities/starting_lineup_player_entity.dart';
 import '../../domain/entities/team_entity.dart';
 
@@ -456,8 +459,6 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
   final String team2Logo =
       'https://scontent.flad5-1.fna.fbcdn.net/v/t39.30808-1/273144602_10152602977424953_1955203260619408476_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=1&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=q-W_7Ofx0GIQ7kNvwGEJVrU&_nc_oc=Adnh-RBMtZE6Kr9ubdATmRiKH6NAEiVO92HwxQXcJXb10vyt6hqv1nhkO14Pimi4X05KqocWeD2Q83HP7vsW3Xw6&_nc_zt=24&_nc_ht=scontent.flad5-1.fna&_nc_gid=tINtmFSQ5O2qx6UrzJ1Xjg&oh=00_AfFWaHkb26Gz6qnHdeiku917wrHIZY8eRqAgYFACd31o-Q&oe=68047B4B';
 
-  int formationSize = 5;
-  String formationSelected = "4-4-2";
   int selectedTabIndex = 0;
 
   Color parseColorFromString(String colorString) {
@@ -483,6 +484,9 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
     context
         .read<StartingLineupPlayerCubit>()
         .getTeamStartingLineupPlayers(widget.team.id!);
+
+    selectedFormation = widget.team.formation.toString();
+    selectedCount = widget.team.gameType.toString();
   }
 
   @override
@@ -1955,7 +1959,16 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                             value: selectedCount,
                             onChanged: (value) {
                               if (value != null) {
-                                setState(() => selectedCount = value);
+                                setState(() {
+                                  selectedCount = value;
+                                  TeamEntity myTeam = TeamModel.fromEntity(team)
+                                      .copyWith(
+                                          gameType: selectedCount,
+                                          formation: selectedFormation);
+                                  print(myTeam.gameType);
+                                  // BlocProvider.of<ActionTeamSquadCubit>(context)
+                                  //     .updateTeamSquad(myTeam);
+                                });
                               }
                             },
                             isExpanded: true,

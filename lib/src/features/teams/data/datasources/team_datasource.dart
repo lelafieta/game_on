@@ -51,13 +51,13 @@ class TeamRemoteDataSource implements ITeamRemoteDataSource {
 
   @override
   Future<Unit> updateTeam(TeamModel team) async {
-    await client.from('teams').update(team.toMap()).eq('id', team.id!);
+    await client.from('teams').update(team.toJson()).eq('id', team.id!);
     return unit;
   }
 
   @override
   Future<Unit> deleteTeam(String id) async {
-    final response = await client.from('teams').delete().eq('id', id);
+    await client.from('teams').delete().eq('id', id);
     return unit;
   }
 

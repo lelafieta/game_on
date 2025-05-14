@@ -49,6 +49,7 @@ import '../features/teams/domain/usecases/get_team_by_id_usecase.dart';
 import '../features/teams/domain/usecases/get_team_tactical_formation_usecase.dart';
 import '../features/teams/domain/usecases/get_teams_usecase.dart';
 import '../features/teams/domain/usecases/update_team_usecase.dart';
+import '../features/teams/presentation/cubit/action_team_squad_cubit/action_team_squad_cubit.dart';
 import '../features/teams/presentation/cubit/get_one_team_cubit/get_one_team_cubit.dart';
 import '../features/teams/presentation/cubit/team_action_cubit/team_action_cubit.dart';
 import '../features/teams/presentation/cubit/team_fetch_cubit/team_fetch_cubit.dart';
@@ -98,6 +99,9 @@ void _registerCubits() {
   sl.registerFactory(() => TeamFetchCubit(getMyTeamsUseCase: sl()));
   sl.registerFactory(() => GetOneTeamCubit(getTeamByIdUseCase: sl()));
   sl.registerFactory(() => GetTeamEquipamentCubit(getTeamByIdUseCase: sl()));
+
+  sl.registerFactory(() =>
+      ActionTeamSquadCubit(createTeamUseCase: sl(), updateTeamUseCase: sl()));
 
   //PLAYER
   sl.registerFactory(
