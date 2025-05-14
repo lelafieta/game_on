@@ -15,6 +15,7 @@ class StartingLineupPlayerRemoteDataSource
   ) async {
     final teamId = startingLineupPlayer.teamId;
     final playerId = startingLineupPlayer.playerId;
+    final positionIndex = startingLineupPlayer.positionIndex;
 
     // 1. Verifica se já existe
     final existing = await client
@@ -26,7 +27,23 @@ class StartingLineupPlayerRemoteDataSource
 
     // 2. Se existir, deleta
     if (existing != null) {
-      final existingId = existing['id']; // ou use a PK correta
+      final existingId = existing['id'];
+      await client
+          .from('starting_lineup_players')
+          .delete()
+          .eq('id', existingId);
+    }
+
+    final existingPosition = await client
+        .from('starting_lineup_players')
+        .select()
+        .eq('team_id', teamId)
+        .eq('position_index', positionIndex)
+        .limit(1)
+        .then((res) => (res as List).isNotEmpty ? res.first : null);
+
+    if (existingPosition != null) {
+      final existingId = existingPosition['id'];
       await client
           .from('starting_lineup_players')
           .delete()
@@ -34,16 +51,11 @@ class StartingLineupPlayerRemoteDataSource
     }
 
     // 3. Inserção
-    final insertResponse = await client
+    await client
         .from('starting_lineup_players')
-        .insert(startingLineupPlayer.toMap())
-        .select('*, players:players(*), team:teams(*)');
+        .insert(startingLineupPlayer.toMap());
 
-    final data = insertResponse as List;
-
-    return data
-        .map((item) => StartingLineupPlayersModel.fromMap(item))
-        .toList();
+    return await getTeamStartingLineupPlayers(teamId);
   }
 
   @override

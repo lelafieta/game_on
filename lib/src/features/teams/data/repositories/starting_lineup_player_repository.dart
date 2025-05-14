@@ -39,6 +39,7 @@ class StartingLineupPlayerRepository extends IStartingLineupPlayerRepository {
           .getTeamStartingLineupPlayers(teamId);
       return Right(result);
     } catch (e) {
+      print("eror 2 $e");
       return Left(Failure(
           message: 'Erro ao buscar escalação inicial: ${e.toString()}'));
     }

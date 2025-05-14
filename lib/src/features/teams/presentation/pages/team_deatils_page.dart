@@ -185,9 +185,28 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
             child: BlocBuilder<FetchPlayersTeamCubit, FetchPlayersTeamState>(
               builder: (context, state) {
                 if (state is FetchPlayersTeamLoading) {
-                  return const Center(child: CircularProgressIndicator());
+                  return Container(
+                    height: 300,
+                    padding: const EdgeInsets.only(bottom: 50),
+                    decoration: BoxDecoration(
+                      color: Colors.green[100],
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: Colors.green),
+                      image: const DecorationImage(
+                        fit: BoxFit.contain,
+                        image: AssetImage(
+                          AppImages.campoReto,
+                        ),
+                      ),
+                    ),
+                    // child: Column(
+                    //   mainAxisAlignment: MainAxisAlignment.end,
+                    //   children: _buildFormationWithLimit(
+                    //       fieldFormation.reversed.toList(), team),
+                    // ),
+                  );
                 } else if (state is FetchPlayersTeamFailure) {
-                  return Center(child: Text(state.error));
+                  return Center(child: Text("error"));
                 } else if (state is FetchPlayersTeamLoaded) {
                   final players = state.players;
                   return Padding(
@@ -216,6 +235,9 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                                                 playerId: theSelectedPlayer
                                                     .value!.id!,
                                                 positionIndex: __!));
+                                    theSelectedPlayer.value = null;
+                                    plantelIndex.value = null;
+                                    Navigator.pop(context);
                                   },
                                 );
                               }),
@@ -716,7 +738,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                     if (state is FetchPlayersTeamLoading) {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is FetchPlayersTeamFailure) {
-                      return Center(child: Text(state.error));
+                      return Center(child: Text("error"));
                     } else if (state is FetchPlayersTeamLoaded) {
                       final players = state.players;
                       return TabBarView(
@@ -2057,25 +2079,53 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                     //   ],
                     // ),
                     // const SizedBox(height: 16),
-                    Container(
-                      height: 300,
-                      padding: const EdgeInsets.only(bottom: 50),
-                      decoration: BoxDecoration(
-                        color: Colors.green[100],
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.green),
-                        image: const DecorationImage(
-                          fit: BoxFit.contain,
-                          image: AssetImage(
-                            AppImages.campoReto,
+                    BlocBuilder<StartingLineupPlayerCubit,
+                        StartingLineupPlayerState>(
+                      builder: (context, state) {
+                        if (state is StartingLineupPlayerLoading) {
+                          return Container(
+                            width: double.infinity,
+                            height: 300,
+                            padding: const EdgeInsets.only(bottom: 50),
+                            decoration: BoxDecoration(
+                              color: Colors.green[100],
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(color: Colors.green),
+                              image: const DecorationImage(
+                                fit: BoxFit.contain,
+                                image: AssetImage(
+                                  AppImages.campoReto,
+                                ),
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: _buildFormationWithLimit(
+                                  fieldFormation.reversed.toList(), team),
+                            ),
+                          );
+                        }
+                        return Container(
+                          height: 300,
+                          padding: const EdgeInsets.only(bottom: 50),
+                          decoration: BoxDecoration(
+                            color: Colors.green[100],
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: Colors.green),
+                            image: const DecorationImage(
+                              fit: BoxFit.contain,
+                              image: AssetImage(
+                                AppImages.campoReto,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: _buildFormationWithLimit(
-                            fieldFormation.reversed.toList(), team),
-                      ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: _buildFormationWithLimit(
+                                fieldFormation.reversed.toList(), team),
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(height: 25),
                     Wrap(
