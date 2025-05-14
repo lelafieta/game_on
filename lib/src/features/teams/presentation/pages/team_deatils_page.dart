@@ -2128,42 +2128,130 @@ class _TeamDetailsPageState extends State<TeamDetailsPage>
                       },
                     ),
                     const SizedBox(height: 25),
-                    Wrap(
-                      spacing: 5,
-                      runSpacing: 5,
-                      children: List.generate(10, (index) {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              width: 50,
-                              height: 50,
-                              // color: Colors.red,
-                              child:
-                                  EquipmentWidgetUtils.equipamentBackComponent(
-                                      team),
-                            ),
-                            Container(
-                              width: 50,
-                              decoration: BoxDecoration(
-                                color: Colors.black54,
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "nome d",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.white,
-                                      fontSize: 12),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      }),
+                    BlocBuilder<StartingLineupPlayerCubit,
+                        StartingLineupPlayerState>(
+                      builder: (context, lineupState) {
+                        if (lineupState is StartingLineupPlayerLoading) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (lineupState is StartingLineupPlayerLoaded) {
+                          final startingLineup =
+                              lineupState.startingLineupPlayers;
+
+                          return BlocBuilder<FetchPlayersTeamCubit,
+                              FetchPlayersTeamState>(
+                            builder: (context, playersState) {
+                              if (playersState is FetchPlayersTeamLoading) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              } else if (playersState
+                                  is FetchPlayersTeamLoaded) {
+                                final allPlayers = playersState.players;
+
+                                // Filtra jogadores que ainda NÃO estão no lineup
+                                final availablePlayers =
+                                    allPlayers.where((player) {
+                                  return !startingLineup.any(
+                                    (lineupPlayer) =>
+                                        lineupPlayer.playerId == player.id,
+                                  );
+                                }).toList();
+
+                                return Wrap(
+                                  spacing: 5,
+                                  runSpacing: 5,
+                                  children: availablePlayers.map((player) {
+                                    return Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Container(
+                                          width: 50,
+                                          height: 50,
+                                          child: EquipmentWidgetUtils
+                                              .equipamentBackComponent(
+                                            team,
+                                            number: player.shirtNumber
+                                                    ?.toString() ??
+                                                '',
+                                          ),
+                                        ),
+                                        Container(
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            color: Colors.black54,
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              player.nickname ?? 'Sem nome',
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.normal,
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  }).toList(),
+                                );
+                              } else if (playersState
+                                  is FetchPlayersTeamFailure) {
+                                return Center(
+                                    child: Text('Erro: ${playersState.error}'));
+                              }
+
+                              return const SizedBox.shrink();
+                            },
+                          );
+                        } else if (lineupState is StartingLineupPlayerFailure) {
+                          return Center(
+                              child: Text('Erro: ${lineupState.error}'));
+                        }
+
+                        return const SizedBox.shrink();
+                      },
                     )
+
+                    // Wrap(
+                    //   spacing: 5,
+                    //   runSpacing: 5,
+                    //   children: List.generate(10, (index) {
+                    //     return Column(
+                    //       mainAxisSize: MainAxisSize.min,
+                    //       children: [
+                    //         Container(
+                    //           width: 50,
+                    //           height: 50,
+                    //           // color: Colors.red,
+                    //           child:
+                    //               EquipmentWidgetUtils.equipamentBackComponent(
+                    //                   team),
+                    //         ),
+                    //         Container(
+                    //           width: 50,
+                    //           decoration: BoxDecoration(
+                    //             color: Colors.black54,
+                    //             borderRadius: BorderRadius.circular(5),
+                    //           ),
+                    //           child: Center(
+                    //             child: Text(
+                    //               "nome d",
+                    //               style: const TextStyle(
+                    //                   fontWeight: FontWeight.normal,
+                    //                   color: Colors.white,
+                    //                   fontSize: 12),
+                    //               overflow: TextOverflow.ellipsis,
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     );
+                    //   }),
+                    // )
 
                     // Row(
                     //   children: [
