@@ -23,7 +23,7 @@ class _PlayerPageState extends State<PlayerPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
   }
 
   @override
@@ -74,6 +74,15 @@ class _PlayerPageState extends State<PlayerPage> with TickerProviderStateMixin {
                 ),
                 Tab(
                   icon: SvgPicture.asset(
+                    AppIcons.barsStaggered,
+                    color: selectedTabIndex == 1
+                        ? Colors.white
+                        : AppColors.white.withOpacity(.6),
+                  ),
+                  text: 'Estatísticas',
+                ),
+                Tab(
+                  icon: SvgPicture.asset(
                     AppIcons.thumbsup,
                     color: selectedTabIndex == 2
                         ? Colors.white
@@ -97,10 +106,11 @@ class _PlayerPageState extends State<PlayerPage> with TickerProviderStateMixin {
             child: TabBarView(
               controller: _tabController,
               children: [
-                _buildPlayerProfile(), // Feed de notícias
-                CommunityPage(), // Dados pessoais e histórico
-                FollowerPage(), // Meus palpites
-                Center(child: Text('Jogos')), // Jogos próximos
+                _buildPlayerProfile(),
+                CommunityPage(),
+                FollowerPage(),
+                Text("data"),
+                Center(child: Text('Jogos')),
               ],
             ),
           ),
@@ -151,7 +161,7 @@ class _PlayerPageState extends State<PlayerPage> with TickerProviderStateMixin {
                   right: 0,
                   child: Center(
                     child: Text(
-                      "TÁ FALAR, TÁ FAZER",
+                      "MAURO CONDA",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -255,6 +265,69 @@ class _PlayerPageState extends State<PlayerPage> with TickerProviderStateMixin {
             //     )
             //   ],
             // ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              children: [
+                ListTile(
+                  leading: SvgPicture.asset(
+                    AppIcons.footballShoesShoe,
+                    width: 26,
+                  ),
+                  title: Text(
+                    'Pé',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  subtitle: Text(
+                    "Direito",
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+                ListTile(
+                  leading: SvgPicture.asset(
+                    AppIcons.footballShoesShoe,
+                    width: 26,
+                  ),
+                  title: Text(
+                    'Posição',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  subtitle: Text(
+                    "Atacante",
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+                ListTile(
+                  leading: SvgPicture.asset(
+                    AppIcons.footballShoesShoe,
+                    width: 26,
+                  ),
+                  title: Text(
+                    'Camisa',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  subtitle: Text(
+                    "7",
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+                ListTile(
+                  leading: SvgPicture.asset(
+                    AppIcons.footballShoesShoe,
+                    width: 26,
+                  ),
+                  title: Text(
+                    'Equipe',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  subtitle: Text(
+                    "Dourada FC",
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

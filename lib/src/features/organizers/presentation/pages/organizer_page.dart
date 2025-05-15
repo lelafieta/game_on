@@ -21,64 +21,67 @@ class _OrganizerPageState extends State<OrganizerPage> {
     return Scaffold(
       body: Column(
         children: [
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-              child: Row(
-                children: [
-                  Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      padding: const EdgeInsets.all(8.0),
-                      icon: const Icon(
-                        Icons.arrow_back,
-                        color: AppColors.black,
-                      ),
-                      onPressed: () {
-                        // Navigator.of(context).pop();
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    child: Center(
-                      child: Text(
-                        "Organizadores",
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 50,
-                    height: 50,
-                    decoration: const BoxDecoration(
-                      // color: AppColors.primary.withOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      padding: const EdgeInsets.all(8.0),
-                      icon: const Icon(
-                        Icons.more_vert,
-                        color: AppColors.black,
-                      ),
-                      onPressed: () {
-                        // Navigator.of(context).pop();
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          // SafeArea(
+          //   child: Padding(
+          //     padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+          //     child: Row(
+          //       children: [
+          //         Container(
+          //           width: 50,
+          //           height: 50,
+          //           decoration: BoxDecoration(
+          //             color: AppColors.primary.withOpacity(0.1),
+          //             shape: BoxShape.circle,
+          //           ),
+          //           child: IconButton(
+          //             padding: const EdgeInsets.all(8.0),
+          //             icon: const Icon(
+          //               Icons.arrow_back,
+          //               color: AppColors.black,
+          //             ),
+          //             onPressed: () {
+          //               Navigator.of(context).pop();
+          //             },
+          //           ),
+          //         ),
+          //         Expanded(
+          //           child: Center(
+          //             child: Text(
+          //               "Organizadores",
+          //               overflow: TextOverflow.ellipsis,
+          //               style: Theme.of(context)
+          //                   .textTheme
+          //                   .titleMedium!
+          //                   .copyWith(
+          //                       fontWeight: FontWeight.bold,
+          //                       color: Colors.black),
+          //             ),
+          //           ),
+          //         ),
+          //         Container(
+          //           width: 50,
+          //           height: 50,
+          //           decoration: const BoxDecoration(
+          //             color: AppColors.primary.withOpacity(0.1),
+          //             shape: BoxShape.circle,
+          //           ),
+          //           child: IconButton(
+          //             padding: const EdgeInsets.all(8.0),
+          //             icon: const Icon(
+          //               Icons.more_vert,
+          //               color: AppColors.black,
+          //             ),
+          //             onPressed: () {
+          //               Navigator.of(context).pop();
+          //             },
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          SizedBox(
+            height: 16,
           ),
           Expanded(
             child: Column(
