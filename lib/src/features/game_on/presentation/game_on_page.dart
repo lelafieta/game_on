@@ -22,7 +22,6 @@ class GameOnPage extends StatefulWidget {
 
 class _GameOnPageState extends State<GameOnPage> {
   var _currentIndex = 0;
-
   List<String> pagesParameters = [
     "competitions",
     "teams",
